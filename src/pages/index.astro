@@ -1,50 +1,837 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+// src/pages/index.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "8th Pay Commission Calculator, Pay Matrix Level 1-18 & Fitment Factor (2026)";
+const pageDescription = "Calculate your projected 8th Pay Commission revised basic pay, HRA, and pensions. Explore expected fitment factors (1.92x to 2.86x), complete 7th vs 8th CPC comparative pay matrix levels 1 to 18, and arrears estimation.";
+
+// Full Level 1 to 18 Pay Matrix Benchmark Data
+const payMatrixData = [
+  { level: "Level 1", gp: "GP 1800", post: "MTS, Support Staff, Group D", entry7th: 18000 },
+  { level: "Level 2", gp: "GP 1900", post: "Lower Division Clerk (LDC)", entry7th: 19900 },
+  { level: "Level 3", gp: "GP 2000", post: "Senior Clerk, Constable, Driver", entry7th: 21700 },
+  { level: "Level 4", gp: "GP 2400", post: "Upper Division Clerk (UDC), Head Constable", entry7th: 25500 },
+  { level: "Level 5", gp: "GP 2800", post: "Auditor, Accountant, Assistant", entry7th: 29200 },
+  { level: "Level 6", gp: "GP 4200", post: "Inspector, Sub-Inspector, Primary Teacher", entry7th: 35400 },
+  { level: "Level 7", gp: "GP 4600", post: "Assistant Section Officer (ASO), Section Engineer", entry7th: 44900 },
+  { level: "Level 8", gp: "GP 4800", post: "Assistant Accounts Officer (AAO), SO", entry7th: 47600 },
+  { level: "Level 9", gp: "GP 5400 (PB-2)", post: "Senior Accounts Officer, Senior Section Officer", entry7th: 53100 },
+  { level: "Level 10", gp: "GP 5400 (PB-3)", post: "Group-A Entry, SDM, DSP, Assistant Commissioner", entry7th: 56100 },
+  { level: "Level 11", gp: "GP 6600", post: "Under Secretary, Executive Engineer", entry7th: 67700 },
+  { level: "Level 12", gp: "GP 7600", post: "Deputy Secretary, Superintendent Engineer", entry7th: 78800 },
+  { level: "Level 13", gp: "GP 8700", post: "Director, Selection Grade", entry7th: 123100 },
+  { level: "Level 13A", gp: "GP 8900", post: "Senior Director, DIG, Chief Engineer", entry7th: 139600 },
+  { level: "Level 14", gp: "GP 10000", post: "Joint Secretary, Inspector General (IG)", entry7th: 144200 },
+  { level: "Level 15", gp: "HAG", post: "Principal Secretary, Additional Director General", entry7th: 182200 },
+  { level: "Level 16", gp: "HAG+", post: "Special Secretary, Director General of Police (DG)", entry7th: 205400 },
+  { level: "Level 17", gp: "Apex Scale", post: "Secretary to Government of India", entry7th: 225000 },
+  { level: "Level 18", gp: "Cabinet Sec", post: "Cabinet Secretary of India", entry7th: 250000 }
+];
+
+// 22 Detailed SEO FAQ schema items
+const faqs = [
+  { q: "What is the expected 8th Pay Commission fitment factor?", a: "Economists and employee federations anticipate a fitment factor ranging between 1.92x and 2.86x. A multiplier of 2.25x to 2.57x is considered the primary baseline for balancing federal fiscal reserves with consumer price index (CPI) growth." },
+  { q: "What will be the revised Level 1 minimum basic pay under 8th CPC?", a: "Under the 7th CPC, the entry basic salary is ₹18,000. At an expected 2.25x fitment factor, minimum basic pay will adjust to ₹40,500, while at a 2.57x multiplier it reaches ₹46,260, and at 2.86x it exceeds ₹51,480." },
+  { q: "When is the 8th Central Pay Commission expected to be effective?", a: "Historically, central pay commissions are appointed once every decade. With the 7th CPC implemented on January 1, 2016, the 10-year transition cycle points toward the 2026 calendar cycle." },
+  { q: "How is the 8th Pay Commission revised basic salary calculated?", a: "The formula is: Revised Basic Pay = Current 7th CPC Basic Pay × Approved Fitment Factor. The calculated amount is then fitted into the nearest pay matrix cell index." },
+  { q: "What happens to Dearness Allowance (DA) when the 8th CPC starts?", a: "Whenever a new Pay Commission is officially implemented, accumulated Dearness Allowance is merged into the revised basic salary, and the new DA rate resets to 0%." },
+  { q: "How does the 8th Pay Commission affect pensioners?", a: "Central government pensioners and family pensioners receive proportional pension revision. The basic pension (50% of last-drawn basic pay) is multiplied by the finalized fitment factor." },
+  { q: "Will the Level 1 to 18 matrix format continue under the 8th CPC?", a: "Yes. The 7th CPC removed the older running Grade Pay framework and introduced the unified Pay Matrix spanning Levels 1 to 18, which is expected to remain the standard structure." },
+  { q: "How will House Rent Allowance (HRA) be revised under the 8th Pay Commission?", a: "HRA will continue to be classified across X, Y, and Z city categories. While percentages may adjust, they apply directly to the higher revised basic salary, significantly increasing monthly house rent disbursements." },
+  { q: "Will state government employees receive 8th Pay Commission benefits?", a: "Pay commissions are formed for Central Government employees and Armed Forces. However, state governments traditionally adopt similar revisions within 6 to 24 months." },
+  { q: "What is the primary demand regarding commuted pension restoration?", a: "Pensioner associations have submitted memorandums demanding the recovery timeline for commuted pension be reduced from 15 years down to 12 years." },
+  { q: "How is Military Service Pay (MSP) impacted?", a: "Armed forces personnel receive revised Military Service Pay (MSP) across Officers, Military Nursing Service (MNS), and JCO/OR tiers to address unique service conditions." },
+  { q: "Are Railway and Postal personnel covered?", a: "Yes. All regular civilian employees of the Union Government, including Indian Railways, Department of Posts, and Defence Civilians, are directly covered." },
+  { q: "How are arrears calculated in case of retroactive notification?", a: "Arrears represent the net financial difference between the new revised salary entitlement and the drawn wages across the retroactive rollout duration." },
+  { q: "Will Transport Allowance (TA) be increased proportionally?", a: "Yes. Transport Allowance (TA) and its corresponding DA allowances undergo upward calibration based on cost-of-living parameters." },
+  { q: "What will be the maximum basic pay ceiling under Level 18?", a: "Level 18 (Cabinet Secretary) is capped at ₹2,50,000 under the 7th CPC. Under a 2.25x to 2.57x fitment multiplier, this ceiling expands between ₹5,62,500 and ₹6,42,500." },
+  { q: "What is the role of the National Council of JCM in 8th CPC?", a: "The National Council of Joint Consultative Machinery (JCM) functions as the official negotiating body representing employee confederations before the Ministry of Finance." },
+  { q: "Does the 8th Pay Commission impact the Unified Pension Scheme (UPS)?", a: "Yes. Since UPS assures a pension of 50% of the average basic pay drawn in the last 12 months before retirement, the sharp hike in basic pay directly boosts assured retirement payouts." },
+  { q: "What will happen to Children Education Allowance (CEA)?", a: "CEA rates automatically adjust upward when allowance restructuring takes place alongside base salary revisions." },
+  { q: "What is the minimum pension under the 8th Pay Commission?", a: "Minimum basic pension under the 7th CPC is ₹9,000. Under an expected fitment factor between 2.25x and 2.57x, minimum pension will adjust between ₹20,250 and ₹23,130." },
+  { q: "How does the annual increment system work in the pay matrix?", a: "Employees move vertically down the pay matrix by one cell each year, reflecting an annual incremental step of approximately 3% compounding growth." },
+  { q: "What is the official procedure for 8th CPC report approval?", a: "Once appointed, the commission holds stakeholder hearings, prepares a recommendations report, submits it to the Finance Ministry, which is then ratified by the Union Cabinet." },
+  { q: "Where can verified notifications be cross-checked?", a: "Official gazettes and directives are issued via the Department of Expenditure (doe.gov.in) and the Press Information Bureau (pib.gov.in)." }
+];
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="8th pay commission, 8th cpc calculator, fitment factor, pay matrix level 1 to 18, central government employees, pension revision 2026, arrears calculation" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={pageDescription} />
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        "url": siteUrl,
+        "name": "8th Pay Commission Information & Calculation Portal",
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${siteUrl}/#webpage`,
+        "url": siteUrl,
+        "name": pageTitle,
+        "isPartOf": { "@id": `${siteUrl}/#website` },
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": f.a
+          }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --primary: #0a192f;
+      --primary-accent: #2563eb;
+      --accent-cyan: #0ea5e9;
+      --accent-gradient: linear-gradient(135deg, #2563eb 0%, #0284c7 100%);
+      --text-main: #334155;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border-subtle: #e2e8f0;
+      --border-focus: #3b82f6;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-page); color: var(--text-main); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary-accent); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: #1d4ed8; }
+
+    /* Modern Navigation */
+    header { background: rgba(10, 25, 47, 0.96); backdrop-filter: blur(12px); color: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; }
+    .logo { font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.6rem; text-decoration: none !important; letter-spacing: -0.02em; }
+    .rupee-badge { background: var(--accent-gradient); width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.4); }
+    .logo span { color: var(--accent-cyan); }
+    nav ul { display: flex; list-style: none; gap: 1.75rem; align-items: center; }
+    nav a { color: #cbd5e1; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: #fff; }
+    @media (max-width: 860px) { nav ul { display: none; } }
+
+    /* Layout & Structural Containers */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.25rem; }
+    section { margin-bottom: 3.75rem; scroll-margin-top: 5rem; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-sm); }
+    .section-title { font-size: 1.85rem; color: var(--text-dark); margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; }
+    .section-desc { color: var(--text-muted); margin-bottom: 1.75rem; font-size: 1rem; }
+
+    /* Hero */
+    .hero { background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a192f 100%); color: #fff; padding: 5rem 1.25rem 4rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .hero h1 { font-size: 2.6rem; margin-bottom: 1rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+    .hero p { font-size: 1.15rem; color: #94a3b8; max-width: 780px; margin: 0 auto 2.25rem; font-weight: 400; }
+    .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn { padding: 0.85rem 1.75rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.95rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border: none; text-decoration: none !important; transition: all 0.2s ease; }
+    .btn-primary { background: var(--accent-gradient); color: #fff; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+    .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(4px); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+
+    /* Trust / Editorial Transparency Bar */
+    .trust-meta-bar { display: flex; align-items: center; gap: 1.25rem; padding: 1rem 1.25rem; background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 2.5rem; font-size: 0.88rem; color: var(--text-muted); flex-wrap: wrap; }
+    .trust-meta-bar strong { color: var(--text-dark); }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+
+    /* Interactive Calculators */
+    .calc-inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
+    .form-group label { display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.45rem; color: #334155; }
+    .form-group input, .form-group select { width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: var(--radius-sm); font-size: 0.98rem; outline: none; background: #fff; color: var(--text-dark); transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+    .calc-output { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 5px solid #16a34a; border-radius: var(--radius-sm); padding: 1.5rem; margin-top: 1.5rem; display: none; }
+    .calc-output-row { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px dashed #cbd5e1; font-size: 1rem; }
+    .calc-output-row:last-child { border-bottom: none; font-weight: 800; font-size: 1.2rem; color: #15803d; }
+
+    /* Multiplier Pill Bar */
+    .factor-buttons-container { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .factor-pill-btn { padding: 0.65rem 1.4rem; background: #f1f5f9; border-radius: 30px; font-weight: 700; cursor: pointer; border: 2px solid transparent; font-size: 0.92rem; color: #475569; transition: all 0.2s ease; }
+    .factor-pill-btn.active { background: #eff6ff; border-color: var(--primary-accent); color: var(--primary-accent); }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; margin-top: 1.25rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.94rem; }
+    th, td { padding: 0.9rem 1.15rem; border-bottom: 1px solid var(--border-subtle); }
+    th { background: #f8fafc; font-weight: 700; color: var(--text-dark); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: #f8fafc; }
+
+    /* Level Badges */
+    .level-badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
+    .level-badge { background: #fff; border: 1px solid var(--border-subtle); padding: 0.9rem; border-radius: var(--radius-sm); text-align: center; cursor: pointer; transition: all 0.2s ease; }
+    .level-badge:hover { border-color: var(--primary-accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .level-badge strong { display: block; color: var(--text-dark); font-size: 1rem; }
+    .level-badge span { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Editorial Content */
+    .editorial-prose { margin: 1.5rem 0; font-size: 1.05rem; color: #334155; }
+    .editorial-prose p { margin-bottom: 1.25rem; }
+    .editorial-prose h3 { font-size: 1.35rem; color: var(--text-dark); margin: 2rem 0 0.85rem; font-weight: 700; }
+    .editorial-prose ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+    .editorial-prose li { margin-bottom: 0.5rem; }
+
+    /* FAQ System */
+    .faq-accordion { margin-top: 1.5rem; }
+    .faq-row { border-bottom: 1px solid var(--border-subtle); padding: 1.2rem 0; }
+    .faq-header { font-weight: 700; color: var(--text-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem; }
+    .faq-body { display: none; padding-top: 0.85rem; font-size: 0.98rem; color: #475569; line-height: 1.7; }
+    .faq-row.open .faq-body { display: block; }
+    .faq-row.open .chevron { transform: rotate(180deg); }
+    .chevron { transition: transform 0.2s ease; font-size: 0.85rem; color: var(--text-muted); }
+
+    /* Official Government Reference Cards */
+    .official-sources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
+    .source-box { background: #fff; border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+    .source-box a { font-weight: 700; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 0.3rem; }
+    .source-box p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem; }
+
+    /* Modern Footer */
+    footer { background: #071120; color: #94a3b8; padding: 4rem 1.25rem 2.5rem; margin-top: 5rem; font-size: 0.92rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-content { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-nav a { color: #cbd5e1; margin-left: 1.5rem; }
+    .footer-nav a:hover { color: #fff; }
+    .disclaimer-text { max-width: 1140px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; line-height: 1.6; color: #64748b; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-wrapper">
+      <a href="/" class="logo">
+        <span class="rupee-badge">₹</span>
+        8th Pay <span>Commission</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#salary-calculator">Calculator</a></li>
+          <li><a href="#fitment-factor">Fitment Factor</a></li>
+          <li><a href="#pay-matrix">Pay Matrix</a></li>
+          <li><a href="#pension-calculator">Pension</a></li>
+          <li><a href="#faqs">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- H1 HERO SECTION -->
+  <section class="hero">
+    <h1>8th Pay Commission 2026</h1>
+    <p>Salary Calculation, Fitment Factor Multipliers, Pay Matrix & Pension Revision Analysis</p>
+    <div class="hero-actions">
+      <a href="#salary-calculator" class="btn btn-primary">Salary Calculator</a>
+      <a href="#fitment-factor" class="btn btn-secondary">Fitment Calculator</a>
+      <a href="#pay-matrix" class="btn btn-secondary">Pay Matrix Levels</a>
+    </div>
+  </section>
+
+  <div class="container" style="margin-top: 2rem;">
+
+    <!-- TRUST / E-E-A-T TRANSPARENCY BAR -->
+    <div class="trust-meta-bar">
+      <div class="meta-item">
+        <span>Curated By:</span> <strong>Pay & Pension Research Desk</strong>
+      </div>
+      <div class="meta-item">
+        <span>Reviewed Against:</span> <strong>7th CPC Gazette & DoE Orders</strong>
+      </div>
+      <div class="meta-item">
+        <span>Status:</span> <strong style="color: #16a34a;">Pre-Implementation Evaluation (2026)</strong>
+      </div>
+    </div>
+
+    <!-- EDITORIAL COMPREHENSIVE OVERVIEW (SEO AUTHORITY) -->
+    <section class="card">
+      <h2 class="section-title">Comprehensive Guide to the 8th Central Pay Commission</h2>
+      <p class="section-desc">Understanding the historical evolution, economic metrics, and compensation restructuring for Central Government employees.</p>
+      
+      <div class="editorial-prose">
+        <p>
+          The <strong>8th Central Pay Commission (CPC)</strong> represents the upcoming statutory remuneration revision framework designed by the Government of India to recalibrate the earnings, allowances, post-retirement annuities, and operational benefits for over 4.8 million regular central government employees and upwards of 6.7 million pensioners. Established on a decennial (10-year) precedent since post-independence India, pay commissions play an essential role in bridging the gap between historical wage increments and ongoing retail inflation measured through the Consumer Price Index for Industrial Workers (CPI-IW).
+        </p>
+        <p>
+          With the implementation of the 7th Central Pay Commission taking effect on January 1, 2016, central employees and pensioner federations nationwide have focused on 2026 as the scheduled threshold for the commencement of the 8th CPC. Over the preceding decade, key macroeconomic indicators have shifted significantly. The continuous compounding of retail inflation has led Dearness Allowance (DA) and Dearness Relief (DR) to reach and exceed the critical 50% milestone. Under central service rules, crossing the 50% DA mark triggers institutional re-examinations of critical allowances, such as House Rent Allowance (HRA), Children Education Allowance (CEA), and Transport Allowance (TA).
+        </p>
+
+        <h3>Core Objectives of Pay Revisions in Public Service</h3>
+        <p>
+          The structural formulation of the 8th Pay Commission is expected to pursue four primary administrative mandates:
+        </p>
+        <ul>
+          <li><strong>Real Wage Preservation:</strong> Incorporating cumulative inflation by merging accumulated Dearness Allowance directly into the basic pay structure.</li>
+          <li><strong>Compression Ratio Balancing:</strong> Addressing the disparity between entry-level Grade Pay (Level 1) and senior bureaucratic executive echelons (Level 18, Cabinet Secretary scale).</li>
+          <li><strong>Simplification of Matrix Progression:</strong> Refining the Level 1 to 18 Pay Matrix cells introduced under the 7th CPC to eliminate career stagnation and anomalous promotional pay ceilings.</li>
+          <li><strong>Parity in Pensioner Entitlements:</strong> Ensuring retired defence personnel, civilian veterans, and family pensioners receive equitable pension adjustments matching active duty increments.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8TH PAY COMMISSION SALARY CALCULATOR -->
+    <section id="salary-calculator">
+      <div class="card">
+        <h2 class="section-title">8th Pay Commission Salary Calculator</h2>
+        <p class="section-desc">Interactive computational tool to project revised monthly basic pay, HRA, and gross salary based on varying fitment multipliers.</p>
+
+        <form id="mainSalaryForm">
+          <div class="calc-inputs-grid">
+            <div class="form-group">
+              <label for="calc7thBasic">7th CPC Current Basic Pay (₹)</label>
+              <input type="number" id="calc7thBasic" value="18000" min="18000" step="100" required />
+            </div>
+
+            <div class="form-group">
+              <label for="calcFitment">Fitment Factor Multiplier</label>
+              <select id="calcFitment">
+                <option value="1.92">1.92x (Conservative Benchmark)</option>
+                <option value="2.10">2.10x (Balanced Projection)</option>
+                <option value="2.25" selected>2.25x (Moderate Baseline)</option>
+                <option value="2.57">2.57x (7th CPC Equivalent)</option>
+                <option value="2.86">2.86x (Federation Demand)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="calcHra">City Category (HRA Classification)</label>
+              <select id="calcHra">
+                <option value="0.27">X Class (27% Tier-1 Metro: Delhi, Mumbai, Bengaluru, etc.)</option>
+                <option value="0.18">Y Class (18% Tier-2 Cities)</option>
+                <option value="0.09">Z Class (9% Tier-3 Rural/Small Towns)</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Calculate 8th CPC Projected Salary</button>
+        </form>
+
+        <div id="salaryResults" class="calc-output">
+          <div class="calc-output-row"><span>Projected 8th CPC Basic Pay:</span> <span id="resRevisedBasic">₹0</span></div>
+          <div class="calc-output-row"><span>Estimated Revised HRA:</span> <span id="resRevisedHRA">₹0</span></div>
+          <div class="calc-output-row"><span>DA at Rollout (Absorbed & Resets):</span> <span>₹0 (0%)</span></div>
+          <div class="calc-output-row"><span>Estimated Gross Monthly Emoluments:</span> <span id="resGrossTotal">₹0</span></div>
+        </div>
+
+        <div class="editorial-prose" style="margin-top: 2rem;">
+          <h3>Mathematical Methodology of Salary Projections</h3>
+          <p>
+            The calculation model follows standard statutory precedent: <br />
+            <code>Revised Basic Salary = Current 7th CPC Basic × Fitment Factor Multiplier</code><br />
+            Because a new Pay Commission absorbs preceding dearness allowances into the revised base pay, the Dearness Allowance rate resets to 0% on the date of effect. The allowance cycle subsequently rebuilds biannually (in January and July) based on twelve-month moving averages of the AICPI-IW index.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FITMENT FACTOR DEEP DIVE -->
+    <section id="fitment-factor">
+      <div class="card">
+        <h2 class="section-title">Fitment Factor: The Core Multiplier Explained</h2>
+        <p class="section-desc">Analyze how distinct multiplier scenarios reshape basic salaries across lower, middle, and senior administrative cadres.</p>
+
+        <div class="factor-buttons-container">
+          <div class="factor-pill-btn" data-factor="1.92">1.92x (Conservative)</div>
+          <div class="factor-pill-btn" data-factor="2.10">2.10x</div>
+          <div class="factor-pill-btn active" data-factor="2.25">2.25x (Baseline)</div>
+          <div class="factor-pill-btn" data-factor="2.57">2.57x (7th CPC Baseline)</div>
+          <div class="factor-pill-btn" data-factor="2.86">2.86x (Union Target)</div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Multiplier Scenario</th>
+                <th>Level 1 (MTS: ₹18,000)</th>
+                <th>Level 6 (Inspector: ₹35,400)</th>
+                <th>Level 10 (Gazetted: ₹56,100)</th>
+                <th>Level 14 (Joint Sec: ₹1,44,200)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong id="displayFactor">2.25x Multiplier Selected</strong></td>
+                <td id="factorLvl1">₹40,500</td>
+                <td id="factorLvl6">₹79,650</td>
+                <td id="factorLvl10">₹1,26,225</td>
+                <td id="factorLvl14">₹3,24,450</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="editorial-prose" style="margin-top: 2rem;">
+          <h3>Historical Progression of Pay Commission Multipliers</h3>
+          <p>
+            To appreciate the function of the fitment factor, one must observe its historical trajectory. The 5th CPC utilized a base formula that integrated existing pay scales with 40% fitment weightage. The 6th CPC (2006) introduced running pay bands coupled with Grade Pay and utilized a multiplier factor of approximately 1.86x. The 7th CPC (2016) made a major departure by disbanding the Grade Pay structure altogether, replacing it with the Level 1 to 18 Pay Matrix and establishing a uniform fitment multiplier of 2.57x.
+          </p>
+          <p>
+            Under the expected 8th CPC deliberations, staff side confederations including the National Council (JCM) have advocated for a factor between 2.86x and 3.25x. Their rationale rests on the Aykroyd formula of minimum wage computation, factoring in nutrition, clothing, housing, and social expenditure benchmarks. Conversely, macroeconomic analysts suggest a factor between 1.92x and 2.28x to ensure fiscal deficit sustainability for the exchequer.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8TH CPC PAY MATRIX (LEVEL 1 TO LEVEL 18) -->
+    <section id="pay-matrix">
+      <div class="card">
+        <h2 class="section-title">8th CPC Pay Matrix: Levels 1 to 18</h2>
+        <p class="section-desc">Comprehensive comparative grid reflecting current 7th CPC starting pay versus projected 8th CPC pay at 2.25x and 2.57x fitment factors.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Pay Level</th>
+                <th>Equivalent Grade Pay</th>
+                <th>Designation Cadre</th>
+                <th>7th CPC Base</th>
+                <th>8th CPC (2.25x Baseline)</th>
+                <th>8th CPC (2.57x Parity)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {payMatrixData.map((row) => (
+                <tr>
+                  <td><strong>{row.level}</strong></td>
+                  <td>{row.gp}</td>
+                  <td>{row.post}</td>
+                  <td>₹{row.entry7th.toLocaleString('en-IN')}</td>
+                  <td><strong>₹{Math.round(row.entry7th * 2.25).toLocaleString('en-IN')}</strong></td>
+                  <td><strong style="color: var(--primary-accent);">₹{Math.round(row.entry7th * 2.57).toLocaleString('en-IN')}</strong></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="editorial-prose" style="margin-top: 2rem;">
+          <h3>The Structure and Mechanics of the Pay Matrix</h3>
+          <p>
+            The Pay Matrix simplifies the civil and defence salary framework by grouping positions into 18 distinct vertical levels. Horizontally, each level comprises upwards of 30 to 40 sequential index cells representing annual increments (standardized at approximately 3% per year). Under the 8th Pay Commission, this matrix system will be preserved while updating the base cell values to prevent stagnation in long-tenure posts.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SALARY BY PAY LEVEL LOOKUP -->
+    <section>
+      <div class="card">
+        <h2 class="section-title">Pay Matrix Level Lookup</h2>
+        <p class="section-desc">Select any level badge below to verify starting salary transformations across civil, defence, and postal cadres.</p>
+        
+        <div class="level-badge-grid">
+          {payMatrixData.map((item) => (
+            <div class="level-badge" onclick={`alert('${item.level} (${item.gp})\\nCurrent 7th CPC: ₹${item.entry7th.toLocaleString('en-IN')}\\nProjected 8th CPC (2.25x): ₹${Math.round(item.entry7th * 2.25).toLocaleString('en-IN')}')`}>
+              <strong>{item.level}</strong>
+              <span>7th: ₹{item.entry7th.toLocaleString('en-IN')}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- PENSION CALCULATOR -->
+    <section id="pension-calculator">
+      <div class="card">
+        <h2 class="section-title">8th Pay Commission Pension Calculator</h2>
+        <p class="section-desc">Estimate post-retirement basic pension and family pension revisions for retired Central Government and Armed Forces veterans.</p>
+
+        <form id="pensionForm">
+          <div class="calc-inputs-grid">
+            <div class="form-group">
+              <label for="pensionCurrent">Current Basic Pension (₹)</label>
+              <input type="number" id="pensionCurrent" value="9000" min="9000" step="100" required />
+            </div>
+            <div class="form-group">
+              <label for="pensionFactor">Projected Fitment Factor</label>
+              <select id="pensionFactor">
+                <option value="1.92">1.92x (Conservative)</option>
+                <option value="2.10">2.10x</option>
+                <option value="2.25" selected>2.25x (Baseline)</option>
+                <option value="2.57">2.57x (7th CPC Baseline)</option>
+                <option value="2.86">2.86x (Demanded Factor)</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem;">Calculate Revised Pension</button>
+        </form>
+
+        <div id="pensionResult" class="calc-output">
+          <div class="calc-output-row"><span>Revised Monthly Basic Pension:</span> <span id="resPension">₹0</span></div>
+          <div class="calc-output-row"><span>Standard Family Pension (30% Baseline):</span> <span id="resFamilyPension">₹0</span></div>
+        </div>
+
+        <div class="editorial-prose" style="margin-top: 2rem;">
+          <h3>Pension Formulation and Revision Standards</h3>
+          <p>
+            In accordance with the recommendations of successive Pay Commissions, full basic pension entitlement is pegged at 50% of the last drawn basic pay (or the average emoluments of the last 10 months of qualifying service, whichever is more beneficial). For past retirees, basic pension is updated by applying the finalized fitment multiplier directly, providing complete parity with active employees.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARREARS CALCULATOR -->
+    <section id="arrears-calculator">
+      <div class="card">
+        <h2 class="section-title">8th CPC Arrears Calculator</h2>
+        <p class="section-desc">Calculate prospective retrospective earnings if the Pay Commission recommendations are enacted retroactively.</p>
+
+        <form id="arrearsForm">
+          <div class="calc-inputs-grid">
+            <div class="form-group">
+              <label for="arrOldPay">Current Monthly Drawn Pay (₹)</label>
+              <input type="number" id="arrOldPay" value="45000" required />
+            </div>
+            <div class="form-group">
+              <label for="arrNewPay">Estimated Revised Monthly Gross (₹)</label>
+              <input type="number" id="arrNewPay" value="62000" required />
+            </div>
+            <div class="form-group">
+              <label for="arrMonths">Retrospective Duration (Months)</label>
+              <input type="number" id="arrMonths" value="6" min="1" max="36" required />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem;">Estimate Total Arrears</button>
+        </form>
+
+        <div id="arrearsResult" class="calc-output">
+          <div class="calc-output-row"><span>Estimated Monthly Difference:</span> <span id="resMonthlyDiff">₹0</span></div>
+          <div class="calc-output-row"><span>Estimated Net Arrears Receivable:</span> <span id="resTotalArrears">₹0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8TH CPC IMPLEMENTATION TIMELINE & CYCLE -->
+    <section>
+      <div class="card">
+        <h2 class="section-title">8th CPC Implementation Timeline & Historical Precedent</h2>
+        <p class="section-desc">Reviewing past commission execution cycles to evaluate the roadmap for 2026 and beyond.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Pay Commission</th>
+                <th>Year Constituted</th>
+                <th>Effective Rollout Date</th>
+                <th>Processing Timeframe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>5th CPC</strong></td>
+                <td>1994</td>
+                <td>January 1, 1996</td>
+                <td>~24 Months</td>
+              </tr>
+              <tr>
+                <td><strong>6th CPC</strong></td>
+                <td>October 2006</td>
+                <td>January 1, 2006 (Retrospective)</td>
+                <td>~22 Months</td>
+              </tr>
+              <tr>
+                <td><strong>7th CPC</strong></td>
+                <td>February 2014</td>
+                <td>January 1, 2016</td>
+                <td>~23 Months</td>
+              </tr>
+              <tr>
+                <td><strong>8th CPC</strong></td>
+                <td>Consultations Ongoing</td>
+                <td>Projected 2026 Cycle</td>
+                <td>Under Deliberation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="editorial-prose" style="margin-top: 2rem;">
+          <h3>Procedural Milestones for Implementation</h3>
+          <p>
+            The administrative process of enacting a Central Pay Commission follows a defined sequence:
+          </p>
+          <ul>
+            <li><strong>Terms of Reference (ToR) Notification:</strong> The Department of Expenditure issues the formal charter defining the scope of work, member composition, and review criteria.</li>
+            <li><strong>Stakeholder Representations:</strong> The Commission solicits detailed memorandums and oral testimonies from union confederations, defence leadership, and administrative services.</li>
+            <li><strong>Report Compilation & Submission:</strong> The Commission synthesizes historical economic data, fiscal constraints, and price indices into a comprehensive final report.</li>
+            <li><strong>Empowered Committee of Secretaries (E-CoS):</strong> An empowered panel headed by the Cabinet Secretary analyzes the fiscal viability of the proposals.</li>
+            <li><strong>Union Cabinet Approval & Gazette Notification:</strong> The Cabinet formally adopts the modified recommendations, notifying the new pay rules in the Gazette of India.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7TH CPC VS 8TH CPC COMPREHENSIVE COMPARISON -->
+    <section>
+      <div class="card">
+        <h2 class="section-title">7th CPC vs 8th CPC Structural Comparison</h2>
+        <p class="section-desc">Detailed comparative breakdown of core salary parameters, allowances, and retirement mechanisms.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Remuneration Parameter</th>
+                <th>7th Central Pay Commission</th>
+                <th>8th Central Pay Commission (Projected)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Fitment Multiplier</strong></td>
+                <td>2.57x Uniform baseline (Higher for specific cadres)</td>
+                <td>Projected between 1.92x and 2.86x</td>
+              </tr>
+              <tr>
+                <td><strong>Entry-Level Pay (Level 1)</strong></td>
+                <td>₹18,000 per month</td>
+                <td>₹34,560 to ₹51,480 per month</td>
+              </tr>
+              <tr>
+                <td><strong>Apex Salary (Level 18)</strong></td>
+                <td>₹2,50,000 per month (Cabinet Secretary)</td>
+                <td>₹5,00,000 to ₹7,15,000 per month</td>
+              </tr>
+              <tr>
+                <td><strong>Dearness Allowance (DA)</strong></td>
+                <td>Merged 125% accumulated DA from 6th CPC</td>
+                <td>Will absorb accumulated DA (resetting to 0%)</td>
+              </tr>
+              <tr>
+                <td><strong>Pay Band Architecture</strong></td>
+                <td>Replaced Grade Pay with unified Pay Matrix</td>
+                <td>Continuation of Levels 1–18 with expanded cells</td>
+              </tr>
+              <tr>
+                <td><strong>Pension Basis</strong></td>
+                <td>50% of last drawn pay with full parity</td>
+                <td>Expected parity via direct fitment multiplication</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENSIONERS WELFARE & ALLOWANCES -->
+    <section>
+      <div class="card">
+        <h2 class="section-title">Pensioners: Pension, Family Pension & Dearness Relief</h2>
+        <p class="section-desc">Comprehensive entitlements, family welfare guidelines, and commutation regulations for veterans and retirees.</p>
+
+        <div class="editorial-prose">
+          <p>
+            Central government pensioners form a central pillar of pay commission reviews. The 8th CPC is tasked with harmonizing pension provisions across various retirement frameworks, including the Old Pension Scheme (OPS), the Unified Pension Scheme (UPS), and the National Pension System (NPS).
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div style="border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); background: #fff;">
+              <h4 style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.15rem;">Basic Pension Parity</h4>
+              <p style="font-size: 0.95rem;">Retirees receive parity revisions. Pre-2026 pensioners have their pensions updated via the direct fitment multiplier, ensuring equivalent entitlements regardless of retirement year.</p>
+            </div>
+            <div style="border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); background: #fff;">
+              <h4 style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.15rem;">Family Pension Protection</h4>
+              <p style="font-size: 0.95rem;">Family pension is calculated at 30% of the last drawn basic pay (subject to the minimum pension threshold), providing long-term security to surviving dependents.</p>
+            </div>
+            <div style="border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); background: #fff;">
+              <h4 style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.15rem;">Commutation Period Demands</h4>
+              <p style="font-size: 0.95rem;">Employee confederations have pressed for commuted pension recovery to be reduced from 15 years to 12 years, citing modern actuarial interest rates and mortality tables.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FREQUENTLY ASKED QUESTIONS (22 DETAILED QUESTIONS) -->
+    <section id="faqs">
+      <div class="card">
+        <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
+        <p class="section-desc">In-depth answers to the 22 most essential queries concerning the 8th Central Pay Commission.</p>
+
+        <div class="faq-accordion">
+          {faqs.map((faq) => (
+            <div class="faq-row">
+              <div class="faq-header">
+                <span>{faq.q}</span>
+                <span class="chevron">▼</span>
+              </div>
+              <div class="faq-body">{faq.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFICIAL GOVERNMENT SOURCES -->
+    <section>
+      <div class="card">
+        <h2 class="section-title">Official Sources & Verification Portals</h2>
+        <p class="section-desc">Verify authentic announcements and statutory notices directly through primary government repositories.</p>
+
+        <div class="official-sources-grid">
+          <div class="source-box">
+            <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">Department of Expenditure (doe.gov.in) ↗</a>
+            <p>Official repository for central pay rules, allowance gazettes, and service directives.</p>
+          </div>
+          <div class="source-box">
+            <a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">Press Information Bureau (pib.gov.in) ↗</a>
+            <p>Union Cabinet decisions, official press briefings, and government statements.</p>
+          </div>
+          <div class="source-box">
+            <a href="https://finmin.nic.in" target="_blank" rel="noopener noreferrer">Ministry of Finance (finmin.nic.in) ↗</a>
+            <p>Union budget documentation and financial expenditure memorandums.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MODERN FOOTER WITH ADSENSE COMPLIANCE DISCLAIMERS -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <strong style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;">
+          <span class="rupee-badge" style="width: 24px; height: 24px; font-size: 0.9rem;">₹</span>
+          8paycommission.com
+        </strong>
+        <p style="font-size: 0.85rem; max-width: 500px;">
+          An independent research and analytical utility portal providing salary estimates, matrix comparisons, and statutory updates for Indian public servants.
+        </p>
+      </div>
+      <div class="footer-nav">
+        <a href="about-us">About Us</a>
+        <a href="editorial-policy">Editorial Policy</a>
+        <a href="privacy-policy">Privacy Policy</a>
+        <a href="terms-of-use">Terms of Use</a>
+        
+      </div>
+    </div>
+    <div class="disclaimer-text">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and informative portal and is not operated by, affiliated with, or endorsed by the Government of India, the Ministry of Finance, or any Pay Commission authority. Official notifications, gazette copies, and orders must be verified exclusively through the official government portal at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer" style="color: #94a3b8; text-decoration: underline;">doe.gov.in</a>. All calculations generated on this website are projected estimates based on past pay commission methodologies and public representations.
+    </div>
+  </footer>
+
+  <!-- CLIENT SCRIPTS -->
+  <script is:inline>
+    // 1. Salary Calculator Logic
+    const salaryForm = document.getElementById('mainSalaryForm');
+    salaryForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const basic = parseFloat(document.getElementById('calc7thBasic').value) || 0;
+      const factor = parseFloat(document.getElementById('calcFitment').value) || 2.25;
+      const hraRate = parseFloat(document.getElementById('calcHra').value) || 0.27;
+
+      const revisedBasic = Math.round(basic * factor);
+      const revisedHra = Math.round(revisedBasic * hraRate);
+      const gross = revisedBasic + revisedHra;
+
+      document.getElementById('resRevisedBasic').textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      document.getElementById('resRevisedHRA').textContent = '₹' + revisedHra.toLocaleString('en-IN');
+      document.getElementById('resGrossTotal').textContent = '₹' + gross.toLocaleString('en-IN');
+      document.getElementById('salaryResults').style.display = 'block';
+    });
+
+    // 2. Interactive Fitment Factor Pill Switcher
+    const pills = document.querySelectorAll('.factor-pill-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const f = parseFloat(pill.getAttribute('data-factor'));
+
+        document.getElementById('displayFactor').textContent = f.toFixed(2) + 'x Multiplier Selected';
+        document.getElementById('factorLvl1').textContent = '₹' + Math.round(18000 * f).toLocaleString('en-IN');
+        document.getElementById('factorLvl6').textContent = '₹' + Math.round(35400 * f).toLocaleString('en-IN');
+        document.getElementById('factorLvl10').textContent = '₹' + Math.round(56100 * f).toLocaleString('en-IN');
+        document.getElementById('factorLvl14').textContent = '₹' + Math.round(144200 * f).toLocaleString('en-IN');
+      });
+    });
+
+    // 3. Pension Calculator Logic
+    const pensionForm = document.getElementById('pensionForm');
+    pensionForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const current = parseFloat(document.getElementById('pensionCurrent').value) || 0;
+      const factor = parseFloat(document.getElementById('pensionFactor').value) || 2.25;
+
+      const revised = Math.round(current * factor);
+      const family = Math.round(revised * 0.6); // 30% of corresponding full salary baseline
+
+      document.getElementById('resPension').textContent = '₹' + revised.toLocaleString('en-IN');
+      document.getElementById('resFamilyPension').textContent = '₹' + family.toLocaleString('en-IN');
+      document.getElementById('pensionResult').style.display = 'block';
+    });
+
+    // 4. Arrears Calculator Logic
+    const arrearsForm = document.getElementById('arrearsForm');
+    arrearsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const oldVal = parseFloat(document.getElementById('arrOldPay').value) || 0;
+      const newVal = parseFloat(document.getElementById('arrNewPay').value) || 0;
+      const months = parseInt(document.getElementById('arrMonths').value) || 0;
+
+      const monthlyDiff = Math.max(0, newVal - oldVal);
+      const totalArrears = monthlyDiff * months;
+
+      document.getElementById('resMonthlyDiff').textContent = '₹' + monthlyDiff.toLocaleString('en-IN');
+      document.getElementById('resTotalArrears').textContent = '₹' + totalArrears.toLocaleString('en-IN');
+      document.getElementById('arrearsResult').style.display = 'block';
+    });
+
+    // 5. FAQ Accordion Interaction
+    document.querySelectorAll('.faq-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const row = header.parentElement;
+        row.classList.toggle('open');
+      });
+    });
+  </script>
+
+</body>
 </html>

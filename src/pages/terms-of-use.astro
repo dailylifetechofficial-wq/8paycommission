@@ -1,0 +1,197 @@
+---
+// src/pages/terms-of-use.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "Terms of Use | 8th Pay Commission Information Portal";
+const pageDescription = "Terms of Use and Service Agreement for 8paycommission.com outlining user responsibilities, calculator disclaimers, and non-governmental declarations.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Google Font: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #0a192f;
+      --primary-accent: #2563eb;
+      --accent-cyan: #0ea5e9;
+      --accent-gradient: linear-gradient(135deg, #2563eb 0%, #0284c7 100%);
+      --text-main: #334155;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border-subtle: #e2e8f0;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-page); color: var(--text-main); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary-accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Navigation */
+    header { background: rgba(10, 25, 47, 0.96); backdrop-filter: blur(12px); color: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; }
+    .logo { font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.6rem; text-decoration: none !important; }
+    .rupee-badge { background: var(--accent-gradient); width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.4); }
+    .logo span { color: var(--accent-cyan); }
+    nav ul { display: flex; list-style: none; gap: 1.75rem; align-items: center; }
+    nav a { color: #cbd5e1; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: #fff; text-decoration: none; }
+    @media (max-width: 860px) { nav ul { display: none; } }
+
+    /* Page Hero */
+    .page-hero { background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a192f 100%); color: #fff; padding: 4.5rem 1.25rem 3.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .page-hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+    .page-hero p { font-size: 1.15rem; color: #94a3b8; max-width: 700px; margin: 0 auto; }
+
+    /* Content Layout */
+    .container { max-width: 920px; margin: 3rem auto 4.5rem; padding: 0 1.25rem; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    h2 { font-size: 1.5rem; color: var(--text-dark); margin: 2rem 0 0.75rem; font-weight: 800; letter-spacing: -0.01em; }
+    h2:first-of-type { margin-top: 0; }
+    p { margin-bottom: 1.25rem; font-size: 1.02rem; }
+    ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    li { margin-bottom: 0.6rem; font-size: 1rem; }
+
+    .warning-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 1.25rem; border-radius: var(--radius-sm); margin: 1.75rem 0; font-size: 0.95rem; color: #991b1b; line-height: 1.7; }
+    .highlight-box { background: #eff6ff; border-left: 4px solid var(--primary-accent); padding: 1.25rem; border-radius: var(--radius-sm); margin: 1.75rem 0; font-size: 0.95rem; line-height: 1.7; }
+
+    /* Footer */
+    footer { background: #071120; color: #94a3b8; padding: 3.5rem 1.25rem 2.5rem; font-size: 0.92rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-content { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-nav a { color: #cbd5e1; margin-left: 1.5rem; }
+    .footer-nav a:hover { color: #fff; }
+    .disclaimer-text { max-width: 1140px; margin: 1.75rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-wrapper">
+      <a href="/" class="logo">
+        <span class="rupee-badge">₹</span>
+        8th Pay <span>Commission</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#salary-calculator">Calculator</a></li>
+          <li><a href="/#fitment-factor">Fitment Factor</a></li>
+          <li><a href="/#pay-matrix">Pay Matrix</a></li>
+          <li><a href="/#pension-calculator">Pension</a></li>
+          <li><a href="/about-us">About Us</a></li>
+          <li><a href="/#faqs">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <h1>Terms of Use</h1>
+    <p>Last updated: September 2026</p>
+  </section>
+
+  <!-- MAIN TERMS CONTENT -->
+  <main class="container">
+    <article class="card">
+      <p>
+        Welcome to <strong>8paycommission.com</strong>. By accessing, browsing, or utilizing the interactive calculators, pay matrix references, and analytical content provided on this website, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use and our <a href="/privacy-policy">Privacy Policy</a>.
+      </p>
+
+      <div class="warning-box">
+        <strong>Non-Governmental Disclaimer & Independent Status:</strong><br />
+        8paycommission.com is a private educational and computational resource. This website is <strong>not</strong> operated by, associated with, or authorized by the Government of India, the Ministry of Finance, the Department of Personnel and Training (DoPT), or any Pay Commission committee. Official service rules, orders, and gazettes must always be sourced through primary statutory outlets such as <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer" style="color: #991b1b; text-decoration: underline;">doe.gov.in</a>.
+      </div>
+
+      <h2>1. Nature of the Calculation Tools & Projections</h2>
+      <p>
+        The calculators available on this website—including the 8th Pay Commission Salary Estimator, Fitment Multipliers, Pension Calculator, and Arrears Estimator—are designed exclusively for informational and estimation purposes:
+      </p>
+      <ul>
+        <li>All calculations use mathematical projections derived from historical trends and public union representations.</li>
+        <li>None of the figures displayed on this website constitute legal, financial, or service pay entitlements.</li>
+        <li>Individual pay fixations, stepping up of pay, qualifying service adjustments, and allowance admissibility are subject to official government gazette orders and verification by your respective Accounts Officer (PAO/AG).</li>
+      </ul>
+
+      <h2>2. Permitted Use & Intellectual Property</h2>
+      <p>
+        You are granted a limited, non-exclusive, revocable license to access the content, use the interactive computational widgets, and review the pay matrix for personal, educational, and non-commercial utility.
+      </p>
+      <ul>
+        <li>You may share calculation results, tables, and links with attribution to <strong>8paycommission.com</strong>.</li>
+        <li>You may not scrape, frame, redistribute, reverse-engineer, or deploy automated bots to duplicate large datasets or calculator code without prior written consent.</li>
+      </ul>
+
+      <h2>3. Accuracy of Information & Content Updates</h2>
+      <p>
+        While we make every reasonable effort to ensure our pay matrices, allowances, and statutory references are accurate and updated:
+      </p>
+      <ul>
+        <li>We make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, or availability of the website's data.</li>
+        <li>The website administrators reserve the right to modify, adjust, or retire any calculator, matrix table, or reference document without prior notice.</li>
+      </ul>
+
+      <h2>4. Limitation of Liability</h2>
+      <p>
+        In no event shall 8paycommission.com, its researchers, or administrators be liable for any direct, indirect, incidental, consequential, or special loss or damage arising from your use of, or inability to use, this website or reliance on its calculated output.
+      </p>
+
+      <h2>5. Links to External Portals</h2>
+      <p>
+        Throughout the website, external links to authentic government domains (such as <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a> and <a href="https://pib.gov.in" target="_blank" rel="noopener noreferrer">pib.gov.in</a>) are provided for verification purposes. We do not exercise operational control over external websites and bear no responsibility for their content or policies.
+      </p>
+
+      <h2>6. Governing Law & Jurisdiction</h2>
+      <p>
+        These Terms of Use shall be governed by and construed in accordance with the laws of the Republic of India. Any disputes arising in connection with the website shall be subject to the exclusive jurisdiction of the competent courts in India.
+      </p>
+
+      <h2>7. Contact Information</h2>
+      <p>
+        If you have any questions or require clarification regarding these Terms of Use, please reach out via email at <a href="mailto:dailylifetech.official@gmail.com">dailylifetech.official@gmail.com</a>.
+      </p>
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <strong style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;">
+          <span class="rupee-badge" style="width: 24px; height: 24px; font-size: 0.85rem;">₹</span>
+          8paycommission.com
+        </strong>
+        <p style="font-size: 0.85rem; max-width: 500px;">
+          An independent research and analytical utility portal providing salary estimates, matrix comparisons, and statutory updates for Indian public servants.
+        </p>
+      </div>
+      <div class="footer-nav">
+        <a href="/about-us">About Us</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="disclaimer-text">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and informative portal and is not operated by, affiliated with, or endorsed by the Government of India, the Ministry of Finance, or any Pay Commission authority. Official notifications, gazette copies, and orders must be verified exclusively through the official government portal at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer" style="color: #94a3b8; text-decoration: underline;">doe.gov.in</a>.
+    </div>
+  </footer>
+
+</body>
+</html>

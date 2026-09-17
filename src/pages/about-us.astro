@@ -1,0 +1,187 @@
+---
+// src/pages/about-us.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "About Us | 8th Pay Commission Research & Portal";
+const pageDescription = "Learn about 8paycommission.com, an independent calculation and analytical portal providing salary estimates and matrix models for Indian public servants.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Google Font: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #0a192f;
+      --primary-accent: #2563eb;
+      --accent-cyan: #0ea5e9;
+      --accent-gradient: linear-gradient(135deg, #2563eb 0%, #0284c7 100%);
+      --text-main: #334155;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border-subtle: #e2e8f0;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-page); color: var(--text-main); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary-accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Navigation */
+    header { background: rgba(10, 25, 47, 0.96); backdrop-filter: blur(12px); color: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; }
+    .logo { font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.6rem; text-decoration: none !important; }
+    .rupee-badge { background: var(--accent-gradient); width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.4); }
+    .logo span { color: var(--accent-cyan); }
+    nav ul { display: flex; list-style: none; gap: 1.75rem; align-items: center; }
+    nav a { color: #cbd5e1; font-weight: 600; font-size: 0.92rem; }
+    nav a:hover { color: #fff; text-decoration: none; }
+    @media (max-width: 860px) { nav ul { display: none; } }
+
+    /* Page Hero */
+    .page-hero { background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a192f 100%); color: #fff; padding: 4.5rem 1.25rem 3.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .page-hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+    .page-hero p { font-size: 1.15rem; color: #94a3b8; max-width: 700px; margin: 0 auto; }
+
+    /* Content Layout */
+    .container { max-width: 920px; margin: 3rem auto 4.5rem; padding: 0 1.25rem; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    h2 { font-size: 1.55rem; color: var(--text-dark); margin: 2.25rem 0 0.85rem; font-weight: 800; letter-spacing: -0.01em; }
+    h2:first-of-type { margin-top: 0; }
+    p { margin-bottom: 1.35rem; font-size: 1.05rem; }
+    ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    li { margin-bottom: 0.65rem; font-size: 1.02rem; }
+
+    .highlight-box { background: #eff6ff; border-left: 4px solid var(--primary-accent); padding: 1.5rem; border-radius: var(--radius-sm); margin: 2rem 0; font-size: 0.98rem; line-height: 1.7; }
+    .contact-card { background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.5rem; margin-top: 1rem; }
+
+    /* Footer */
+    footer { background: #071120; color: #94a3b8; padding: 3.5rem 1.25rem 2.5rem; font-size: 0.92rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-content { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-nav a { color: #cbd5e1; margin-left: 1.5rem; }
+    .footer-nav a:hover { color: #fff; }
+    .disclaimer-text { max-width: 1140px; margin: 1.75rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-wrapper">
+      <a href="/" class="logo">
+        <span class="rupee-badge">₹</span>
+        8th Pay <span>Commission</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#salary-calculator">Calculator</a></li>
+          <li><a href="/#fitment-factor">Fitment Factor</a></li>
+          <li><a href="/#pay-matrix">Pay Matrix</a></li>
+          <li><a href="/#pension-calculator">Pension</a></li>
+          <li><a href="/about-us" style="color: #38bdf8;">About Us</a></li>
+          <li><a href="/#faqs">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <h1>About Our Initiative</h1>
+    <p>Independent research, transparent mathematical modeling, and public service information.</p>
+  </section>
+
+  <!-- MAIN ARTICLE -->
+  <main class="container">
+    <article class="card">
+      <h2>Who We Are</h2>
+      <p>
+        <strong>8paycommission.com</strong> is an independent digital utility, calculation portal, and research archive dedicated to Central Government employees, Armed Forces veterans, Railway staff, and pensioners across India.
+      </p>
+      <p>
+        Our mission is to bring transparency, clarity, and mathematical accuracy to public sector compensation models by demystifying pay matrix transformations, Dearness Allowance (DA) mergers, and pension formulas ahead of the 8th Central Pay Commission.
+      </p>
+      <p>
+        Understanding government service rules, running pay bands, and fitment calculations can be difficult. Complex Gazette notifications and technical circulars often leave employees uncertain about how broad policy updates translate into monthly take-home earnings. Our platform bridges the gap by transforming static financial data into intuitive, interactive tools and clear reference tables.
+      </p>
+
+      <h2>Our Research & Computational Methodology</h2>
+      <p>
+        Every interactive tool, salary forecast, and matrix level featured on our portal is built upon verifiable, objective data models:
+      </p>
+      <ul>
+        <li><strong>Historical Statutory Trends:</strong> Detailed analysis of structural wage transitions dating from the 5th, 6th, and 7th Central Pay Commission Gazettes.</li>
+        <li><strong>Economic Indicators:</strong> Tracking 12-month moving averages of the All India Consumer Price Index for Industrial Workers (AICPI-IW) published by the Labour Bureau to measure real-wage impact.</li>
+        <li><strong>Official Representations:</strong> Evaluating verified memoranda and demand charters submitted by recognized employee consultative bodies, such as the National Council (Staff Side) of the Joint Consultative Machinery (JCM).</li>
+      </ul>
+
+      <h2>Editorial Transparency & Content Integrity</h2>
+      <p>
+        We follow strict editorial standards to ensure data integrity:
+      </p>
+      <ul>
+        <li><strong>Fact-Checked Calculations:</strong> All formulas for basic pay, HRA tier adjustments, and family pensions are cross-checked against standard central service accounting principles.</li>
+        <li><strong>Regular Monitoring:</strong> We actively review updates from primary administrative repositories, including the Department of Expenditure (DoE), the Ministry of Finance, and the Press Information Bureau (PIB).</li>
+        <li><strong>Transparent Corrections:</strong> If revisions are made to government guidelines or if an error is identified in our datasets, our models are promptly updated to reflect accurate information.</li>
+      </ul>
+
+      <div class="highlight-box">
+        <strong>Statutory & Non-Governmental Declaration:</strong><br />
+        8paycommission.com is an independent educational research and reference portal. We are <strong>not</strong> an official platform of the Government of India, the Ministry of Finance, or any state administration. All calculations, estimates, and matrix projections available on this site are for informational and financial planning purposes only. Official orders and gazette copies should always be verified through authorized portals such as <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
+      </div>
+
+      <h2>Get in Touch</h2>
+      <p>
+        We welcome constructive feedback, suggestions, and dataset corrections from civil servants, defense personnel, and visitors.
+      </p>
+      
+      <div class="contact-card">
+        <p style="margin-bottom: 0.5rem;"><strong>General Inquiries & Feedback:</strong> <a href="mailto:dailylifetech.official@gmail.com"></a>dailylifetech.official@gmail.com</p>
+        <p style="margin-bottom: 0;"><strong>Research Initiative:</strong> 8paycommission Analytical Desk, India</p>
+      </div>
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <strong style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;">
+          <span class="rupee-badge" style="width: 24px; height: 24px; font-size: 0.9rem;">₹</span>
+          8paycommission.com
+        </strong>
+        <p style="font-size: 0.85rem; max-width: 500px;">
+          An independent research and analytical utility portal providing salary estimates, matrix comparisons, and statutory updates for Indian public servants.
+        </p>
+      </div>
+      <div class="footer-nav">
+        <a href="/about-us">About Us</a>
+        <a href="#">Editorial Policy</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="disclaimer-text">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and informative portal and is not operated by, affiliated with, or endorsed by the Government of India, the Ministry of Finance, or any Pay Commission authority. Official notifications, gazette copies, and orders must be verified exclusively through the official government portal at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer" style="color: #94a3b8; text-decoration: underline;">doe.gov.in</a>.
+    </div>
+  </footer>
+
+</body>
+</html>
