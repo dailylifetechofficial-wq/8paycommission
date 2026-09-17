@@ -5,13 +5,15 @@ import '../styles/global.css';
 
 interface Props {
 	title: string;
-	description: string;
+	description?: string;
 	image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const defaultDescription =
+	'Calculate 8th Pay Commission revised salary, fitment factor (1.92x–2.86x), HRA, and pension. Explore projected 8th CPC pay matrix levels 1 to 18 and arrears.';
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description = defaultDescription, image = '/blog-placeholder-1.jpg' } = Astro.props;
 ---
 
 <!-- Global Metadata -->
