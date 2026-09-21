@@ -1,0 +1,653 @@
+---
+// src/pages/8th-pay-commission-salary-calculator.astro
+const pageTitle = "8th Pay Commission Salary Calculator: Expected Pay Matrix & In-Hand Hike";
+const pageDescription = "Calculate your projected 8th CPC revised basic pay, HRA, gross, and in-hand monthly salary based on expected fitment factors (1.92x to 3.68x).";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="robots" content="index, follow" />
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --surface: #ffffff;
+      --bg: #f8fafc;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --success: #166534;
+      --success-bg: #dcfce7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.65;
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    header.page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header.page-header h1 {
+      font-size: 2rem;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+
+    header.page-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Widget Styling */
+    .calculator-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      margin-bottom: 3rem;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .calc-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #fff;
+      color: var(--text-main);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .results-panel {
+      margin-top: 1.5rem;
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .results-panel {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .result-item {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .result-item.highlight {
+      background: var(--success-bg);
+      border-color: #86efac;
+    }
+
+    .result-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+    }
+
+    .result-value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .result-item.highlight .result-value {
+      color: var(--success);
+    }
+
+    /* Content Area Styling */
+    .content-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+
+    .content-body h2 {
+      font-size: 1.45rem;
+      margin: 2rem 0 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid #eff6ff;
+      padding-bottom: 0.4rem;
+    }
+
+    .content-body h3 {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .content-body p {
+      margin-bottom: 1rem;
+      color: #334155;
+    }
+
+    .content-body ul {
+      margin-bottom: 1.25rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+
+    .content-body li {
+      margin-bottom: 0.4rem;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background-color: #f8fafc;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    tr:nth-child(even) {
+      background-color: #fdfdfd;
+    }
+
+    .formula-box {
+      background-color: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 1rem;
+      margin: 1.25rem 0;
+      font-family: monospace;
+      font-size: 0.95rem;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .disclaimer {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: 2rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- TOP HEADER -->
+    <header class="page-header">
+      <h1>8th Pay Commission Salary Calculator</h1>
+      <p>Estimate your projected 8th CPC revised basic pay, HRA, gross pay, and in-hand monthly hike.</p>
+    </header>
+
+    <!-- INTERACTIVE CALCULATOR (ABOVE CONTENT) -->
+    <section class="calculator-card" aria-label="8th Pay Commission Interactive Calculator">
+      <div class="calc-grid">
+        <div class="form-group">
+          <label for="payLevel">Select 7th CPC Pay Matrix Level</label>
+          <select id="payLevel">
+            <option value="18000">Level 1 (GP 1800) - Min Basic ₹18,000</option>
+            <option value="19900">Level 2 (GP 1900) - Min Basic ₹19,900</option>
+            <option value="21700">Level 3 (GP 2000) - Min Basic ₹21,700</option>
+            <option value="25500">Level 4 (GP 2400) - Min Basic ₹25,500</option>
+            <option value="29200">Level 5 (GP 2800) - Min Basic ₹29,200</option>
+            <option value="35400" selected>Level 6 (GP 4200) - Min Basic ₹35,400</option>
+            <option value="44900">Level 7 (GP 4600) - Min Basic ₹44,900</option>
+            <option value="47600">Level 8 (GP 4800) - Min Basic ₹47,600</option>
+            <option value="53100">Level 9 (GP 5400) - Min Basic ₹53,100</option>
+            <option value="56100">Level 10 (GP 5400 PB3) - Min Basic ₹56,100</option>
+            <option value="67700">Level 11 (GP 6600) - Min Basic ₹67,700</option>
+            <option value="78800">Level 12 (GP 7600) - Min Basic ₹78,800</option>
+            <option value="118500">Level 13 (GP 8700) - Min Basic ₹1,18,500</option>
+            <option value="144200">Level 14 (GP 10000) - Min Basic ₹1,44,200</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="currentBasic">Current 7th CPC Basic Pay (₹)</label>
+          <input type="number" id="currentBasic" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-group">
+          <label for="fitmentFactor">Expected Fitment Factor</label>
+          <select id="fitmentFactor">
+            <option value="1.92">1.92 (Conservative / Basic DA Merger)</option>
+            <option value="2.28">2.28 (Moderate Multiplier)</option>
+            <option value="2.57">2.57 (Equivalent to 7th CPC Multiplier)</option>
+            <option value="2.86" selected>2.86 (Target Staff Federation Demand)</option>
+            <option value="3.00">3.00 (High Union Proposal)</option>
+            <option value="3.68">3.68 (Aspirational Peak Multiplier)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cityClass">City Classification (HRA Tier)</label>
+          <select id="cityClass">
+            <option value="0.30" selected>Class X (Metro - 30% HRA)</option>
+            <option value="0.20">Class Y (Tier-2 Municipal - 20% HRA)</option>
+            <option value="0.10">Class Z (Rural/Small Town - 10% HRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Calculation Results -->
+      <div class="results-panel">
+        <div class="result-item">
+          <div class="result-label">Revised 8th CPC Basic</div>
+          <div class="result-value" id="dispBasic">₹1,01,244</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Revised HRA (Estimated)</div>
+          <div class="result-value" id="dispHra">₹30,373</div>
+        </div>
+        <div class="result-item highlight">
+          <div class="result-label">Estimated Gross Salary</div>
+          <div class="result-value" id="dispGross">₹1,35,217</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FULL SEO CONTENT -->
+    <article class="content-body">
+      <h2>Understanding the 8th Pay Commission Framework</h2>
+      <p>
+        The conversation surrounding the <strong>8th Pay Commission (8th CPC)</strong> has become central to planning among employees across Central Ministries, Defence services, Indian Railways, and State administrations that align with central pay parity. As inflation indices rise and existing Dearness Allowance (DA) thresholds compound, calculating your revised take-home pay requires a solid understanding of how pay matrices evolve.
+      </p>
+      <p>
+        Historically, Central Pay Commissions are instituted once every decade to revise base compensation, adjust retirement benefits, and update structural allowances in line with real economic growth:
+      </p>
+      <ul>
+        <li><strong>5th Pay Commission (1996):</strong> Consolidated earlier pay structures and instituted modern DA indexation formulas.</li>
+        <li><strong>6th Pay Commission (2006):</strong> Popularized the Pay Band plus Grade Pay categorization system.</li>
+        <li><strong>7th Pay Commission (2016):</strong> Discontinued Grade Pay terminology, replacing it with an 18-level consolidated Pay Matrix while raising the minimum entry-level basic pay from ₹7,000 to ₹18,000 using a 2.57x fitment multiplier.</li>
+        <li><strong>8th Pay Commission:</strong> Scheduled to revise cell figures across all 18 levels, absorb accumulated DA into an expanded basic pay, and adjust baseline ceilings for statutory benefits.</li>
+      </ul>
+
+      <h2>The Fitment Factor: How the Multiplier Operates</h2>
+      <p>
+        The heart of any <strong>8th pay commission salary calculator</strong> is the <strong>fitment factor</strong>. This uniform numerical multiplier scales an employee's existing basic pay into the updated matrix framework. It captures two variables at once: the complete merger of prevailing Dearness Allowance into the base salary, and the net real wage expansion awarded above inflation.
+      </p>
+      
+      <div class="formula-box">
+        Revised 8th CPC Basic Pay = Existing 7th CPC Basic Pay × Selected Fitment Factor
+      </div>
+
+      <p>
+        While employee consultative committees and staff federations have submitted memoranda requesting fitment multipliers ranging between <strong>2.86 and 3.68</strong>, economic think tanks and fiscal analysts often model scenarios along a spectrum of revenue allocations:
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Fitment Model</th>
+              <th>Multiplier Range</th>
+              <th>Projected Level 1 Minimum Basic</th>
+              <th>Structural Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Conservative / Fiscal Restraint</strong></td>
+              <td>1.92x – 2.08x</td>
+              <td>₹34,560 – ₹37,440</td>
+              <td>Primarily covers baseline DA absorption with modest real-wage expansion.</td>
+            </tr>
+            <tr>
+              <td><strong>Consensus Estimate</strong></td>
+              <td>2.28x – 2.57x</td>
+              <td>₹41,040 – ₹46,260</td>
+              <td>Closely matches the historical real-wage growth awarded in the 7th CPC rollout.</td>
+            </tr>
+            <tr>
+              <td><strong>Federation Benchmark</strong></td>
+              <td>2.86x</td>
+              <td>₹51,480</td>
+              <td>The standard baseline multiplier proposed in major staff council representations.</td>
+            </tr>
+            <tr>
+              <td><strong>High Demand Range</strong></td>
+              <td>3.00x – 3.68x</td>
+              <td>₹54,000 – ₹66,240</td>
+              <td>Aspirational ceiling submitted during preliminary committee hearings.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Step-by-Step Salary Calculation Workflow</h2>
+      <p>
+        A frequent misconception is assuming that a 2.86x fitment factor will double or triple your net monthly take-home salary overnight. That is not how pay commission implementation works. Because accumulated Dearness Allowance is rolled into the base salary, the DA rate resets to 0% upon rollout. 
+      </p>
+      <p>The standard arithmetic proceeds through six stages:</p>
+      <ul>
+        <li><strong>Step 1 (Base Recalibration):</strong> Multiply current 7th CPC Basic Pay by the fitment factor (e.g., ₹35,400 × 2.86 = ₹1,01,244).</li>
+        <li><strong>Step 2 (DA Reset):</strong> Dearness Allowance resets to 0% initially, gradually compounding again every six months according to future AICPI-IW index numbers.</li>
+        <li><strong>Step 3 (HRA Revision):</strong> Recompute House Rent Allowance on the enlarged base pay (30% for Class X, 20% for Class Y, and 10% for Class Z cities).</li>
+        <li><strong>Step 4 (Transport Allowance):</strong> Apply baseline city-level Transport Allowance rates without immediate DA inflation loading.</li>
+        <li><strong>Step 5 (Statutory Deductions):</strong> Recalculate mandatory pension deductions (10% of Basic Pay under NPS/UPS frameworks) plus revised CGHS healthcare slabs and professional taxes.</li>
+        <li><strong>Step 6 (Net Pay Determination):</strong> Subtract total statutory deductions from the new gross figure to find actual in-hand take-home pay.</li>
+      </ul>
+
+      <h2>Comparative Salary Analysis: Level 1 and Level 6 Examples</h2>
+      <p>
+        To visualize how the formula impacts real monthly earnings, examine these comparative estimates using a <strong>2.86x fitment factor</strong> in a <strong>Class X (Metro) City</strong>:
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Salary Component</th>
+              <th>Level 1 (7th CPC Baseline)</th>
+              <th>Level 1 (8th CPC @ 2.86x)</th>
+              <th>Level 6 (7th CPC Baseline)</th>
+              <th>Level 6 (8th CPC @ 2.86x)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Basic Pay</strong></td>
+              <td>₹18,000</td>
+              <td>₹51,480</td>
+              <td>₹35,400</td>
+              <td>₹1,01,244</td>
+            </tr>
+            <tr>
+              <td><strong>Dearness Allowance (DA)</strong></td>
+              <td>₹9,540 (~53%)</td>
+              <td>₹0 (Reset)</td>
+              <td>₹18,762 (~53%)</td>
+              <td>₹0 (Reset)</td>
+            </tr>
+            <tr>
+              <td><strong>House Rent Allowance (30%)</strong></td>
+              <td>₹5,400</td>
+              <td>₹15,444</td>
+              <td>₹10,620</td>
+              <td>₹30,373</td>
+            </tr>
+            <tr>
+              <td><strong>Transport Allowance (TA)</strong></td>
+              <td>₹2,066</td>
+              <td>₹1,350</td>
+              <td>₹5,508</td>
+              <td>₹3,600</td>
+            </tr>
+            <tr>
+              <td><strong>Estimated Gross Monthly</strong></td>
+              <td><strong>₹35,006</strong></td>
+              <td><strong>₹68,274</strong></td>
+              <td><strong>₹70,290</strong></td>
+              <td><strong>₹1,35,217</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Statutory Deductions (NPS/Taxes)</strong></td>
+              <td>~₹2,954</td>
+              <td>~₹5,348</td>
+              <td>~₹7,216</td>
+              <td>~₹16,424</td>
+            </tr>
+            <tr>
+              <td><strong>Estimated Net In-Hand</strong></td>
+              <td><strong>~₹32,052</strong></td>
+              <td><strong>~₹62,926</strong></td>
+              <td><strong>~₹63,074</strong></td>
+              <td><strong>~₹1,18,793</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Pay Matrix Level Projections (Level 1 to Level 14)</h2>
+      <p>
+        The table below displays entry-level starting basic figures across key matrix levels under four different fitment multiplier scenarios:
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Pay Level & Designation Rank</th>
+              <th>7th CPC Basic</th>
+              <th>1.92x Fitment</th>
+              <th>2.28x Fitment</th>
+              <th>2.57x Fitment</th>
+              <th>2.86x Fitment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Level 1</strong> (MTS / Group D)</td>
+              <td>₹18,000</td>
+              <td>₹34,560</td>
+              <td>₹41,040</td>
+              <td>₹46,260</td>
+              <td>₹51,480</td>
+            </tr>
+            <tr>
+              <td><strong>Level 2</strong> (Lower Division Clerk)</td>
+              <td>₹19,900</td>
+              <td>₹38,208</td>
+              <td>₹45,372</td>
+              <td>₹51,143</td>
+              <td>₹56,914</td>
+            </tr>
+            <tr>
+              <td><strong>Level 3</strong> (Constable / Clerk)</td>
+              <td>₹21,700</td>
+              <td>₹41,664</td>
+              <td>₹49,476</td>
+              <td>₹55,769</td>
+              <td>₹62,062</td>
+            </tr>
+            <tr>
+              <td><strong>Level 4</strong> (Head Constable / Assistant)</td>
+              <td>₹25,500</td>
+              <td>₹48,960</td>
+              <td>₹58,140</td>
+              <td>₹65,535</td>
+              <td>₹72,930</td>
+            </tr>
+            <tr>
+              <td><strong>Level 5</strong> (Sub-Inspector / Senior Auditor)</td>
+              <td>₹29,200</td>
+              <td>₹56,064</td>
+              <td>₹66,576</td>
+              <td>₹75,044</td>
+              <td>₹83,512</td>
+            </tr>
+            <tr>
+              <td><strong>Level 6</strong> (Inspector / ASO / SI)</td>
+              <td>₹35,400</td>
+              <td>₹67,968</td>
+              <td>₹80,712</td>
+              <td>₹90,978</td>
+              <td>₹1,01,244</td>
+            </tr>
+            <tr>
+              <td><strong>Level 7</strong> (Section Officer / Inspector)</td>
+              <td>₹44,900</td>
+              <td>₹86,208</td>
+              <td>₹1,02,372</td>
+              <td>₹1,15,393</td>
+              <td>₹1,28,414</td>
+            </tr>
+            <tr>
+              <td><strong>Level 8</strong> (Senior Section Officer)</td>
+              <td>₹47,600</td>
+              <td>₹91,392</td>
+              <td>₹1,08,528</td>
+              <td>₹1,22,332</td>
+              <td>₹1,36,136</td>
+            </tr>
+            <tr>
+              <td><strong>Level 10</strong> (Assistant Commissioner / Class-I)</td>
+              <td>₹56,100</td>
+              <td>₹1,07,712</td>
+              <td>₹1,27,908</td>
+              <td>₹1,44,177</td>
+              <td>₹1,60,446</td>
+            </tr>
+            <tr>
+              <td><strong>Level 12</strong> (Deputy Secretary / Joint Director)</td>
+              <td>₹78,800</td>
+              <td>₹1,51,296</td>
+              <td>₹1,79,664</td>
+              <td>₹2,02,516</td>
+              <td>₹2,25,368</td>
+            </tr>
+            <tr>
+              <td><strong>Level 14</strong> (Joint Secretary / Director)</td>
+              <td>₹1,44,200</td>
+              <td>₹2,76,864</td>
+              <td>₹3,28,776</td>
+              <td>₹3,70,594</td>
+              <td>₹4,12,412</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Impact on Allowances, Gratuity, and Pension Structures</h2>
+      <p>
+        The benefits of the 8th Pay Commission extend far beyond basic monthly salaries. Crucial secondary components include:
+      </p>
+      <ul>
+        <li><strong>House Rent Allowance (HRA):</strong> HRA tier percentages (currently 30%, 20%, and 10% for Class X, Y, and Z cities) will apply directly to the new, expanded basic pay, significantly increasing the actual rupee benefit.</li>
+        <li><strong>Pension Parity:</strong> Civil service pensioners will have their basic pensions notionally re-indexed using the finalized fitment factor, updating pensions while resetting Dearness Relief (DR) to 0%.</li>
+        <li><strong>Gratuity Enhancements:</strong> While the 7th CPC ceiling was scaled to ₹25 Lakhs upon DA exceeding 50%, recommendations for the 8th Pay Commission are expected to propose raising the maximum statutory gratuity ceiling to between ₹30 Lakhs and ₹40 Lakhs.</li>
+      </ul>
+
+      <h2>Frequently Asked Questions (FAQ)</h2>
+      <h3>Will Dearness Allowance (DA) become zero after the 8th Pay Commission?</h3>
+      <p>
+        Yes. In every pay commission cycle, accumulated DA is merged into the base salary through the fitment multiplier. The DA index is then reset to 0% and starts accumulating fresh adjustments every six months based on subsequent AICPI-IW index figures.
+      </p>
+
+      <h3>How will this affect state government employees?</h3>
+      <p>
+        While Central Pay Commissions apply directly to central staff and defence forces, state governments typically implement matching revisions through dedicated state pay committees or official Government Orders (GOs) within 6 to 18 months following central notifications.
+      </p>
+
+      <p class="disclaimer">
+        Disclaimer: Calculations, fitment factors, and salary matrix estimates provided on this page are for informational and projection purposes based on historical pay commission trends, staff federation memoranda, and macroeconomic indicators. Final pay scales and structural terms will be officially enacted once the Government of India issues formal gazette notifications.
+      </p>
+    </article>
+  </div>
+
+  <!-- CLIENT-SIDE CALCULATOR JAVASCRIPT (ZERO FRAMEWORK OVERHEAD) -->
+  <script is:inline>
+    function calculateSalary() {
+      const basicInput = document.getElementById('currentBasic');
+      const fitmentSelect = document.getElementById('fitmentFactor');
+      const citySelect = document.getElementById('cityClass');
+      const levelSelect = document.getElementById('payLevel');
+
+      const basic = parseFloat(basicInput.value) || 0;
+      const fitment = parseFloat(fitmentSelect.value) || 2.86;
+      const hraRate = parseFloat(citySelect.value) || 0.30;
+
+      // Calculations
+      const revisedBasic = Math.round(basic * fitment);
+      const revisedHra = Math.round(revisedBasic * hraRate);
+      
+      // Standard baseline Transport Allowance estimate based on pay scale level
+      const taBase = basic >= 35400 ? 3600 : 1350;
+      const gross = revisedBasic + revisedHra + taBase;
+
+      // Update DOM
+      document.getElementById('dispBasic').textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      document.getElementById('dispHra').textContent = '₹' + revisedHra.toLocaleString('en-IN');
+      document.getElementById('dispGross').textContent = '₹' + gross.toLocaleString('en-IN');
+    }
+
+    // Update basic pay when a user switches the Level dropdown preset
+    document.getElementById('payLevel').addEventListener('change', (e) => {
+      document.getElementById('currentBasic').value = e.target.value;
+      calculateSalary();
+    });
+
+    // Listen to changes across all inputs
+    document.getElementById('currentBasic').addEventListener('input', calculateSalary);
+    document.getElementById('fitmentFactor').addEventListener('change', calculateSalary);
+    document.getElementById('cityClass').addEventListener('change', calculateSalary);
+
+    // Initial run
+    calculateSalary();
+  </script>
+</body>
+</html>
