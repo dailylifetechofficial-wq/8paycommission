@@ -122,6 +122,7 @@ const faqs = [
   <style>
     :root {
       --primary: #0a192f;
+      --primary-hover: #112240;
       --primary-accent: #2563eb;
       --accent-cyan: #0ea5e9;
       --accent-gradient: linear-gradient(135deg, #2563eb 0%, #0284c7 100%);
@@ -133,8 +134,8 @@ const faqs = [
       --border-subtle: #e2e8f0;
       --border-focus: #3b82f6;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+      --shadow-md: 0 6px 12px -2px rgba(15,23,42,0.06), 0 3px 6px -3px rgba(15,23,42,0.04);
+      --shadow-lg: 0 12px 24px -4px rgba(15,23,42,0.08), 0 4px 8px -4px rgba(15,23,42,0.03);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
@@ -142,132 +143,602 @@ const faqs = [
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
     body { background-color: var(--bg-page); color: var(--text-main); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; }
-    a { color: var(--primary-accent); text-decoration: none; transition: color 0.2s ease; }
+    a { color: var(--primary-accent); text-decoration: none; transition: all 0.2s ease; }
     a:hover { color: #1d4ed8; }
 
-    /* Modern Navigation */
-    header { background: rgba(10, 25, 47, 0.96); backdrop-filter: blur(12px); color: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .nav-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; }
-    .logo { font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.6rem; text-decoration: none !important; letter-spacing: -0.02em; }
-    .rupee-badge { background: var(--accent-gradient); width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.4); }
+    /* =========================================================
+       NAVIGATION BAR & MEGA MENUS
+    ========================================================= */
+    header.site-header {
+      background: rgba(10, 25, 47, 0.98);
+      backdrop-filter: blur(14px);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-wrapper {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+    }
+    .logo {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none !important;
+      letter-spacing: -0.02em;
+    }
+    .rupee-badge {
+      background: var(--accent-gradient);
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(37,99,235,0.45);
+    }
     .logo span { color: var(--accent-cyan); }
-    nav ul { display: flex; list-style: none; gap: 1.75rem; align-items: center; }
-    nav a { color: #cbd5e1; font-weight: 600; font-size: 0.92rem; }
-    nav a:hover { color: #fff; }
-    @media (max-width: 860px) { nav ul { display: none; } }
 
-    /* Layout & Structural Containers */
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.25rem; }
-    section { margin-bottom: 3.75rem; scroll-margin-top: 5rem; }
-    .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-sm); }
-    .section-title { font-size: 1.85rem; color: var(--text-dark); margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; }
+    /* Desktop Navigation */
+    .desktop-nav { display: flex; align-items: center; }
+    .nav-menu { display: flex; list-style: none; gap: 0.5rem; align-items: center; }
+    .nav-item { position: relative; }
+    .nav-link {
+      color: #cbd5e1;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 0.6rem 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+    .nav-link:hover, .nav-item:hover > .nav-link {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .nav-arrow { font-size: 0.65rem; transition: transform 0.2s ease; opacity: 0.8; }
+    .nav-item:hover .nav-arrow { transform: rotate(180deg); }
+
+    /* Dropdown Menus */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 260px;
+      background: #0f223d;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 0.5rem;
+      list-style: none;
+      display: none;
+      flex-direction: column;
+      gap: 0.2rem;
+      z-index: 1010;
+      animation: fadeIn 0.15s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .nav-item:hover .dropdown-menu { display: flex; }
+    .dropdown-link {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.6rem 0.85rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+    }
+    .dropdown-link:hover {
+      background: var(--primary-accent);
+      color: #ffffff;
+      padding-left: 1rem;
+    }
+    .badge-tag {
+      font-size: 0.68rem;
+      background: #ef4444;
+      color: #fff;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Mobile Hamburger Trigger */
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    /* Mobile Drawer */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 82%;
+      max-width: 340px;
+      height: 100%;
+      background: #0a192f;
+      z-index: 1020;
+      padding: 1.5rem;
+      box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+      overflow-y: auto;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-drawer.open { right: 0; }
+    .mobile-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 1.25rem;
+    }
+    .drawer-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+    .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .mobile-nav-item { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.35rem; }
+    .mobile-nav-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      color: #f1f5f9;
+      font-size: 0.96rem;
+      font-weight: 600;
+      padding: 0.75rem 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .mobile-sub-list {
+      list-style: none;
+      display: none;
+      padding-left: 1rem;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .mobile-nav-item.expanded .mobile-sub-list { display: flex; }
+    .mobile-nav-item.expanded .mobile-arrow { transform: rotate(180deg); }
+    .mobile-sub-link {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.88rem;
+      padding: 0.45rem 0.5rem;
+      border-radius: 4px;
+    }
+    .mobile-sub-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1015;
+      display: none;
+    }
+    .drawer-backdrop.active { display: block; }
+
+    @media (max-width: 992px) {
+      .desktop-nav { display: none; }
+      .mobile-menu-btn { display: block; }
+    }
+
+    /* =========================================================
+       LAYOUT & STRUCTURAL COMPONENTS
+    ========================================================= */
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+    section { margin-bottom: 3.5rem; scroll-margin-top: 5rem; }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease;
+    }
+    .card:hover { box-shadow: var(--shadow-md); }
+    .section-title {
+      font-size: 1.85rem;
+      color: var(--text-dark);
+      margin-bottom: 0.45rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+    }
     .section-desc { color: var(--text-muted); margin-bottom: 1.75rem; font-size: 1rem; }
 
-    /* Hero */
-    .hero { background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a192f 100%); color: #fff; padding: 5rem 1.25rem 4rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .hero h1 { font-size: 2.6rem; margin-bottom: 1rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
-    .hero p { font-size: 1.15rem; color: #94a3b8; max-width: 780px; margin: 0 auto 2.25rem; font-weight: 400; }
-    .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .btn { padding: 0.85rem 1.75rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.95rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border: none; text-decoration: none !important; transition: all 0.2s ease; }
+    /* Hero Section */
+    .hero {
+      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a192f 100%);
+      color: #fff;
+      padding: 4.5rem 1.25rem 3.75rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.35rem 0.9rem;
+      border-radius: 30px;
+      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      margin-bottom: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.18;
+    }
+    .hero p {
+      font-size: 1.12rem;
+      color: #94a3b8;
+      max-width: 760px;
+      margin: 0 auto 2.25rem;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    .hero-actions { display: flex; justify-content: center; gap: 0.9rem; flex-wrap: wrap; }
+    .btn {
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      border: none;
+      text-decoration: none !important;
+      transition: all 0.2s ease;
+    }
     .btn-primary { background: var(--accent-gradient); color: #fff; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); }
     .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
-    .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(4px); }
-    .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+    .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
 
-    /* Trust / Editorial Transparency Bar */
-    .trust-meta-bar { display: flex; align-items: center; gap: 1.25rem; padding: 1rem 1.25rem; background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 2.5rem; font-size: 0.88rem; color: var(--text-muted); flex-wrap: wrap; }
+    /* Trust / E-E-A-T Bar */
+    .trust-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 1.35rem;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 2.5rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
     .trust-meta-bar strong { color: var(--text-dark); }
-    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item { display: flex; align-items: center; gap: 0.45rem; }
 
-    /* Interactive Calculators */
-    .calc-inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
-    .form-group label { display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.45rem; color: #334155; }
-    .form-group input, .form-group select { width: 100%; padding: 0.8rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: var(--radius-sm); font-size: 0.98rem; outline: none; background: #fff; color: var(--text-dark); transition: border-color 0.2s; }
-    .form-group input:focus, .form-group select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
-    .calc-output { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 5px solid #16a34a; border-radius: var(--radius-sm); padding: 1.5rem; margin-top: 1.5rem; display: none; }
-    .calc-output-row { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px dashed #cbd5e1; font-size: 1rem; }
-    .calc-output-row:last-child { border-bottom: none; font-weight: 800; font-size: 1.2rem; color: #15803d; }
+    /* =========================================================
+       CALCULATOR STYLING & RESULTS GRIDS
+    ========================================================= */
+    .calc-inputs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+    .form-group label { display: block; font-size: 0.86rem; font-weight: 700; margin-bottom: 0.4rem; color: #1e293b; }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.8rem 0.95rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      outline: none;
+      background: #fff;
+      color: var(--text-dark);
+      transition: all 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .calc-output {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.75rem;
+      display: none;
+    }
+    .calc-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .calc-metric-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem;
+      text-align: center;
+    }
+    .calc-metric-card.accent {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .metric-label { font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem; }
+    .metric-value { font-size: 1.45rem; font-weight: 800; color: var(--text-dark); }
+    .calc-metric-card.accent .metric-value { color: var(--primary-accent); }
 
     /* Multiplier Pill Bar */
-    .factor-buttons-container { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0; }
-    .factor-pill-btn { padding: 0.65rem 1.4rem; background: #f1f5f9; border-radius: 30px; font-weight: 700; cursor: pointer; border: 2px solid transparent; font-size: 0.92rem; color: #475569; transition: all 0.2s ease; }
+    .factor-buttons-container { display: flex; gap: 0.65rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .factor-pill-btn {
+      padding: 0.65rem 1.25rem;
+      background: #f1f5f9;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      font-size: 0.9rem;
+      color: #475569;
+      transition: all 0.2s ease;
+    }
+    .factor-pill-btn:hover { background: #e2e8f0; }
     .factor-pill-btn.active { background: #eff6ff; border-color: var(--primary-accent); color: var(--primary-accent); }
 
     /* Tables */
     .table-responsive { overflow-x: auto; margin-top: 1.25rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.94rem; }
-    th, td { padding: 0.9rem 1.15rem; border-bottom: 1px solid var(--border-subtle); }
-    th { background: #f8fafc; font-weight: 700; color: var(--text-dark); }
+    th, td { padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--border-subtle); }
+    th { background: #f8fafc; font-weight: 700; color: var(--text-dark); font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.02em; }
     tr:last-child td { border-bottom: none; }
     tr:hover { background: #f8fafc; }
 
-    /* Level Badges */
-    .level-badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
-    .level-badge { background: #fff; border: 1px solid var(--border-subtle); padding: 0.9rem; border-radius: var(--radius-sm); text-align: center; cursor: pointer; transition: all 0.2s ease; }
+    /* Level Badges Grid */
+    .level-badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
+    .level-badge {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      padding: 0.85rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
     .level-badge:hover { border-color: var(--primary-accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .level-badge strong { display: block; color: var(--text-dark); font-size: 1rem; }
+    .level-badge strong { display: block; color: var(--text-dark); font-size: 0.98rem; }
     .level-badge span { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* Editorial Content */
-    .editorial-prose { margin: 1.5rem 0; font-size: 1.05rem; color: #334155; }
-    .editorial-prose p { margin-bottom: 1.25rem; }
-    .editorial-prose h3 { font-size: 1.35rem; color: var(--text-dark); margin: 2rem 0 0.85rem; font-weight: 700; }
+    /* Editorial Prose & Guides */
+    .editorial-prose { margin: 1.5rem 0; font-size: 1.02rem; color: #334155; }
+    .editorial-prose p { margin-bottom: 1.15rem; }
+    .editorial-prose h3 { font-size: 1.35rem; color: var(--text-dark); margin: 2rem 0 0.85rem; font-weight: 800; letter-spacing: -0.02em; }
     .editorial-prose ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
-    .editorial-prose li { margin-bottom: 0.5rem; }
+    .editorial-prose li { margin-bottom: 0.45rem; }
 
     /* FAQ System */
     .faq-accordion { margin-top: 1.5rem; }
-    .faq-row { border-bottom: 1px solid var(--border-subtle); padding: 1.2rem 0; }
-    .faq-header { font-weight: 700; color: var(--text-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem; }
-    .faq-body { display: none; padding-top: 0.85rem; font-size: 0.98rem; color: #475569; line-height: 1.7; }
+    .faq-row { border-bottom: 1px solid var(--border-subtle); padding: 1.15rem 0; }
+    .faq-header { font-weight: 700; color: var(--text-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.02rem; user-select: none; }
+    .faq-body { display: none; padding-top: 0.85rem; font-size: 0.96rem; color: #475569; line-height: 1.7; }
     .faq-row.open .faq-body { display: block; }
     .faq-row.open .chevron { transform: rotate(180deg); }
-    .chevron { transition: transform 0.2s ease; font-size: 0.85rem; color: var(--text-muted); }
+    .chevron { transition: transform 0.2s ease; font-size: 0.8rem; color: var(--text-muted); }
 
-    /* Official Government Reference Cards */
+    /* Government Portals */
     .official-sources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
-    .source-box { background: #fff; border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-    .source-box a { font-weight: 700; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 0.3rem; }
-    .source-box p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem; }
+    .source-box { background: #fff; border: 1px solid var(--border-subtle); padding: 1.4rem; border-radius: var(--radius-sm); }
+    .source-box a { font-weight: 700; font-size: 1.02rem; display: inline-flex; align-items: center; gap: 0.3rem; }
+    .source-box p { font-size: 0.84rem; color: var(--text-muted); margin-top: 0.35rem; }
 
-    /* Modern Footer */
-    footer { background: #071120; color: #94a3b8; padding: 4rem 1.25rem 2.5rem; margin-top: 5rem; font-size: 0.92rem; border-top: 1px solid rgba(255,255,255,0.06); }
-    .footer-content { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
-    .footer-nav a { color: #cbd5e1; margin-left: 1.5rem; }
+    /* Footer */
+    footer {
+      background: #071120;
+      color: #94a3b8;
+      padding: 4rem 1.25rem 2.5rem;
+      margin-top: 5rem;
+      font-size: 0.92rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-content { max-width: 1160px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-nav a { color: #cbd5e1; margin-left: 1.25rem; font-size: 0.88rem; }
     .footer-nav a:hover { color: #fff; }
-    .disclaimer-text { max-width: 1140px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; line-height: 1.6; color: #64748b; }
+    .disclaimer-text { max-width: 1160px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; line-height: 1.6; color: #64748b; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
+  <!-- =========================================================
+       DESKTOP & MOBILE HEADER NAVIGATION
+  ========================================================= -->
+  <header class="site-header">
     <div class="nav-wrapper">
       <a href="/" class="logo">
         <span class="rupee-badge">₹</span>
         8th Pay <span>Commission</span>
       </a>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#salary-calculator">Calculator</a></li>
-          <li><a href="#fitment-factor">Fitment Factor</a></li>
-          <li><a href="#pay-matrix">Pay Matrix</a></li>
-          <li><a href="#pension-calculator">Pension</a></li>
-          <li><a href="#faqs">FAQ</a></li>
+
+      <!-- Desktop Navigation with Dropdowns -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+          
+          <!-- Calculators Dropdown -->
+          <li class="nav-item">
+            <a href="#salary-calculator" class="nav-link">
+              Calculators <span class="nav-arrow">▼</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/salary-calculator" class="dropdown-link">8th Pay Salary Calculator <span class="badge-tag">Top</span></a></li>
+              <li><a href="/pension-calculator" class="dropdown-link">Pension & Arrears Calculator</a></li>
+              <li><a href="/hra-calculator" class="dropdown-link">HRA Slabs Calculator</a></li>
+              <li><a href="/da-calculator" class="dropdown-link">Expected DA Calculator</a></li>
+            </ul>
+          </li>
+
+          <!-- Pay Matrix Dropdown -->
+          <li class="nav-item">
+            <a href="#pay-matrix" class="nav-link">
+              Pay Matrix <span class="nav-arrow">▼</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/pay-matrix" class="dropdown-link">Level 1 to 18 Matrix Table</a></li>
+              <li><a href="/fitment-factor" class="dropdown-link">Fitment Factor Scenarios</a></li>
+              <li><a href="/comparison-7th-vs-8th" class="dropdown-link">7th vs 8th CPC Comparison</a></li>
+            </ul>
+          </li>
+
+          <!-- Allowances & Rules Dropdown -->
+          <li class="nav-item">
+            <a href="#salary-calculator" class="nav-link">
+              Allowances & Rules <span class="nav-arrow">▼</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/dearness-allowance" class="dropdown-link">DA & AICPI Tracker</a></li>
+              <li><a href="/hra-rules" class="dropdown-link">HRA (X, Y, Z Cities)</a></li>
+              <li><a href="/transport-allowance" class="dropdown-link">Travel & TA Rules</a></li>
+              <li><a href="/cea-rules" class="dropdown-link">Children Education Allowance</a></li>
+            </ul>
+          </li>
+
+          <!-- Sector-Wise Pay Dropdown -->
+          <li class="nav-item">
+            <a href="#pay-matrix" class="nav-link">
+              Sector-Wise Pay <span class="nav-arrow">▼</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/defence-pay-scale" class="dropdown-link">Defence & MSP Matrix</a></li>
+              <li><a href="/railway-pay-structure" class="dropdown-link">Railway Employee Rules</a></li>
+              <li><a href="/teachers-pay-scale" class="dropdown-link">Teachers & University Staff</a></li>
+              <li><a href="/state-wise-status" class="dropdown-link">State Govt Status</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a href="/latest-news" class="nav-link">Latest Updates</a></li>
         </ul>
       </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Mobile Menu">☰</button>
     </div>
   </header>
 
-  <!-- H1 HERO SECTION -->
+  <!-- Mobile Drawer Backdrop -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <!-- Mobile Off-Canvas Drawer Navigation -->
+  <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="/" class="logo" style="font-size: 1.1rem;">
+        <span class="rupee-badge" style="width: 28px; height: 28px; font-size: 1rem;">₹</span>
+        8th Pay Commission
+      </a>
+      <button class="drawer-close" id="drawerCloseBtn" aria-label="Close Mobile Menu">✕</button>
+    </div>
+
+    <ul class="mobile-nav-list">
+      <li class="mobile-nav-item"><a href="/" class="mobile-sub-link" style="color: #fff; font-weight: 600;">Home</a></li>
+
+      <!-- Mobile Accordion Item: Calculators -->
+      <li class="mobile-nav-item">
+        <button class="mobile-nav-toggle">
+          <span>Calculators</span>
+          <span class="mobile-arrow">▼</span>
+        </button>
+        <ul class="mobile-sub-list">
+          <li><a href="/salary-calculator" class="mobile-sub-link">8th Pay Salary Calculator</a></li>
+          <li><a href="/pension-calculator" class="mobile-sub-link">Pension & Arrears Calculator</a></li>
+          <li><a href="/hra-calculator" class="mobile-sub-link">HRA Slabs Calculator</a></li>
+          <li><a href="/da-calculator" class="mobile-sub-link">Expected DA Calculator</a></li>
+        </ul>
+      </li>
+
+      <!-- Mobile Accordion Item: Pay Matrix -->
+      <li class="mobile-nav-item">
+        <button class="mobile-nav-toggle">
+          <span>Pay Matrix</span>
+          <span class="mobile-arrow">▼</span>
+        </button>
+        <ul class="mobile-sub-list">
+          <li><a href="/pay-matrix" class="mobile-sub-link">Level 1 to 18 Matrix Table</a></li>
+          <li><a href="/fitment-factor" class="mobile-sub-link">Fitment Factor Scenarios</a></li>
+          <li><a href="/comparison-7th-vs-8th" class="mobile-sub-link">7th vs 8th CPC Comparison</a></li>
+        </ul>
+      </li>
+
+      <!-- Mobile Accordion Item: Allowances & Rules -->
+      <li class="mobile-nav-item">
+        <button class="mobile-nav-toggle">
+          <span>Allowances & Rules</span>
+          <span class="mobile-arrow">▼</span>
+        </button>
+        <ul class="mobile-sub-list">
+          <li><a href="/dearness-allowance" class="mobile-sub-link">DA & AICPI Tracker</a></li>
+          <li><a href="/hra-rules" class="mobile-sub-link">HRA (X, Y, Z Cities)</a></li>
+          <li><a href="/transport-allowance" class="mobile-sub-link">Travel & TA Rules</a></li>
+          <li><a href="/cea-rules" class="mobile-sub-link">Children Education Allowance</a></li>
+        </ul>
+      </li>
+
+      <!-- Mobile Accordion Item: Sector-Wise Pay -->
+      <li class="mobile-nav-item">
+        <button class="mobile-nav-toggle">
+          <span>Sector-Wise Pay</span>
+          <span class="mobile-arrow">▼</span>
+        </button>
+        <ul class="mobile-sub-list">
+          <li><a href="/defence-pay-scale" class="mobile-sub-link">Defence & MSP Matrix</a></li>
+          <li><a href="/railway-pay-structure" class="mobile-sub-link">Railway Employee Rules</a></li>
+          <li><a href="/teachers-pay-scale" class="mobile-sub-link">Teachers & University Staff</a></li>
+          <li><a href="/state-wise-status" class="mobile-sub-link">State Govt Status</a></li>
+        </ul>
+      </li>
+
+      <li class="mobile-nav-item"><a href="/latest-news" class="mobile-sub-link" style="color: #fff; font-weight: 600;">Latest Updates</a></li>
+    </ul>
+  </aside>
+
+  <!-- =========================================================
+       HERO SECTION
+  ========================================================= -->
   <section class="hero">
-    <h1>8th Pay Commission 2026</h1>
-    <p>Salary Calculation, Fitment Factor Multipliers, Pay Matrix & Pension Revision Analysis</p>
+    <div class="hero-badge">Pre-Implementation Study (2026)</div>
+    <h1>8th Pay Commission Portal</h1>
+    <p>Calculate your projected 8th CPC basic salary, explore fitment multipliers (1.92x to 2.86x), compare Level 1 to 18 matrix scales, and estimate revised pensions.</p>
     <div class="hero-actions">
       <a href="#salary-calculator" class="btn btn-primary">Salary Calculator</a>
-      <a href="#fitment-factor" class="btn btn-secondary">Fitment Calculator</a>
-      <a href="#pay-matrix" class="btn btn-secondary">Pay Matrix Levels</a>
+      <a href="#fitment-factor" class="btn btn-secondary">Fitment Scenarios</a>
+      <a href="#pay-matrix" class="btn btn-secondary">Level 1-18 Pay Matrix</a>
     </div>
   </section>
 
@@ -279,17 +750,17 @@ const faqs = [
         <span>Curated By:</span> <strong>Pay & Pension Research Desk</strong>
       </div>
       <div class="meta-item">
-        <span>Reviewed Against:</span> <strong>7th CPC Gazette & DoE Orders</strong>
+        <span>Validated Against:</span> <strong>7th CPC Gazette & DoE Orders</strong>
       </div>
       <div class="meta-item">
-        <span>Status:</span> <strong style="color: #16a34a;">Pre-Implementation Evaluation (2026)</strong>
+        <span>Status:</span> <strong style="color: #16a34a;">Active Research & Modeling</strong>
       </div>
     </div>
 
-    <!-- EDITORIAL COMPREHENSIVE OVERVIEW (SEO AUTHORITY) -->
+    <!-- EDITORIAL COMPREHENSIVE OVERVIEW -->
     <section class="card">
       <h2 class="section-title">Comprehensive Guide to the 8th Central Pay Commission</h2>
-      <p class="section-desc">Understanding the historical evolution, economic metrics, and compensation restructuring for Central Government employees.</p>
+      <p class="section-desc">Historical evolution, inflationary economic metrics, and compensation restructuring for Central Government employees.</p>
       
       <div class="editorial-prose">
         <p>
@@ -320,6 +791,17 @@ const faqs = [
 
         <form id="mainSalaryForm">
           <div class="calc-inputs-grid">
+            <!-- Level Quick-Select Dropdown -->
+            <div class="form-group">
+              <label for="calcQuickLevel">Select Pay Matrix Level (Preset)</label>
+              <select id="calcQuickLevel">
+                <option value="" disabled selected>-- Choose Pay Level --</option>
+                {payMatrixData.map((row) => (
+                  <option value={row.entry7th}>{row.level} ({row.gp}) - Min ₹{row.entry7th.toLocaleString('en-IN')}</option>
+                ))}
+              </select>
+            </div>
+
             <div class="form-group">
               <label for="calc7thBasic">7th CPC Current Basic Pay (₹)</label>
               <input type="number" id="calc7thBasic" value="18000" min="18000" step="100" required />
@@ -339,9 +821,9 @@ const faqs = [
             <div class="form-group">
               <label for="calcHra">City Category (HRA Classification)</label>
               <select id="calcHra">
-                <option value="0.27">X Class (27% Tier-1 Metro: Delhi, Mumbai, Bengaluru, etc.)</option>
-                <option value="0.18">Y Class (18% Tier-2 Cities)</option>
-                <option value="0.09">Z Class (9% Tier-3 Rural/Small Towns)</option>
+                <option value="0.30" selected>X Class (30% Metro: Delhi, Mumbai, Chennai, etc.)</option>
+                <option value="0.20">Y Class (20% Tier-2 Cities)</option>
+                <option value="0.10">Z Class (10% Tier-3 Rural/Small Towns)</option>
               </select>
             </div>
           </div>
@@ -349,10 +831,20 @@ const faqs = [
         </form>
 
         <div id="salaryResults" class="calc-output">
-          <div class="calc-output-row"><span>Projected 8th CPC Basic Pay:</span> <span id="resRevisedBasic">₹0</span></div>
-          <div class="calc-output-row"><span>Estimated Revised HRA:</span> <span id="resRevisedHRA">₹0</span></div>
-          <div class="calc-output-row"><span>DA at Rollout (Absorbed & Resets):</span> <span>₹0 (0%)</span></div>
-          <div class="calc-output-row"><span>Estimated Gross Monthly Emoluments:</span> <span id="resGrossTotal">₹0</span></div>
+          <div class="calc-metrics-grid">
+            <div class="calc-metric-card">
+              <div class="metric-label">Projected 8th CPC Basic</div>
+              <div class="metric-value" id="resRevisedBasic">₹0</div>
+            </div>
+            <div class="calc-metric-card">
+              <div class="metric-label">Estimated Revised HRA</div>
+              <div class="metric-value" id="resRevisedHRA">₹0</div>
+            </div>
+            <div class="calc-metric-card accent">
+              <div class="metric-label">Estimated Monthly Gross</div>
+              <div class="metric-value" id="resGrossTotal">₹0</div>
+            </div>
+          </div>
         </div>
 
         <div class="editorial-prose" style="margin-top: 2rem;">
@@ -461,13 +953,13 @@ const faqs = [
     <section>
       <div class="card">
         <h2 class="section-title">Pay Matrix Level Lookup</h2>
-        <p class="section-desc">Select any level badge below to verify starting salary transformations across civil, defence, and postal cadres.</p>
+        <p class="section-desc">Click any level badge below to quickly inspect starting salary transformations across cadres.</p>
         
         <div class="level-badge-grid">
           {payMatrixData.map((item) => (
-            <div class="level-badge" onclick={`alert('${item.level} (${item.gp})\\nCurrent 7th CPC: ₹${item.entry7th.toLocaleString('en-IN')}\\nProjected 8th CPC (2.25x): ₹${Math.round(item.entry7th * 2.25).toLocaleString('en-IN')}')`}>
+            <div class="level-badge" data-level={item.level} data-gp={item.gp} data-base={item.entry7th}>
               <strong>{item.level}</strong>
-              <span>7th: ₹{item.entry7th.toLocaleString('en-IN')}</span>
+              <span>₹{item.entry7th.toLocaleString('en-IN')}</span>
             </div>
           ))}
         </div>
@@ -501,8 +993,16 @@ const faqs = [
         </form>
 
         <div id="pensionResult" class="calc-output">
-          <div class="calc-output-row"><span>Revised Monthly Basic Pension:</span> <span id="resPension">₹0</span></div>
-          <div class="calc-output-row"><span>Standard Family Pension (30% Baseline):</span> <span id="resFamilyPension">₹0</span></div>
+          <div class="calc-metrics-grid">
+            <div class="calc-metric-card">
+              <div class="metric-label">Revised Basic Pension</div>
+              <div class="metric-value" id="resPension">₹0</div>
+            </div>
+            <div class="calc-metric-card accent">
+              <div class="metric-label">Family Pension (30% Baseline)</div>
+              <div class="metric-value" id="resFamilyPension">₹0</div>
+            </div>
+          </div>
         </div>
 
         <div class="editorial-prose" style="margin-top: 2rem;">
@@ -539,159 +1039,25 @@ const faqs = [
         </form>
 
         <div id="arrearsResult" class="calc-output">
-          <div class="calc-output-row"><span>Estimated Monthly Difference:</span> <span id="resMonthlyDiff">₹0</span></div>
-          <div class="calc-output-row"><span>Estimated Net Arrears Receivable:</span> <span id="resTotalArrears">₹0</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8TH CPC IMPLEMENTATION TIMELINE & CYCLE -->
-    <section>
-      <div class="card">
-        <h2 class="section-title">8th CPC Implementation Timeline & Historical Precedent</h2>
-        <p class="section-desc">Reviewing past commission execution cycles to evaluate the roadmap for 2026 and beyond.</p>
-
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Pay Commission</th>
-                <th>Year Constituted</th>
-                <th>Effective Rollout Date</th>
-                <th>Processing Timeframe</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>5th CPC</strong></td>
-                <td>1994</td>
-                <td>January 1, 1996</td>
-                <td>~24 Months</td>
-              </tr>
-              <tr>
-                <td><strong>6th CPC</strong></td>
-                <td>October 2006</td>
-                <td>January 1, 2006 (Retrospective)</td>
-                <td>~22 Months</td>
-              </tr>
-              <tr>
-                <td><strong>7th CPC</strong></td>
-                <td>February 2014</td>
-                <td>January 1, 2016</td>
-                <td>~23 Months</td>
-              </tr>
-              <tr>
-                <td><strong>8th CPC</strong></td>
-                <td>Consultations Ongoing</td>
-                <td>Projected 2026 Cycle</td>
-                <td>Under Deliberation</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="editorial-prose" style="margin-top: 2rem;">
-          <h3>Procedural Milestones for Implementation</h3>
-          <p>
-            The administrative process of enacting a Central Pay Commission follows a defined sequence:
-          </p>
-          <ul>
-            <li><strong>Terms of Reference (ToR) Notification:</strong> The Department of Expenditure issues the formal charter defining the scope of work, member composition, and review criteria.</li>
-            <li><strong>Stakeholder Representations:</strong> The Commission solicits detailed memorandums and oral testimonies from union confederations, defence leadership, and administrative services.</li>
-            <li><strong>Report Compilation & Submission:</strong> The Commission synthesizes historical economic data, fiscal constraints, and price indices into a comprehensive final report.</li>
-            <li><strong>Empowered Committee of Secretaries (E-CoS):</strong> An empowered panel headed by the Cabinet Secretary analyzes the fiscal viability of the proposals.</li>
-            <li><strong>Union Cabinet Approval & Gazette Notification:</strong> The Cabinet formally adopts the modified recommendations, notifying the new pay rules in the Gazette of India.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7TH CPC VS 8TH CPC COMPREHENSIVE COMPARISON -->
-    <section>
-      <div class="card">
-        <h2 class="section-title">7th CPC vs 8th CPC Structural Comparison</h2>
-        <p class="section-desc">Detailed comparative breakdown of core salary parameters, allowances, and retirement mechanisms.</p>
-
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Remuneration Parameter</th>
-                <th>7th Central Pay Commission</th>
-                <th>8th Central Pay Commission (Projected)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Fitment Multiplier</strong></td>
-                <td>2.57x Uniform baseline (Higher for specific cadres)</td>
-                <td>Projected between 1.92x and 2.86x</td>
-              </tr>
-              <tr>
-                <td><strong>Entry-Level Pay (Level 1)</strong></td>
-                <td>₹18,000 per month</td>
-                <td>₹34,560 to ₹51,480 per month</td>
-              </tr>
-              <tr>
-                <td><strong>Apex Salary (Level 18)</strong></td>
-                <td>₹2,50,000 per month (Cabinet Secretary)</td>
-                <td>₹5,00,000 to ₹7,15,000 per month</td>
-              </tr>
-              <tr>
-                <td><strong>Dearness Allowance (DA)</strong></td>
-                <td>Merged 125% accumulated DA from 6th CPC</td>
-                <td>Will absorb accumulated DA (resetting to 0%)</td>
-              </tr>
-              <tr>
-                <td><strong>Pay Band Architecture</strong></td>
-                <td>Replaced Grade Pay with unified Pay Matrix</td>
-                <td>Continuation of Levels 1–18 with expanded cells</td>
-              </tr>
-              <tr>
-                <td><strong>Pension Basis</strong></td>
-                <td>50% of last drawn pay with full parity</td>
-                <td>Expected parity via direct fitment multiplication</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- PENSIONERS WELFARE & ALLOWANCES -->
-    <section>
-      <div class="card">
-        <h2 class="section-title">Pensioners: Pension, Family Pension & Dearness Relief</h2>
-        <p class="section-desc">Comprehensive entitlements, family welfare guidelines, and commutation regulations for veterans and retirees.</p>
-
-        <div class="editorial-prose">
-          <p>
-            Central government pensioners form a central pillar of pay commission reviews. The 8th CPC is tasked with harmonizing pension provisions across various retirement frameworks, including the Old Pension Scheme (OPS), the Unified Pension Scheme (UPS), and the National Pension System (NPS).
-          </p>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
-            <div style="border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); background: #fff;">
-              <h4 style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.15rem;">Basic Pension Parity</h4>
-              <p style="font-size: 0.95rem;">Retirees receive parity revisions. Pre-2026 pensioners have their pensions updated via the direct fitment multiplier, ensuring equivalent entitlements regardless of retirement year.</p>
+          <div class="calc-metrics-grid">
+            <div class="calc-metric-card">
+              <div class="metric-label">Monthly Gross Difference</div>
+              <div class="metric-value" id="resMonthlyDiff">₹0</div>
             </div>
-            <div style="border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); background: #fff;">
-              <h4 style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.15rem;">Family Pension Protection</h4>
-              <p style="font-size: 0.95rem;">Family pension is calculated at 30% of the last drawn basic pay (subject to the minimum pension threshold), providing long-term security to surviving dependents.</p>
-            </div>
-            <div style="border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-sm); background: #fff;">
-              <h4 style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.15rem;">Commutation Period Demands</h4>
-              <p style="font-size: 0.95rem;">Employee confederations have pressed for commuted pension recovery to be reduced from 15 years to 12 years, citing modern actuarial interest rates and mortality tables.</p>
+            <div class="calc-metric-card accent">
+              <div class="metric-label">Estimated Total Arrears Receivable</div>
+              <div class="metric-value" id="resTotalArrears">₹0</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FREQUENTLY ASKED QUESTIONS (22 DETAILED QUESTIONS) -->
+    <!-- FREQUENTLY ASKED QUESTIONS -->
     <section id="faqs">
       <div class="card">
         <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
-        <p class="section-desc">In-depth answers to the 22 most essential queries concerning the 8th Central Pay Commission.</p>
+        <p class="section-desc">In-depth answers to essential queries concerning the 8th Central Pay Commission.</p>
 
         <div class="faq-accordion">
           {faqs.map((faq) => (
@@ -732,7 +1098,7 @@ const faqs = [
 
   </div>
 
-  <!-- MODERN FOOTER WITH ADSENSE COMPLIANCE DISCLAIMERS -->
+  <!-- MODERN FOOTER -->
   <footer>
     <div class="footer-content">
       <div>
@@ -745,12 +1111,11 @@ const faqs = [
         </p>
       </div>
       <div class="footer-nav">
-        <a href="about-us">About Us</a>
-        <a href="editorial-policy">Editorial Policy</a>
-        <a href="privacy-policy">Privacy Policy</a>
-        <a href="terms-of-use">Terms of Use</a>
-<a href="contact-us">Contact Us</a>
-        
+        <a href="/about-us">About Us</a>
+        <a href="/editorial-policy">Editorial Policy</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+        <a href="/contact-us">Contact Us</a>
       </div>
     </div>
     <div class="disclaimer-text">
@@ -758,15 +1123,57 @@ const faqs = [
     </div>
   </footer>
 
-  <!-- CLIENT SCRIPTS -->
+  <!-- =========================================================
+       CLIENT SCRIPTS (VANILLA JS, HIGH PERFORMANCE)
+  ========================================================= -->
   <script is:inline>
-    // 1. Salary Calculator Logic
+    // 1. Mobile Drawer Navigation Toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    const backdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerCloseBtn');
+
+    function toggleDrawer(open) {
+      if (open) {
+        drawer.classList.add('open');
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.remove('open');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    mobileBtn.addEventListener('click', () => toggleDrawer(true));
+    drawerClose.addEventListener('click', () => toggleDrawer(false));
+    backdrop.addEventListener('click', () => toggleDrawer(false));
+
+    // Mobile Submenu Accordions
+    document.querySelectorAll('.mobile-nav-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        item.classList.toggle('expanded');
+      });
+    });
+
+    // 2. Main Salary Calculator Logic
     const salaryForm = document.getElementById('mainSalaryForm');
+    const quickLevelSelect = document.getElementById('calcQuickLevel');
+    const basicInput = document.getElementById('calc7thBasic');
+
+    // Quick-fill basic salary from level selector
+    quickLevelSelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        basicInput.value = e.target.value;
+      }
+    });
+
     salaryForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const basic = parseFloat(document.getElementById('calc7thBasic').value) || 0;
+      const basic = parseFloat(basicInput.value) || 0;
       const factor = parseFloat(document.getElementById('calcFitment').value) || 2.25;
-      const hraRate = parseFloat(document.getElementById('calcHra').value) || 0.27;
+      const hraRate = parseFloat(document.getElementById('calcHra').value) || 0.30;
 
       const revisedBasic = Math.round(basic * factor);
       const revisedHra = Math.round(revisedBasic * hraRate);
@@ -778,7 +1185,7 @@ const faqs = [
       document.getElementById('salaryResults').style.display = 'block';
     });
 
-    // 2. Interactive Fitment Factor Pill Switcher
+    // 3. Interactive Fitment Factor Pill Switcher
     const pills = document.querySelectorAll('.factor-pill-btn');
     pills.forEach(pill => {
       pill.addEventListener('click', () => {
@@ -794,7 +1201,17 @@ const faqs = [
       });
     });
 
-    // 3. Pension Calculator Logic
+    // 4. Pay Level Badges Quick-Filler for Calculator
+    document.querySelectorAll('.level-badge').forEach(badge => {
+      badge.addEventListener('click', () => {
+        const base = badge.getAttribute('data-base');
+        basicInput.value = base;
+        document.getElementById('salary-calculator').scrollIntoView({ behavior: 'smooth' });
+        salaryForm.dispatchEvent(new Event('submit'));
+      });
+    });
+
+    // 5. Pension Calculator Logic
     const pensionForm = document.getElementById('pensionForm');
     pensionForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -802,14 +1219,14 @@ const faqs = [
       const factor = parseFloat(document.getElementById('pensionFactor').value) || 2.25;
 
       const revised = Math.round(current * factor);
-      const family = Math.round(revised * 0.6); // 30% of corresponding full salary baseline
+      const family = Math.round(revised * 0.6);
 
       document.getElementById('resPension').textContent = '₹' + revised.toLocaleString('en-IN');
       document.getElementById('resFamilyPension').textContent = '₹' + family.toLocaleString('en-IN');
       document.getElementById('pensionResult').style.display = 'block';
     });
 
-    // 4. Arrears Calculator Logic
+    // 6. Arrears Calculator Logic
     const arrearsForm = document.getElementById('arrearsForm');
     arrearsForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -825,7 +1242,7 @@ const faqs = [
       document.getElementById('arrearsResult').style.display = 'block';
     });
 
-    // 5. FAQ Accordion Interaction
+    // 7. FAQ Accordion Interaction
     document.querySelectorAll('.faq-header').forEach(header => {
       header.addEventListener('click', () => {
         const row = header.parentElement;
