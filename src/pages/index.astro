@@ -1,965 +1,146 @@
 ---
-// src/pages/index.astro
-const siteUrl = "https://8paycommission.com";
-const canonicalURL = new URL(Astro.url.pathname, siteUrl);
-const pageTitle = "8th Pay Commission Calculator 2026: Expected Pay Matrix & Salary Hike";
-const pageDescription = "Accurate 8th Pay Commission salary calculator. Instant basic pay, HRA, and gross salary estimates across Level 1-18 with 1.92x–2.86x fitment factors.";
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const siteUrl = 'https://8paycommission.com';
+const pageTitle = '8th Pay Commission Calculator 2026: Expected Pay Matrix & Salary Hike';
+const pageDescription = 'Calculate projected 8th Pay Commission basic pay, HRA and gross salary for Pay Matrix Levels 1 to 18.';
 
 const payMatrixData = [
-  { level: "Level 1", gp: "GP 1800", post: "MTS / Group D Staff", entry7th: 18000 },
-  { level: "Level 2", gp: "GP 1900", post: "Lower Division Clerk (LDC)", entry7th: 19900 },
-  { level: "Level 3", gp: "GP 2000", post: "Senior Clerk / Constable", entry7th: 21700 },
-  { level: "Level 4", gp: "GP 2400", post: "Upper Division Clerk (UDC)", entry7th: 25500 },
-  { level: "Level 5", gp: "GP 2800", post: "Auditor / Accountant", entry7th: 29200 },
-  { level: "Level 6", gp: "GP 4200", post: "Inspector / Sub-Inspector / Primary Teacher", entry7th: 35400 },
-  { level: "Level 7", gp: "GP 4600", post: "Assistant Section Officer (ASO)", entry7th: 44900 },
-  { level: "Level 8", gp: "GP 4800", post: "Assistant Accounts Officer (AAO)", entry7th: 47600 },
-  { level: "Level 9", gp: "GP 5400 (PB-2)", post: "Senior Accounts Officer", entry7th: 53100 },
-  { level: "Level 10", gp: "GP 5400 (PB-3)", post: "Group-A Entry / DSP / SDM", entry7th: 56100 },
-  { level: "Level 11", gp: "GP 6600", post: "Under Secretary / Exec Engineer", entry7th: 67700 },
-  { level: "Level 12", gp: "GP 7600", post: "Deputy Secretary", entry7th: 78800 },
-  { level: "Level 13", gp: "GP 8700", post: "Director / Selection Grade", entry7th: 123100 },
-  { level: "Level 13A", gp: "GP 8900", post: "Senior Director / DIG", entry7th: 139600 },
-  { level: "Level 14", gp: "GP 10000", post: "Joint Secretary / IG", entry7th: 144200 },
-  { level: "Level 15", gp: "HAG", post: "Principal Secretary / ADG", entry7th: 182200 },
-  { level: "Level 16", gp: "HAG+", post: "Special Secretary / DG", entry7th: 205400 },
-  { level: "Level 17", gp: "Apex Scale", post: "Secretary to GoI", entry7th: 225000 },
-  { level: "Level 18", gp: "Cabinet Sec", post: "Cabinet Secretary of India", entry7th: 250000 }
+  { level: 'Level 1', gp: 'GP 1800', post: 'MTS / Group D Staff', entry7th: 18000 },
+  { level: 'Level 2', gp: 'GP 1900', post: 'Lower Division Clerk (LDC)', entry7th: 19900 },
+  { level: 'Level 3', gp: 'GP 2000', post: 'Senior Clerk / Constable', entry7th: 21700 },
+  { level: 'Level 4', gp: 'GP 2400', post: 'Upper Division Clerk (UDC)', entry7th: 25500 },
+  { level: 'Level 5', gp: 'GP 2800', post: 'Auditor / Accountant', entry7th: 29200 },
+  { level: 'Level 6', gp: 'GP 4200', post: 'Inspector / Sub-Inspector / Primary Teacher', entry7th: 35400 },
+  { level: 'Level 7', gp: 'GP 4600', post: 'Assistant Section Officer (ASO)', entry7th: 44900 },
+  { level: 'Level 8', gp: 'GP 4800', post: 'Assistant Accounts Officer (AAO)', entry7th: 47600 },
+  { level: 'Level 9', gp: 'GP 5400 (PB-2)', post: 'Senior Accounts Officer', entry7th: 53100 },
+  { level: 'Level 10', gp: 'GP 5400 (PB-3)', post: 'Group-A Entry / DSP / SDM', entry7th: 56100 },
+  { level: 'Level 11', gp: 'GP 6600', post: 'Under Secretary / Executive Engineer', entry7th: 67700 },
+  { level: 'Level 12', gp: 'GP 7600', post: 'Deputy Secretary', entry7th: 78800 },
+  { level: 'Level 13', gp: 'GP 8700', post: 'Director / Selection Grade', entry7th: 123100 },
+  { level: 'Level 13A', gp: 'GP 8900', post: 'Senior Director / DIG', entry7th: 139600 },
+  { level: 'Level 14', gp: 'GP 10000', post: 'Joint Secretary / IG', entry7th: 144200 },
+  { level: 'Level 15', gp: 'HAG', post: 'Principal Secretary / ADG', entry7th: 182200 },
+  { level: 'Level 16', gp: 'HAG+', post: 'Special Secretary / DG', entry7th: 205400 },
+  { level: 'Level 17', gp: 'Apex Scale', post: 'Secretary to GoI', entry7th: 225000 },
+  { level: 'Level 18', gp: 'Cabinet Sec', post: 'Cabinet Secretary of India', entry7th: 250000 },
 ];
 
 const faqs = [
-  { q: "What is the expected 8th Pay Commission fitment factor?", a: "Staff federations and financial models place the anticipated fitment factor between 2.25x and 2.86x, with conservative baseline projections starting at 1.92x." },
-  { q: "What will be the revised Level 1 minimum basic pay?", a: "Current 7th CPC minimum basic is ₹18,000. Under 2.25x fitment it adjusts to ₹40,500; at 2.57x it hits ₹46,260; and at 2.86x it reaches ₹51,480." },
-  { q: "What happens to Dearness Allowance (DA) when 8th CPC starts?", a: "Accumulated Dearness Allowance merges directly into the revised basic salary, and the new DA rate officially resets to 0% upon rollout." },
-  { q: "How will House Rent Allowance (HRA) be revised?", a: "HRA continues across X (30%), Y (20%), and Z (10%) classifications, applying directly to the higher revised basic salary." },
-  { q: "How are 8th CPC arrears calculated?", a: "Arrears represent the cumulative difference between the revised gross salary entitlement and the drawn wages across any retroactive rollout period." }
+  ['What is the expected 8th Pay Commission fitment factor?', 'Current projections commonly model factors between 1.92x and 2.86x. The final factor will only be known after an official recommendation.'],
+  ['What will happen to Dearness Allowance (DA)?', 'At implementation, accumulated DA is generally considered as part of the revised pay calculation. The government will confirm the treatment and reset mechanism.'],
+  ['How is HRA estimated?', 'This calculator applies indicative HRA rates of 30%, 20% and 10% for Class X, Y and Z cities to the projected basic pay.'],
+  ['How are arrears calculated?', 'Arrears are the difference between revised eligible pay and salary already drawn during any period covered by a retrospective implementation date.'],
 ];
+
+const money = (value: number) => `₹${value.toLocaleString('en-IN')}`;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>{pageTitle}</title>
-  <meta name="description" content={pageDescription} />
-  <meta name="keywords" content="8th pay commission calculator, 8th cpc salary calculator, fitment factor 2026, 8th pay matrix, level 1 to 18 basic pay, central government employees pay hike" />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
-  <link rel="canonical" href={canonicalURL} />
-
-  <!-- Open Graph / Social SEO -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content={pageTitle} />
-  <meta property="og:description" content={pageDescription} />
-  <meta property="og:url" content={canonicalURL} />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Schema.org SoftwareApplication + FAQPage for Rich Snippets -->
+<SiteLayout title={pageTitle} description={pageDescription}>
   <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebApplication",
-        "name": "8th Pay Commission Salary Calculator",
-        "operatingSystem": "All",
-        "applicationCategory": "FinanceApplication",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": faqs.map((f) => ({
-          "@type": "Question",
-          "name": f.q,
-          "acceptedAnswer": { "@type": "Answer", "text": f.a }
-        }))
-      }
-    ]
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebApplication', name: '8th Pay Commission Salary Calculator', url: siteUrl, applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' } },
+      { '@type': 'FAQPage', mainEntity: faqs.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
+    ],
   })} />
 
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-subtle: #f1f5f9;
-      --border: #e2e8f0;
-      --border-focus: #2563eb;
-      --primary: #1d4ed8;
-      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --accent-green: #15803d;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
-    body { background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; -webkit-font-smoothing: antialiased; }
-    a { color: var(--primary); text-decoration: none; }
-
-    /* Sticky Navigation */
-    header.site-nav {
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 1.25rem;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-    .brand-badge {
-      background: var(--primary-gradient);
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 800;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-    }
-
-    /* Desktop Navigation with Dropdowns */
-    .desktop-nav { display: flex; align-items: center; }
-    .nav-list { display: flex; list-style: none; gap: 0.25rem; align-items: center; }
-    .nav-item { position: relative; }
-    .nav-link {
-      color: #334155;
-      font-weight: 600;
-      font-size: 0.88rem;
-      padding: 0.55rem 0.85rem;
-      border-radius: var(--radius-sm);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      transition: all 0.2s ease;
-    }
-    .nav-link:hover, .nav-item:hover > .nav-link {
-      color: var(--primary);
-      background: #eff6ff;
-    }
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 250px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      padding: 0.4rem;
-      list-style: none;
-      display: none;
-      flex-direction: column;
-      gap: 0.2rem;
-      z-index: 1010;
-    }
-    .nav-item:hover .dropdown { display: flex; }
-    .dropdown-link {
-      color: #475569;
-      font-size: 0.84rem;
-      padding: 0.55rem 0.75rem;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: 0.15s;
-    }
-    .dropdown-link:hover { background: #eff6ff; color: var(--primary); padding-left: 0.95rem; }
-
-    /* Mobile Hamburger */
-    .menu-trigger {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-size: 1.6rem;
-      cursor: pointer;
-    }
-    @media (max-width: 992px) {
-      .desktop-nav { display: none; }
-      .menu-trigger { display: block; }
-    }
-
-    /* Mobile Drawer */
-    .drawer-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(4px);
-      z-index: 1020;
-      display: none;
-    }
-    .drawer-backdrop.active { display: block; }
-    .mobile-drawer {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 82%;
-      max-width: 320px;
-      height: 100%;
-      background: #ffffff;
-      z-index: 1030;
-      padding: 1.25rem;
-      transition: right 0.3s ease;
-      overflow-y: auto;
-      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
-    }
-    .mobile-drawer.open { right: 0; }
-    .mobile-drawer-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1rem;
-    }
-    .drawer-close { background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
-    .mobile-acc-btn {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-weight: 700;
-      padding: 0.7rem 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-    }
-    .mobile-sub-menu { display: none; list-style: none; padding-left: 0.85rem; }
-    .mobile-acc-item.expanded .mobile-sub-menu { display: block; }
-    .mobile-sub-menu a { display: block; padding: 0.45rem 0; color: #64748b; font-size: 0.88rem; }
-
-    /* Layout & Containers */
-    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
-    
-    /* Hero Header */
-    .hero-panel {
-      text-align: center;
-      padding: 3rem 1rem 2rem;
-    }
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      color: #1d4ed8;
-      padding: 0.25rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-    }
-    .hero-panel h1 {
-      font-size: clamp(1.85rem, 4vw, 2.7rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-      margin-bottom: 0.75rem;
-      color: var(--text);
-    }
-    .hero-panel p {
-      color: var(--text-muted);
-      max-width: 680px;
-      margin: 0 auto;
-      font-size: 1.05rem;
-    }
-
-    /* Calculator Card */
-    .glass-calculator {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 3.5rem;
-    }
-    .calc-controls-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem;
-    }
-    .form-ctrl {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .form-ctrl label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .form-ctrl input, .form-ctrl select {
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      color: var(--text);
-      padding: 0.75rem 0.9rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.95rem;
-      font-weight: 600;
-      outline: none;
-      transition: all 0.2s;
-    }
-    .form-ctrl input:focus, .form-ctrl select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    /* Instant Real-Time KPI Cards */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1.75rem;
-    }
-    .kpi-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .kpi-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: #cbd5e1;
-    }
-    .kpi-card.highlight {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-    }
-    .kpi-card.highlight::before {
-      background: var(--primary-gradient);
-    }
-    .kpi-title {
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 0.35rem;
-    }
-    .kpi-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .kpi-card.highlight .kpi-value {
-      color: var(--primary);
-    }
-
-    /* Horizontal Multiplier Chips */
-    .chip-bar {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-      padding: 0.75rem 0 0.5rem;
-      scrollbar-width: none;
-    }
-    .chip-bar::-webkit-scrollbar { display: none; }
-    .chip-btn {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: #475569;
-      padding: 0.55rem 1.1rem;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .chip-btn:hover { background: #e2e8f0; }
-    .chip-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
-    }
-
-    /* Panels & Tables */
-    .panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      margin-bottom: 3rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .panel h2 {
-      font-size: 1.55rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-    .panel p.desc {
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-    .table-container {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.92rem;
-    }
-    th, td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    th {
-      background: #f8fafc;
-      color: #475569;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f8fafc; }
-
-    /* Level Badges Grid */
-    .level-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 0.6rem;
-      margin-top: 1rem;
-    }
-    .level-pill {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      padding: 0.75rem 0.5rem;
-      border-radius: var(--radius-sm);
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .level-pill:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      background: #eff6ff;
-    }
-    .level-pill strong { display: block; font-size: 0.95rem; color: var(--text); }
-    .level-pill span { font-size: 0.78rem; color: var(--text-muted); }
-
-    /* FAQ System */
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 0;
-    }
-    .faq-q {
-      font-weight: 700;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1rem;
-      user-select: none;
-    }
-    .faq-a {
-      display: none;
-      padding-top: 0.6rem;
-      color: #475569;
-      font-size: 0.94rem;
-      line-height: 1.65;
-    }
-    .faq-item.open .faq-a { display: block; }
-    .faq-item.open .faq-toggle { transform: rotate(180deg); }
-    .faq-toggle { transition: transform 0.2s; font-size: 0.75rem; color: var(--text-muted); }
-
-    /* Sticky Mobile Summary Bar */
-    .mobile-sticky-bar {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.96);
-      border-top: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-      padding: 0.75rem 1.25rem;
-      z-index: 990;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    }
-    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
-    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
-    @media (max-width: 768px) {
-      .mobile-sticky-bar { display: flex; }
-      body { padding-bottom: 4rem; }
-    }
-
-    /* Clean Footer & Disclaimer */
-    footer {
-      background: #ffffff;
-      border-top: 1px solid var(--border);
-      padding: 3rem 1.25rem 2.5rem;
-      margin-top: 4rem;
-      font-size: 0.88rem;
-      color: #64748b;
-    }
-    .footer-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .footer-links a { color: #475569; margin-left: 1rem; }
-    .footer-links a:hover { color: var(--primary); }
-
-    .disclaimer-card {
-      max-width: 1160px;
-      margin: 2rem auto 0;
-      padding: 1.25rem;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-left: 4px solid #94a3b8;
-      border-radius: var(--radius-sm);
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: #64748b;
-    }
-    .disclaimer-card strong { color: var(--text); }
-  </style>
-</head>
-<body>
-
-  <!-- NAVIGATION -->
-  <header class="site-nav">
-    <div class="nav-container">
-      <a href="/" class="brand">
-        <span class="brand-badge">₹</span>
-        8paycommission
-      </a>
-
-      <!-- Desktop Dropdowns -->
-      <nav class="desktop-nav" aria-label="Main Navigation">
-        <ul class="nav-list">
-          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-          
-          <li class="nav-item">
-            <a href="#calculator" class="nav-link">Calculators ▾</a>
-            <ul class="dropdown">
-              <li><a href="/8th-pay-commission-salary-calculator" class="dropdown-link">8th Pay Salary Calculator</a></li>
-              <li><a href="/pension-calculator" class="dropdown-link">Pension & Arrears</a></li>
-              <li><a href="/hra-calculator" class="dropdown-link">HRA Slabs Calculator</a></li>
-              <li><a href="/da-calculator" class="dropdown-link">Expected DA Calculator</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="#pay-matrix" class="nav-link">Pay Matrix ▾</a>
-            <ul class="dropdown">
-              <li><a href="/pay-matrix" class="dropdown-link">Level 1 to 18 Matrix Table</a></li>
-              <li><a href="/fitment-factor" class="dropdown-link">Fitment Factor Scenarios</a></li>
-              <li><a href="/comparison-7th-vs-8th" class="dropdown-link">7th vs 8th CPC Comparison</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="#rules" class="nav-link">Allowances & Rules ▾</a>
-            <ul class="dropdown">
-              <li><a href="/dearness-allowance" class="dropdown-link">DA & AICPI Tracker</a></li>
-              <li><a href="/hra-rules" class="dropdown-link">HRA (X, Y, Z Cities)</a></li>
-              <li><a href="/transport-allowance" class="dropdown-link">Travel & TA Rules</a></li>
-              <li><a href="/cea-rules" class="dropdown-link">Children Education Allowance</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="#sectors" class="nav-link">Sector-Wise Pay ▾</a>
-            <ul class="dropdown">
-              <li><a href="/defence-pay-scale" class="dropdown-link">Defence & MSP Matrix</a></li>
-              <li><a href="/railway-pay-structure" class="dropdown-link">Railway Employee Rules</a></li>
-              <li><a href="/teachers-pay-scale" class="dropdown-link">Teachers & University Staff</a></li>
-              <li><a href="/state-wise-status" class="dropdown-link">State Govt Status</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item"><a href="/latest-news" class="nav-link">Latest Updates</a></li>
-        </ul>
-      </nav>
-
-      <button class="menu-trigger" id="menuBtn" aria-label="Open Navigation">☰</button>
-    </div>
+  <header class="hero">
+    <span class="eyebrow">2026 Salary Projection Model</span>
+    <h1>8th Pay Commission Calculator</h1>
+    <p>Estimate revised basic pay, HRA and monthly gross salary across all Central Government Pay Matrix levels.</p>
   </header>
 
-  <!-- Mobile Drawer Navigation -->
-  <div class="drawer-backdrop" id="backdrop"></div>
-  <aside class="mobile-drawer" id="drawer">
-    <div class="mobile-drawer-head">
-      <span class="brand" style="font-size: 1.1rem;">
-        <span class="brand-badge" style="width: 26px; height: 26px; font-size: 0.9rem;">₹</span>
-        8paycommission
-      </span>
-      <button class="drawer-close" id="drawerClose">✕</button>
+  <section class="card calculator" id="calculator" aria-labelledby="calculator-title">
+    <h2 id="calculator-title">Calculate your projected salary</h2>
+    <p class="muted">Choose your current basic pay, fitment factor and city category.</p>
+    <div class="controls">
+      <label>Pay Level Preset<select id="levelSelect">{payMatrixData.map((row) => <option value={row.entry7th} selected={row.level === 'Level 6'}>{row.level} — {money(row.entry7th)}</option>)}</select></label>
+      <label>Current Basic Pay (₹)<input id="basicPay" type="number" value="35400" min="18000" step="100" /></label>
+      <label>Fitment Factor<select id="fitment"><option value="1.92">1.92x Conservative</option><option value="2.25">2.25x Baseline</option><option value="2.57">2.57x Parity</option><option value="2.86" selected>2.86x Target</option></select></label>
+      <label>City Category<select id="hra"><option value="0.30" selected>Class X — 30%</option><option value="0.20">Class Y — 20%</option><option value="0.10">Class Z — 10%</option></select></label>
     </div>
-    
-    <div class="mobile-acc-list">
-      <div class="mobile-acc-item">
-        <button class="mobile-acc-btn"><span>Calculators</span> <span>▾</span></button>
-        <ul class="mobile-sub-menu">
-          <li><a href="/salary-calculator">8th Pay Salary Calculator</a></li>
-          <li><a href="/pension-calculator">Pension & Arrears Calculator</a></li>
-          <li><a href="/hra-calculator">HRA Slabs Calculator</a></li>
-          <li><a href="/da-calculator">Expected DA Calculator</a></li>
-        </ul>
-      </div>
-
-      <div class="mobile-acc-item">
-        <button class="mobile-acc-btn"><span>Pay Matrix</span> <span>▾</span></button>
-        <ul class="mobile-sub-menu">
-          <li><a href="/pay-matrix">Level 1 to 18 Matrix Table</a></li>
-          <li><a href="/fitment-factor">Fitment Factor Scenarios</a></li>
-          <li><a href="/comparison-7th-vs-8th">7th vs 8th CPC Comparison</a></li>
-        </ul>
-      </div>
-
-      <div class="mobile-acc-item">
-        <button class="mobile-acc-btn"><span>Allowances</span> <span>▾</span></button>
-        <ul class="mobile-sub-menu">
-          <li><a href="/dearness-allowance">DA & AICPI Tracker</a></li>
-          <li><a href="/hra-rules">HRA (X, Y, Z Cities)</a></li>
-          <li><a href="/transport-allowance">Travel & TA Rules</a></li>
-          <li><a href="/cea-rules">Children Education Allowance</a></li>
-        </ul>
-      </div>
-
-      <div class="mobile-acc-item">
-        <button class="mobile-acc-btn"><span>Sector-Wise Pay</span> <span>▾</span></button>
-        <ul class="mobile-sub-menu">
-          <li><a href="/defence-pay-scale">Defence & MSP Matrix</a></li>
-          <li><a href="/railway-pay-structure">Railway Employee Rules</a></li>
-          <li><a href="/teachers-pay-scale">Teachers & University Staff</a></li>
-          <li><a href="/state-wise-status">State Govt Status</a></li>
-        </ul>
-      </div>
-
-      <div style="padding: 0.75rem 0;"><a href="/latest-news" style="color: var(--text); font-weight: 700;">Latest Updates</a></div>
+    <div class="results" aria-live="polite">
+      <div><span>Projected Basic Pay</span><strong id="resultBasic">₹1,01,244</strong></div>
+      <div><span>Projected HRA</span><strong id="resultHra">₹30,373</strong></div>
+      <div class="highlight"><span>Estimated Monthly Gross</span><strong id="resultGross">₹1,35,217</strong></div>
     </div>
-  </aside>
+  </section>
 
-  <main class="layout-wrap">
+  <section class="card" id="pay-matrix">
+    <h2>7th vs 8th CPC Pay Matrix Projections</h2>
+    <p class="muted">Indicative starting basic pay for Levels 1 to 18. Select a level to load it into the calculator.</p>
+    <div class="table-wrap"><table><thead><tr><th>Level</th><th>Grade Pay</th><th>Typical Post</th><th>7th CPC</th><th>8th CPC at 2.25x</th><th>8th CPC at 2.86x</th></tr></thead><tbody>{payMatrixData.map((row) => <tr><td><button class="level-button" data-level={row.entry7th}>{row.level}</button></td><td>{row.gp}</td><td>{row.post}</td><td>{money(row.entry7th)}</td><td>{money(Math.round(row.entry7th * 2.25))}</td><td class="accent">{money(Math.round(row.entry7th * 2.86))}</td></tr>)}</tbody></table></div>
+  </section>
 
-    <!-- HERO INTRO -->
-    <div class="hero-panel">
-      <div class="badge-pill">2026 Salary Projection Model</div>
-      <h1>8th Pay Commission Calculator</h1>
-      <p>Estimate revised basic pay, HRA allowances, and total monthly in-hand hikes across all 18 Pay Matrix levels.</p>
-    </div>
+  <section class="card" id="faqs">
+    <h2>Frequently Asked Questions</h2>
+    {faqs.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}
+  </section>
 
-    <!-- MODERN INTERACTIVE CALCULATOR (ABOVE THE FOLD) -->
-    <section class="glass-calculator" id="calculator" aria-label="Interactive 8th CPC Salary Calculator">
-      
-      <!-- Quick Multiplier Selector -->
-      <div style="margin-bottom: 1.25rem;">
-        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Expected Fitment Factor:</span>
-        <div class="chip-bar" id="chipBar">
-          <button class="chip-btn" data-factor="1.92">1.92x (Conservative)</button>
-          <button class="chip-btn" data-factor="2.25">2.25x</button>
-          <button class="chip-btn" data-factor="2.57">2.57x (7th CPC Parity)</button>
-          <button class="chip-btn active" data-factor="2.86">2.86x (Federation Target)</button>
-        </div>
-      </div>
+  <p class="disclaimer"><strong>Disclaimer:</strong> This is an independent informational calculator. Values are estimates and are not official Government of India pay rules. Always verify the final notification, pay matrix and allowance orders before making financial decisions.</p>
+</SiteLayout>
 
-      <div class="calc-controls-grid">
-        <div class="form-ctrl">
-          <label for="matrixLevelSelect">Pay Level Preset</label>
-          <select id="matrixLevelSelect">
-            {payMatrixData.map((row) => (
-              <option value={row.entry7th} selected={row.level === "Level 6"}>
-                {row.level} ({row.gp}) - Min ₹{row.entry7th.toLocaleString('en-IN')}
-              </option>
-            ))}
-          </select>
-        </div>
+<style>
+  :global(body) { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .hero { padding: 3rem 0 2rem; text-align: center; }
+  .eyebrow { display: inline-block; padding: .3rem .8rem; border: 1px solid #bfdbfe; border-radius: 999px; background: #eff6ff; color: #1d4ed8; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  h1 { margin: .9rem 0 .6rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; }
+  h2 { margin: 0 0 .45rem; font-size: 1.45rem; }
+  .hero p { max-width: 680px; margin: 0 auto; color: #64748b; font-size: 1.05rem; }
+  .card { margin: 0 0 2rem; padding: 2rem; border: 1px solid #e2e8f0; border-radius: 18px; background: #fff; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
+  .muted { margin: 0 0 1.25rem; color: #64748b; }
+  .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; }
+  label { display: grid; gap: .4rem; color: #334155; font-size: .8rem; font-weight: 700; text-transform: uppercase; }
+  input, select { width: 100%; padding: .75rem; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #0f172a; font: inherit; font-size: .9rem; }
+  input:focus, select:focus { outline: 3px solid #dbeafe; border-color: #2563eb; }
+  .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+  .results div { padding: 1.1rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc; text-align: center; }
+  .results span { display: block; color: #64748b; font-size: .75rem; font-weight: 700; text-transform: uppercase; }
+  .results strong { display: block; margin-top: .25rem; font-size: 1.35rem; }
+  .results .highlight { border-color: #bfdbfe; background: #eff6ff; color: #1d4ed8; }
+  .table-wrap { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; }
+  table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; font-size: .88rem; }
+  th, td { padding: .8rem; border-bottom: 1px solid #e2e8f0; }
+  th { background: #f8fafc; color: #475569; font-size: .75rem; text-transform: uppercase; }
+  tr:last-child td { border-bottom: 0; }
+  .level-button { border: 0; background: transparent; color: #1d4ed8; cursor: pointer; font: inherit; font-weight: 700; }
+  .accent { color: #1d4ed8; font-weight: 700; }
+  details { padding: 1rem 0; border-bottom: 1px solid #e2e8f0; }
+  details:last-child { border-bottom: 0; }
+  summary { cursor: pointer; font-weight: 700; }
+  details p { margin: .6rem 0 0; color: #475569; }
+  .disclaimer { margin: 0 0 2rem; padding: 1rem; border-left: 4px solid #94a3b8; border-radius: 6px; background: #f8fafc; color: #64748b; font-size: .82rem; }
+  @media (max-width: 640px) { .card { padding: 1.25rem; } .results { grid-template-columns: 1fr; } }
+</style>
 
-        <div class="form-ctrl">
-          <label for="basicPayInput">Current Basic Pay (₹)</label>
-          <input type="number" id="basicPayInput" value="35400" min="18000" step="100" />
-        </div>
+<script>
+  const basicPay = document.querySelector('#basicPay') as HTMLInputElement;
+  const fitment = document.querySelector('#fitment') as HTMLSelectElement;
+  const hra = document.querySelector('#hra') as HTMLSelectElement;
+  const levelSelect = document.querySelector('#levelSelect') as HTMLSelectElement;
+  const resultBasic = document.querySelector('#resultBasic');
+  const resultHra = document.querySelector('#resultHra');
+  const resultGross = document.querySelector('#resultGross');
+  const formatMoney = (value: number) => `₹${Math.round(value).toLocaleString('en-IN')}`;
 
-        <div class="form-ctrl">
-          <label for="customFitment">Fitment Factor</label>
-          <select id="customFitment">
-            <option value="1.92">1.92x (Conservative DA Merge)</option>
-            <option value="2.10">2.10x (Balanced)</option>
-            <option value="2.25">2.25x (Baseline Model)</option>
-            <option value="2.57">2.57x (Equivalent to 7th CPC)</option>
-            <option value="2.86" selected>2.86x (Union Demanded Target)</option>
-            <option value="3.00">3.00x (High Wage Benchmark)</option>
-          </select>
-        </div>
+  function calculate() {
+    const revisedBasic = Number(basicPay.value || 0) * Number(fitment.value);
+    const revisedHra = revisedBasic * Number(hra.value);
+    const transportAllowance = Number(basicPay.value || 0) >= 35400 ? 3600 : 1350;
+    resultBasic!.textContent = formatMoney(revisedBasic);
+    resultHra!.textContent = formatMoney(revisedHra);
+    resultGross!.textContent = formatMoney(revisedBasic + revisedHra + transportAllowance);
+  }
 
-        <div class="form-ctrl">
-          <label for="cityTierSelect">City Tier (HRA Rate)</label>
-          <select id="cityTierSelect">
-            <option value="0.30" selected>Class X (30% - Metro Cities)</option>
-            <option value="0.20">Class Y (20% - Tier-2 Centers)</option>
-            <option value="0.10">Class Z (10% - Small Towns/Rural)</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Real-Time Metrics Output -->
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <div class="kpi-title">8th CPC Basic Pay</div>
-          <div class="kpi-value" id="kpiBasic">₹1,01,244</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Revised HRA</div>
-          <div class="kpi-value" id="kpiHra">₹30,373</div>
-        </div>
-        <div class="kpi-card highlight">
-          <div class="kpi-title">Estimated Monthly Gross</div>
-          <div class="kpi-value" id="kpiGross">₹1,35,217</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PAY MATRIX QUICK LOOKUP -->
-    <section class="panel" id="pay-matrix">
-      <h2>Pay Matrix Level Lookup</h2>
-      <p class="desc">Select any level badge to load starting salaries directly into the projection tool.</p>
-      
-      <div class="level-grid">
-        {payMatrixData.map((item) => (
-          <div class="level-pill" data-base={item.entry7th}>
-            <strong>{item.level}</strong>
-            <span>₹{item.entry7th.toLocaleString('en-IN')}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- LEVEL 1-18 COMPARISON TABLE -->
-    <section class="panel">
-      <h2>7th vs 8th CPC Pay Matrix Projections</h2>
-      <p class="desc">Side-by-side comparative table modeling basic starting scales across Levels 1 through 18.</p>
-
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Pay Level</th>
-              <th>Grade Pay</th>
-              <th>Cadre Post</th>
-              <th>7th CPC Base</th>
-              <th>8th CPC (2.25x)</th>
-              <th>8th CPC (2.86x Target)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {payMatrixData.map((row) => (
-              <tr>
-                <td><strong>{row.level}</strong></td>
-                <td>{row.gp}</td>
-                <td>{row.post}</td>
-                <td>₹{row.entry7th.toLocaleString('en-IN')}</td>
-                <td>₹{Math.round(row.entry7th * 2.25).toLocaleString('en-IN')}</td>
-                <td style="color: var(--primary); font-weight: 700;">₹{Math.round(row.entry7th * 2.86).toLocaleString('en-IN')}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- FAQ ACCORDION -->
-    <section class="panel" id="faqs">
-      <h2>Frequently Asked Questions</h2>
-      <p class="desc">Direct answers to core questions surrounding the 8th Central Pay Commission implementation.</p>
-
-      <div class="faq-list">
-        {faqs.map((faq) => (
-          <div class="faq-item">
-            <div class="faq-q">
-              <span>{faq.q}</span>
-              <span class="faq-toggle">▼</span>
-            </div>
-            <div class="faq-a">{faq.a}</div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-  </main>
-
-  <!-- STICKY MOBILE SUMMARY BAR -->
-  <div class="mobile-sticky-bar">
-    <div>
-      <div class="lbl">Estimated Gross</div>
-      <div class="val" id="stickyGross">₹1,35,217</div>
-    </div>
-    <a href="#calculator" class="chip-btn active" style="padding: 0.45rem 0.9rem; font-size: 0.8rem;">Recalculate</a>
-  </div>
-
-  <!-- MINIMAL FOOTER WITH DISCLAIMER -->
-  <footer>
-    <div class="footer-inner">
-      <div>
-        <strong style="color: var(--text);">8paycommission.com</strong> — Independent Public Remuneration Research
-      </div>
-      <div class="footer-links">
-        <a href="/about-us">About Us</a>
-        <a href="/privacy-policy">Privacy Policy</a>
-        <a href="/terms-of-use">Terms of Use</a>
-        <a href="/contact-us">Contact Us</a>
-      </div>
-    </div>
-
-    <!-- STATUTORY DISCLAIMER -->
-    <div class="disclaimer-card">
-      <strong>Disclaimer:</strong> 8paycommission.com is an independent informational and calculation portal. This website is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or any official Pay Commission authority. All calculations, fitment multipliers, and salary matrices presented here are projected mathematical estimates based on historical pay commission methodologies and publicly submitted employee representations. For official gazette notifications, visit <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
-    </div>
-  </footer>
-
-  <!-- LIGHTWEIGHT REAL-TIME JAVASCRIPT -->
-  <script is:inline>
-    // Mobile Drawer Controls
-    const menuBtn = document.getElementById('menuBtn');
-    const drawer = document.getElementById('drawer');
-    const backdrop = document.getElementById('backdrop');
-    const drawerClose = document.getElementById('drawerClose');
-
-    function toggleNav(show) {
-      if (show) {
-        drawer.classList.add('open');
-        backdrop.classList.add('active');
-      } else {
-        drawer.classList.remove('open');
-        backdrop.classList.remove('active');
-      }
-    }
-
-    menuBtn.addEventListener('click', () => toggleNav(true));
-    drawerClose.addEventListener('click', () => toggleNav(false));
-    backdrop.addEventListener('click', () => toggleNav(false));
-
-    // Drawer Submenus
-    document.querySelectorAll('.mobile-acc-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.parentElement.classList.toggle('expanded');
-      });
-    });
-
-    // Real-Time Salary Engine
-    const basicInput = document.getElementById('basicPayInput');
-    const fitmentSelect = document.getElementById('customFitment');
-    const citySelect = document.getElementById('cityTierSelect');
-    const levelSelect = document.getElementById('matrixLevelSelect');
-
-    const kpiBasic = document.getElementById('kpiBasic');
-    const kpiHra = document.getElementById('kpiHra');
-    const kpiGross = document.getElementById('kpiGross');
-    const stickyGross = document.getElementById('stickyGross');
-
-    function compute() {
-      const basic = parseFloat(basicInput.value) || 0;
-      const fitment = parseFloat(fitmentSelect.value) || 2.86;
-      const hraRate = parseFloat(citySelect.value) || 0.30;
-
-      const revisedBasic = Math.round(basic * fitment);
-      const revisedHra = Math.round(revisedBasic * hraRate);
-      const ta = basic >= 35400 ? 3600 : 1350;
-      const gross = revisedBasic + revisedHra + ta;
-
-      kpiBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
-      kpiHra.textContent = '₹' + revisedHra.toLocaleString('en-IN');
-      kpiGross.textContent = '₹' + gross.toLocaleString('en-IN');
-      stickyGross.textContent = '₹' + gross.toLocaleString('en-IN');
-    }
-
-    // Input Event Listeners for Live Calculating
-    basicInput.addEventListener('input', compute);
-    fitmentSelect.addEventListener('change', compute);
-    citySelect.addEventListener('change', compute);
-
-    // Preset Level Picker
-    levelSelect.addEventListener('change', (e) => {
-      basicInput.value = e.target.value;
-      compute();
-    });
-
-    // Chip Bar Multiplier
-    const chips = document.querySelectorAll('.chip-btn[data-factor]');
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        fitmentSelect.value = chip.getAttribute('data-factor');
-        compute();
-      });
-    });
-
-    // Quick Matrix Level Pills
-    document.querySelectorAll('.level-pill').forEach(pill => {
-      pill.addEventListener('click', () => {
-        const val = pill.getAttribute('data-base');
-        basicInput.value = val;
-        levelSelect.value = val;
-        compute();
-        document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-
-    // FAQ Accordion
-    document.querySelectorAll('.faq-q').forEach(q => {
-      q.addEventListener('click', () => {
-        q.parentElement.classList.toggle('open');
-      });
-    });
-
-    // Initial Run
-    compute();
-  </script>
-</body>
-</html>
+  [basicPay, fitment, hra].forEach((element) => element.addEventListener('input', calculate));
+  levelSelect.addEventListener('change', () => { basicPay.value = levelSelect.value; calculate(); });
+  document.querySelectorAll<HTMLButtonElement>('.level-button').forEach((button) => button.addEventListener('click', () => {
+    basicPay.value = button.dataset.level || '18000';
+    levelSelect.value = basicPay.value;
+    calculate();
+    document.querySelector('#calculator')?.scrollIntoView({ behavior: 'smooth' });
+  }));
+  calculate();
+</script>
