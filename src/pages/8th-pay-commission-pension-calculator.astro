@@ -121,55 +121,12 @@ const faqs = [
     a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
     a:hover { color: var(--primary-hover); }
 
-    /* Nav */
-    header.site-nav {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .nav-container {
-      max-width: 1180px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 1.25rem;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-    .brand-badge {
-      background: var(--primary-gradient);
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 800;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-    }
-    .nav-links { display: flex; gap: 1.25rem; align-items: center; }
-    .nav-links a { color: #334155; font-weight: 600; font-size: 0.9rem; padding: 0.4rem 0.7rem; border-radius: 6px; }
-    .nav-links a:hover, .nav-links a.active { color: var(--primary); background: #eff6ff; }
-    @media (max-width: 768px) { .nav-links { display: none; } }
-
     .layout-wrap { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
 
-    /* Hero */
+    /* Hero Header */
     .hero-header {
       text-align: center;
-      padding: 2.75rem 1rem 1.75rem;
+      padding: 3rem 1rem 1.75rem;
     }
     .badge-pill {
       display: inline-flex;
@@ -201,7 +158,7 @@ const faqs = [
       font-size: 1.05rem;
     }
 
-    /* Calculator Widget */
+    /* Calculator Widget Box */
     .calc-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -310,7 +267,7 @@ const faqs = [
     .kpi-unit.highlight .kpi-val { color: var(--primary); }
     .kpi-unit.success .kpi-val { color: var(--accent-green); }
 
-    /* Breakdown Box */
+    /* Breakdown Slip */
     .breakdown-box {
       background: #f8fafc;
       border: 1px solid var(--border);
@@ -342,7 +299,7 @@ const faqs = [
       font-weight: 700;
     }
 
-    /* Content Styling */
+    /* Content Area */
     .article-wrap {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -416,7 +373,7 @@ const faqs = [
     }
     table.data-table tr:hover td { background: #f8fafc; }
 
-    /* Level Badges Grid */
+    /* Level Badges */
     .level-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -466,7 +423,7 @@ const faqs = [
     .faq-unit.open .faq-arrow { transform: rotate(180deg); }
     .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
 
-    /* Mobile Bar */
+    /* Mobile Sticky Summary Bar */
     .mobile-sticky-bar {
       display: none;
       position: fixed;
@@ -489,28 +446,10 @@ const faqs = [
       body { padding-bottom: 4.5rem; }
     }
 
-    /* Footer */
-    footer {
-      background: #ffffff;
-      border-top: 1px solid var(--border);
-      padding: 3.5rem 1.25rem 2.5rem;
-      font-size: 0.88rem;
-      color: #64748b;
-    }
-    .footer-content {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.25rem;
-    }
-    .footer-links a { color: #475569; margin-left: 1.25rem; }
-    .footer-links a:hover { color: var(--primary); }
+    /* Minimal Bottom Disclaimers */
     .disclaimer-strip {
       max-width: 1100px;
-      margin: 2rem auto 0;
+      margin: 2rem auto 4rem;
       padding: 1.25rem;
       background: #f8fafc;
       border: 1px solid var(--border);
@@ -523,23 +462,6 @@ const faqs = [
   </style>
 </head>
 <body>
-
-  <!-- NAVIGATION -->
-  <header class="site-nav">
-    <div class="nav-container">
-      <a href="/" class="brand">
-        <span class="brand-badge">₹</span>
-        8paycommission
-      </a>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/salary-calculator">Salary Calculator</a>
-        <a href="/pay-matrix">Pay Matrix</a>
-        <a href="/pension-calculator" class="active">Pension Calculator</a>
-        <a href="/arrears-calculator">Arrears</a>
-      </nav>
-    </div>
-  </header>
 
   <main class="layout-wrap">
 
@@ -629,7 +551,7 @@ const faqs = [
         </div>
         <div class="kpi-unit success">
           <div class="kpi-label">Net Monthly Take-Home</div>
-          <div class="kpi-val" id="dispNetPension">₹30,373</div>
+          <div class="kpi-val" id="dispNetPension">₹31,373</div>
         </div>
       </div>
 
@@ -854,6 +776,11 @@ const faqs = [
       </div>
     </article>
 
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and informative analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or the Department of Pension & Pensioners' Welfare (DoP&PW). All calculations, commutation estimations, and pension matrix projections are computed based on historical pay commission formulas and publicly submitted pensioner memoranda. Authentic statutory orders and gazettes must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a> and <a href="https://pensionersportal.gov.in" target="_blank" rel="noopener noreferrer">pensionersportal.gov.in</a>.
+    </div>
+
   </main>
 
   <!-- STICKY MOBILE SUMMARY BAR -->
@@ -864,26 +791,6 @@ const faqs = [
     </div>
     <a href="#currentPensionInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
   </div>
-
-  <!-- FOOTER WITH STATUTORY DISCLAIMER -->
-  <footer>
-    <div class="footer-content">
-      <div>
-        <strong style="color: var(--text); font-size: 1.05rem;">8paycommission.com</strong> — Pensioner Analytical Research Portal
-      </div>
-      <div class="footer-links">
-        <a href="/about-us">About Us</a>
-        <a href="/editorial-policy">Editorial Policy</a>
-        <a href="/privacy-policy">Privacy Policy</a>
-        <a href="/terms-of-use">Terms of Use</a>
-        <a href="/contact-us">Contact Us</a>
-      </div>
-    </div>
-
-    <div class="disclaimer-strip">
-      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and informative analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or the Department of Pension & Pensioners' Welfare (DoP&PW). All calculations, commutation estimations, and pension matrix projections are computed based on historical pay commission formulas and publicly submitted pensioner memoranda. Authentic statutory orders and gazettes must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a> and <a href="https://pensionersportal.gov.in" target="_blank" rel="noopener noreferrer">pensionersportal.gov.in</a>.
-    </div>
-  </footer>
 
   <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
   <script is:inline>
