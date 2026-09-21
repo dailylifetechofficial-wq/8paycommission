@@ -82,19 +82,22 @@ const faqs = [
 
   <style>
     :root {
-      --bg: #0b0f19;
-      --surface: #111827;
-      --surface-glass: rgba(17, 24, 39, 0.85);
-      --border: rgba(255, 255, 255, 0.1);
-      --border-accent: rgba(59, 130, 246, 0.5);
-      --primary: #3b82f6;
-      --primary-gradient: linear-gradient(135deg, #2563eb, #06b6d4);
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --accent-green: #10b981;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-focus: #2563eb;
+      --primary: #1d4ed8;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -103,8 +106,8 @@ const faqs = [
 
     /* Sticky Navigation */
     header.site-nav {
-      background: var(--surface-glass);
-      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -124,7 +127,7 @@ const faqs = [
       gap: 0.6rem;
       font-size: 1.2rem;
       font-weight: 800;
-      color: #fff;
+      color: var(--text);
       letter-spacing: -0.02em;
     }
     .brand-badge {
@@ -137,7 +140,7 @@ const faqs = [
       justify-content: center;
       color: #fff;
       font-weight: 800;
-      box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
     }
 
     /* Desktop Navigation with Dropdowns */
@@ -145,7 +148,7 @@ const faqs = [
     .nav-list { display: flex; list-style: none; gap: 0.25rem; align-items: center; }
     .nav-item { position: relative; }
     .nav-link {
-      color: #d1d5db;
+      color: #334155;
       font-weight: 600;
       font-size: 0.88rem;
       padding: 0.55rem 0.85rem;
@@ -156,18 +159,18 @@ const faqs = [
       transition: all 0.2s ease;
     }
     .nav-link:hover, .nav-item:hover > .nav-link {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.06);
+      color: var(--primary);
+      background: #eff6ff;
     }
     .dropdown {
       position: absolute;
       top: 100%;
       left: 0;
       width: 250px;
-      background: #151d30;
+      background: #ffffff;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--shadow-lg);
       padding: 0.4rem;
       list-style: none;
       display: none;
@@ -177,7 +180,7 @@ const faqs = [
     }
     .nav-item:hover .dropdown { display: flex; }
     .dropdown-link {
-      color: #9ca3af;
+      color: #475569;
       font-size: 0.84rem;
       padding: 0.55rem 0.75rem;
       border-radius: 6px;
@@ -186,14 +189,14 @@ const faqs = [
       justify-content: space-between;
       transition: 0.15s;
     }
-    .dropdown-link:hover { background: var(--primary); color: #fff; }
+    .dropdown-link:hover { background: #eff6ff; color: var(--primary); padding-left: 0.95rem; }
 
     /* Mobile Hamburger */
     .menu-trigger {
       display: none;
       background: none;
       border: none;
-      color: #fff;
+      color: var(--text);
       font-size: 1.6rem;
       cursor: pointer;
     }
@@ -206,7 +209,7 @@ const faqs = [
     .drawer-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(15, 23, 42, 0.4);
       backdrop-filter: blur(4px);
       z-index: 1020;
       display: none;
@@ -219,11 +222,12 @@ const faqs = [
       width: 82%;
       max-width: 320px;
       height: 100%;
-      background: #0f172a;
+      background: #ffffff;
       z-index: 1030;
       padding: 1.25rem;
       transition: right 0.3s ease;
       overflow-y: auto;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
     }
     .mobile-drawer.open { right: 0; }
     .mobile-drawer-head {
@@ -234,13 +238,13 @@ const faqs = [
       border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
-    .drawer-close { background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; }
+    .drawer-close { background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
     .mobile-acc-btn {
       width: 100%;
       text-align: left;
       background: none;
       border: none;
-      color: #f3f4f6;
+      color: var(--text);
       font-weight: 700;
       padding: 0.7rem 0;
       display: flex;
@@ -250,12 +254,12 @@ const faqs = [
     }
     .mobile-sub-menu { display: none; list-style: none; padding-left: 0.85rem; }
     .mobile-acc-item.expanded .mobile-sub-menu { display: block; }
-    .mobile-sub-menu a { display: block; padding: 0.45rem 0; color: #9ca3af; font-size: 0.88rem; }
+    .mobile-sub-menu a { display: block; padding: 0.45rem 0; color: #64748b; font-size: 0.88rem; }
 
     /* Layout & Containers */
     .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
     
-    /* Modern Hero Header */
+    /* Hero Header */
     .hero-panel {
       text-align: center;
       padding: 3rem 1rem 2rem;
@@ -264,9 +268,9 @@ const faqs = [
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: rgba(37, 99, 235, 0.15);
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      color: #60a5fa;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
       padding: 0.25rem 0.8rem;
       border-radius: 30px;
       font-size: 0.78rem;
@@ -276,30 +280,27 @@ const faqs = [
       margin-bottom: 1rem;
     }
     .hero-panel h1 {
-      font-size: clamp(1.85rem, 4vw, 2.8rem);
+      font-size: clamp(1.85rem, 4vw, 2.7rem);
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.2;
       margin-bottom: 0.75rem;
-      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--text);
     }
     .hero-panel p {
       color: var(--text-muted);
       max-width: 680px;
       margin: 0 auto;
-      font-size: 1rem;
+      font-size: 1.05rem;
     }
 
-    /* Calculator Glass Card */
+    /* Calculator Card */
     .glass-calculator {
-      background: var(--surface-glass);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 2rem;
-      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
-      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-lg);
       margin-bottom: 3.5rem;
     }
     .calc-controls-grid {
@@ -315,14 +316,14 @@ const faqs = [
     .form-ctrl label {
       font-size: 0.82rem;
       font-weight: 700;
-      color: #e5e7eb;
+      color: #334155;
       text-transform: uppercase;
       letter-spacing: 0.03em;
     }
     .form-ctrl input, .form-ctrl select {
-      background: #1f2937;
-      border: 1.5px solid #374151;
-      color: #fff;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
       padding: 0.75rem 0.9rem;
       border-radius: var(--radius-sm);
       font-size: 0.95rem;
@@ -332,7 +333,7 @@ const faqs = [
     }
     .form-ctrl input:focus, .form-ctrl select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
     /* Instant Real-Time KPI Cards */
@@ -343,7 +344,7 @@ const faqs = [
       margin-top: 1.75rem;
     }
     .kpi-card {
-      background: rgba(31, 41, 55, 0.6);
+      background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 1.25rem;
@@ -358,7 +359,11 @@ const faqs = [
       left: 0;
       right: 0;
       height: 3px;
-      background: var(--border);
+      background: #cbd5e1;
+    }
+    .kpi-card.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
     }
     .kpi-card.highlight::before {
       background: var(--primary-gradient);
@@ -373,10 +378,10 @@ const faqs = [
     .kpi-value {
       font-size: 1.5rem;
       font-weight: 800;
-      color: #fff;
+      color: var(--text);
     }
     .kpi-card.highlight .kpi-value {
-      color: #38bdf8;
+      color: var(--primary);
     }
 
     /* Horizontal Multiplier Chips */
@@ -389,9 +394,9 @@ const faqs = [
     }
     .chip-bar::-webkit-scrollbar { display: none; }
     .chip-btn {
-      background: #1f2937;
-      border: 1px solid #374151;
-      color: #d1d5db;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
       padding: 0.55rem 1.1rem;
       border-radius: 30px;
       font-size: 0.85rem;
@@ -400,26 +405,29 @@ const faqs = [
       cursor: pointer;
       transition: all 0.15s;
     }
+    .chip-btn:hover { background: #e2e8f0; }
     .chip-btn.active {
-      background: #2563eb;
-      border-color: #3b82f6;
-      color: #fff;
-      box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
     }
 
-    /* Modern Table Container */
+    /* Panels & Tables */
     .panel {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 2rem;
       margin-bottom: 3rem;
+      box-shadow: var(--shadow-sm);
     }
     .panel h2 {
       font-size: 1.55rem;
       font-weight: 800;
       margin-bottom: 0.5rem;
       letter-spacing: -0.02em;
+      color: var(--text);
     }
     .panel p.desc {
       color: var(--text-muted);
@@ -435,21 +443,21 @@ const faqs = [
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
     }
     th, td {
       padding: 0.85rem 1rem;
       border-bottom: 1px solid var(--border);
     }
     th {
-      background: #1a2234;
-      color: #9ca3af;
+      background: #f8fafc;
+      color: #475569;
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
+    tr:hover td { background: #f8fafc; }
 
     /* Level Badges Grid */
     .level-grid {
@@ -459,8 +467,8 @@ const faqs = [
       margin-top: 1rem;
     }
     .level-pill {
-      background: #1f2937;
-      border: 1px solid #374151;
+      background: #ffffff;
+      border: 1px solid var(--border);
       padding: 0.75rem 0.5rem;
       border-radius: var(--radius-sm);
       text-align: center;
@@ -470,10 +478,11 @@ const faqs = [
     .level-pill:hover {
       border-color: var(--primary);
       transform: translateY(-2px);
-      background: #273549;
+      box-shadow: var(--shadow-md);
+      background: #eff6ff;
     }
-    .level-pill strong { display: block; font-size: 0.95rem; color: #fff; }
-    .level-pill span { font-size: 0.76rem; color: var(--text-muted); }
+    .level-pill strong { display: block; font-size: 0.95rem; color: var(--text); }
+    .level-pill span { font-size: 0.78rem; color: var(--text-muted); }
 
     /* FAQ System */
     .faq-item {
@@ -482,7 +491,7 @@ const faqs = [
     }
     .faq-q {
       font-weight: 700;
-      color: #f3f4f6;
+      color: var(--text);
       cursor: pointer;
       display: flex;
       justify-content: space-between;
@@ -493,43 +502,45 @@ const faqs = [
     .faq-a {
       display: none;
       padding-top: 0.6rem;
-      color: var(--text-muted);
-      font-size: 0.92rem;
+      color: #475569;
+      font-size: 0.94rem;
       line-height: 1.65;
     }
     .faq-item.open .faq-a { display: block; }
     .faq-item.open .faq-toggle { transform: rotate(180deg); }
-    .faq-toggle { transition: transform 0.2s; font-size: 0.75rem; }
+    .faq-toggle { transition: transform 0.2s; font-size: 0.75rem; color: var(--text-muted); }
 
-    /* Sticky Mobile Calculation Bar */
+    /* Sticky Mobile Summary Bar */
     .mobile-sticky-bar {
       display: none;
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       border-top: 1px solid var(--border);
       backdrop-filter: blur(12px);
       padding: 0.75rem 1.25rem;
       z-index: 990;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
     }
-    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; }
-    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: #38bdf8; }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
     @media (max-width: 768px) {
       .mobile-sticky-bar { display: flex; }
       body { padding-bottom: 4rem; }
     }
 
-    /* Minimalist Footer */
+    /* Clean Footer & Disclaimer */
     footer {
+      background: #ffffff;
       border-top: 1px solid var(--border);
-      padding: 3rem 1.25rem 2rem;
+      padding: 3rem 1.25rem 2.5rem;
       margin-top: 4rem;
-      font-size: 0.84rem;
-      color: #6b7280;
+      font-size: 0.88rem;
+      color: #64748b;
     }
     .footer-inner {
       max-width: 1160px;
@@ -540,8 +551,22 @@ const faqs = [
       flex-wrap: wrap;
       gap: 1rem;
     }
-    .footer-links a { color: #9ca3af; margin-left: 1rem; }
-    .footer-links a:hover { color: #fff; }
+    .footer-links a { color: #475569; margin-left: 1rem; }
+    .footer-links a:hover { color: var(--primary); }
+
+    .disclaimer-card {
+      max-width: 1160px;
+      margin: 2rem auto 0;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+    .disclaimer-card strong { color: var(--text); }
   </style>
 </head>
 <body>
@@ -657,7 +682,7 @@ const faqs = [
         </ul>
       </div>
 
-      <div style="padding: 0.75rem 0;"><a href="/latest-news" style="color: #fff; font-weight: 700;">Latest Updates</a></div>
+      <div style="padding: 0.75rem 0;"><a href="/latest-news" style="color: var(--text); font-weight: 700;">Latest Updates</a></div>
     </div>
   </aside>
 
@@ -675,7 +700,7 @@ const faqs = [
       
       <!-- Quick Multiplier Selector -->
       <div style="margin-bottom: 1.25rem;">
-        <span style="font-size: 0.8rem; font-weight: 700; color: #9ca3af; text-transform: uppercase;">Expected Fitment Factor:</span>
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Expected Fitment Factor:</span>
         <div class="chip-bar" id="chipBar">
           <button class="chip-btn" data-factor="1.92">1.92x (Conservative)</button>
           <button class="chip-btn" data-factor="2.25">2.25x</button>
@@ -780,7 +805,7 @@ const faqs = [
                 <td>{row.post}</td>
                 <td>₹{row.entry7th.toLocaleString('en-IN')}</td>
                 <td>₹{Math.round(row.entry7th * 2.25).toLocaleString('en-IN')}</td>
-                <td style="color: #38bdf8; font-weight: 700;">₹{Math.round(row.entry7th * 2.86).toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{Math.round(row.entry7th * 2.86).toLocaleString('en-IN')}</td>
               </tr>
             ))}
           </tbody>
@@ -817,11 +842,11 @@ const faqs = [
     <a href="#calculator" class="chip-btn active" style="padding: 0.45rem 0.9rem; font-size: 0.8rem;">Recalculate</a>
   </div>
 
-  <!-- MINIMAL FOOTER -->
+  <!-- MINIMAL FOOTER WITH DISCLAIMER -->
   <footer>
     <div class="footer-inner">
       <div>
-        <strong>8paycommission.com</strong> — Independent Public Remuneration Research
+        <strong style="color: var(--text);">8paycommission.com</strong> — Independent Public Remuneration Research
       </div>
       <div class="footer-links">
         <a href="/about-us">About Us</a>
@@ -829,6 +854,11 @@ const faqs = [
         <a href="/terms-of-use">Terms of Use</a>
         <a href="/contact-us">Contact Us</a>
       </div>
+    </div>
+
+    <!-- STATUTORY DISCLAIMER -->
+    <div class="disclaimer-card">
+      <strong>Disclaimer:</strong> 8paycommission.com is an independent informational and calculation portal. This website is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or any official Pay Commission authority. All calculations, fitment multipliers, and salary matrices presented here are projected mathematical estimates based on historical pay commission methodologies and publicly submitted employee representations. For official gazette notifications, visit <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
     </div>
   </footer>
 
