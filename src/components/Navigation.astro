@@ -1,0 +1,110 @@
+---
+const groups = [
+  {
+    label: 'Calculators',
+    items: [
+      ['8th Pay Salary Calculator', '/8th-pay-commission-salary-calculator'],
+      ['Pension & Arrears', '/pension-calculator'],
+      ['HRA Slabs Calculator', '/hra-calculator'],
+      ['Expected DA Calculator', '/da-calculator'],
+    ],
+  },
+  {
+    label: 'Pay Matrix',
+    items: [
+      ['Level 1 to 18 Matrix Table', '/pay-matrix'],
+      ['Fitment Factor Scenarios', '/fitment-factor'],
+      ['7th vs 8th CPC Comparison', '/comparison-7th-vs-8th'],
+    ],
+  },
+  {
+    label: 'Allowances & Rules',
+    items: [
+      ['DA & AICPI Tracker', '/dearness-allowance'],
+      ['HRA (X, Y, Z Cities)', '/hra-rules'],
+      ['Travel & TA Rules', '/transport-allowance'],
+      ['Children Education Allowance', '/cea-rules'],
+    ],
+  },
+  {
+    label: 'Sector-Wise Pay',
+    items: [
+      ['Defence & MSP Matrix', '/defence-pay-scale'],
+      ['Railway Employee Rules', '/railway-pay-structure'],
+      ['Teachers & University Staff', '/teachers-pay-scale'],
+      ['State Govt Status', '/state-wise-status'],
+    ],
+  },
+];
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => currentPath === href || currentPath.startsWith(`${href}/`);
+---
+<header class="site-nav">
+  <div class="nav-container">
+    <a href="/" class="brand"><span class="brand-badge">₹</span>8paycommission</a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a class:list={['nav-link', { active: currentPath === '/' }]} href="/">Home</a></li>
+        {groups.map((group) => (
+          <li class="nav-item">
+            <button class="nav-link menu-button" aria-haspopup="true">{group.label}<span aria-hidden="true">⌄</span></button>
+            <ul class="dropdown">
+              {group.items.map(([label, href]) => <li><a class:list={['dropdown-link', { active: isCurrent(href) }]} href={href}>{label}</a></li>)}
+            </ul>
+          </li>
+        ))}
+        <li><a class:list={['nav-link', { active: isCurrent('/blog') || isCurrent('/latest-news') }]} href="/blog">Latest Updates</a></li>
+      </ul>
+    </nav>
+    <button class="menu-trigger" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
+  </div>
+</header>
+<div class="drawer-backdrop" id="backdrop"></div>
+<aside class="mobile-drawer" id="drawer" aria-label="Mobile navigation" aria-hidden="true">
+  <div class="mobile-drawer-head"><a href="/" class="brand">8paycommission</a><button class="drawer-close" id="drawerClose" aria-label="Close navigation">×</button></div>
+  <a class="mobile-home" href="/">Home</a>
+  {groups.map((group) => (
+    <div class="mobile-acc-item">
+      <button class="mobile-acc-btn" aria-expanded="false">{group.label}<span aria-hidden="true">⌄</span></button>
+      <ul class="mobile-sub-menu">{group.items.map(([label, href]) => <li><a class:list={{ active: isCurrent(href) }} href={href}>{label}</a></li>)}</ul>
+    </div>
+  ))}
+  <a class="mobile-home" href="/blog">Latest Updates</a>
+</aside>
+<style>
+  .site-nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,.97); border-bottom: 1px solid #e2e8f0; }
+  .nav-container { max-width: 1200px; margin: auto; padding: .75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: inline-flex; align-items: center; gap: .55rem; color: #0f172a; font-weight: 800; text-decoration: none; }
+  .brand-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,#1d4ed8,#0284c7); color: #fff; }
+  .nav-list { display: flex; align-items: center; gap: .2rem; list-style: none; margin: 0; padding: 0; }
+  .nav-item { position: relative; }
+  .nav-link, .dropdown-link { display: block; padding: .55rem .7rem; border: 0; border-radius: 7px; color: #334155; background: transparent; font: inherit; font-size: .88rem; font-weight: 650; text-decoration: none; white-space: nowrap; }
+  .menu-button { cursor: pointer; }
+  .nav-link span { margin-left: .35rem; }
+  .nav-link:hover, .nav-link.active, .dropdown-link:hover, .dropdown-link.active { color: #1d4ed8; background: #eff6ff; }
+  .dropdown { display: none; position: absolute; top: calc(100% + .25rem); left: 0; width: 255px; padding: .4rem; margin: 0; list-style: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 12px 30px rgba(15,23,42,.12); }
+  .nav-item:hover .dropdown, .nav-item:focus-within .dropdown { display: block; }
+  .menu-trigger { display: none; border: 0; background: none; font-size: 1.6rem; cursor: pointer; }
+  .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.4); z-index: 1010; }
+  .drawer-backdrop.active { display: block; }
+  .mobile-drawer { position: fixed; top: 0; right: -100%; z-index: 1020; width: min(86%, 340px); height: 100%; padding: 1.25rem; overflow-y: auto; background: #fff; transition: right .25s ease; }
+  .mobile-drawer.open { right: 0; }
+  .mobile-drawer-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; }
+  .drawer-close { border: 0; background: none; font-size: 1.7rem; cursor: pointer; }
+  .mobile-home, .mobile-acc-btn { display: flex; width: 100%; justify-content: space-between; padding: .8rem 0; border: 0; background: none; color: #0f172a; font: inherit; font-weight: 700; text-align: left; text-decoration: none; cursor: pointer; }
+  .mobile-sub-menu { display: none; list-style: none; margin: 0; padding: 0 0 .45rem .9rem; }
+  .mobile-acc-item.expanded .mobile-sub-menu { display: block; }
+  .mobile-sub-menu a { display: block; padding: .42rem 0; color: #64748b; text-decoration: none; }
+  .mobile-sub-menu a.active { color: #1d4ed8; font-weight: 700; }
+  @media (max-width: 992px) { .desktop-nav { display: none; } .menu-trigger { display: block; } }
+</style>
+<script is:inline>
+  const menu = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const backdrop = document.getElementById('backdrop');
+  const close = document.getElementById('drawerClose');
+  const setOpen = (open) => { drawer?.classList.toggle('open', open); backdrop?.classList.toggle('active', open); drawer?.setAttribute('aria-hidden', String(!open)); menu?.setAttribute('aria-expanded', String(open)); };
+  menu?.addEventListener('click', () => setOpen(true)); close?.addEventListener('click', () => setOpen(false)); backdrop?.addEventListener('click', () => setOpen(false));
+  document.querySelectorAll('.mobile-acc-btn').forEach((button) => button.addEventListener('click', () => { const item = button.parentElement; const expanded = item.classList.toggle('expanded'); button.setAttribute('aria-expanded', String(expanded)); }));
+  drawer?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+</script>
