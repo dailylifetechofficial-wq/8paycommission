@@ -1,0 +1,108 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "8th Pay Commission Calculator",
+  description = "8th Pay Commission salary and pay matrix tools.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <style>
+      :root {
+        --primary: #1d4ed8;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --surface: #fff;
+        --bg: #f8fafc;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; line-height: 1.6; }
+      a { color: var(--primary); text-decoration: none; }
+      .site-nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--border); }
+      .nav-container { max-width: 1200px; margin: auto; padding: .75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+      .brand { display: flex; align-items: center; gap: .6rem; color: var(--text); font-weight: 800; }
+      .brand-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,#1d4ed8,#0284c7); color: white; }
+      .nav-list { display: flex; align-items: center; gap: .25rem; list-style: none; margin: 0; padding: 0; }
+      .nav-item { position: relative; }
+      .nav-link, .dropdown-link { display: block; padding: .55rem .8rem; border-radius: 7px; color: #334155; font-weight: 600; font-size: .88rem; }
+      .nav-link:hover, .dropdown-link:hover { color: var(--primary); background: #eff6ff; }
+      .dropdown { display: none; position: absolute; top: 100%; left: 0; width: 250px; padding: .4rem; margin: 0; list-style: none; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 16px 32px rgba(15,23,42,.12); }
+      .nav-item:hover .dropdown { display: block; }
+      .menu-trigger { display: none; border: 0; background: none; font-size: 1.6rem; cursor: pointer; }
+      .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.4); z-index: 20; }
+      .drawer-backdrop.active { display: block; }
+      .mobile-drawer { position: fixed; top: 0; right: -100%; z-index: 30; width: 82%; max-width: 320px; height: 100%; padding: 1.25rem; overflow-y: auto; background: white; transition: right .25s ease; }
+      .mobile-drawer.open { right: 0; }
+      .mobile-drawer-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+      .drawer-close { border: 0; background: none; font-size: 1.4rem; cursor: pointer; }
+      .mobile-acc-btn { width: 100%; display: flex; justify-content: space-between; padding: .7rem 0; border: 0; background: none; color: var(--text); font-weight: 700; text-align: left; cursor: pointer; }
+      .mobile-sub-menu { display: none; list-style: none; margin: 0; padding: 0 0 .4rem .85rem; }
+      .mobile-acc-item.expanded .mobile-sub-menu { display: block; }
+      .mobile-sub-menu a { display: block; padding: .4rem 0; color: var(--muted); }
+      .page-content { max-width: 1160px; margin: 0 auto; padding: 3rem 1.25rem; }
+      @media (max-width: 992px) { .desktop-nav { display: none; } .menu-trigger { display: block; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-nav">
+      <div class="nav-container">
+        <a href="/" class="brand"><span class="brand-badge">₹</span>8paycommission</a>
+        <nav class="desktop-nav" aria-label="Main Navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="#calculator" class="nav-link">Calculators ▾</a><ul class="dropdown">
+              <li><a href="/8th-pay-commission-salary-calculator" class="dropdown-link">8th Pay Salary Calculator</a></li><li><a href="/pension-calculator" class="dropdown-link">Pension &amp; Arrears</a></li><li><a href="/hra-calculator" class="dropdown-link">HRA Slabs Calculator</a></li><li><a href="/da-calculator" class="dropdown-link">Expected DA Calculator</a></li>
+            </ul></li>
+            <li class="nav-item"><a href="#pay-matrix" class="nav-link">Pay Matrix ▾</a><ul class="dropdown">
+              <li><a href="/pay-matrix" class="dropdown-link">Level 1 to 18 Matrix Table</a></li><li><a href="/fitment-factor" class="dropdown-link">Fitment Factor Scenarios</a></li><li><a href="/comparison-7th-vs-8th" class="dropdown-link">7th vs 8th CPC Comparison</a></li>
+            </ul></li>
+            <li class="nav-item"><a href="#rules" class="nav-link">Allowances &amp; Rules ▾</a><ul class="dropdown">
+              <li><a href="/dearness-allowance" class="dropdown-link">DA &amp; AICPI Tracker</a></li><li><a href="/hra-rules" class="dropdown-link">HRA (X, Y, Z Cities)</a></li><li><a href="/transport-allowance" class="dropdown-link">Travel &amp; TA Rules</a></li><li><a href="/cea-rules" class="dropdown-link">Children Education Allowance</a></li>
+            </ul></li>
+            <li class="nav-item"><a href="#sectors" class="nav-link">Sector-Wise Pay ▾</a><ul class="dropdown">
+              <li><a href="/defence-pay-scale" class="dropdown-link">Defence &amp; MSP Matrix</a></li><li><a href="/railway-pay-structure" class="dropdown-link">Railway Employee Rules</a></li><li><a href="/teachers-pay-scale" class="dropdown-link">Teachers &amp; University Staff</a></li><li><a href="/state-wise-status" class="dropdown-link">State Govt Status</a></li>
+            </ul></li>
+            <li class="nav-item"><a href="/latest-news" class="nav-link">Latest Updates</a></li>
+          </ul>
+        </nav>
+        <button class="menu-trigger" id="menuBtn" aria-label="Open Navigation">☰</button>
+      </div>
+    </header>
+
+    <div class="drawer-backdrop" id="backdrop"></div>
+    <aside class="mobile-drawer" id="drawer" aria-label="Mobile Navigation">
+      <div class="mobile-drawer-head"><strong class="brand">8paycommission</strong><button class="drawer-close" id="drawerClose" aria-label="Close Navigation">✕</button></div>
+      <div class="mobile-acc-list">
+        <div class="mobile-acc-item"><button class="mobile-acc-btn">Calculators <span>▾</span></button><ul class="mobile-sub-menu"><li><a href="/8th-pay-commission-salary-calculator">8th Pay Salary Calculator</a></li><li><a href="/pension-calculator">Pension &amp; Arrears Calculator</a></li><li><a href="/hra-calculator">HRA Slabs Calculator</a></li><li><a href="/da-calculator">Expected DA Calculator</a></li></ul></div>
+        <div class="mobile-acc-item"><button class="mobile-acc-btn">Pay Matrix <span>▾</span></button><ul class="mobile-sub-menu"><li><a href="/pay-matrix">Level 1 to 18 Matrix Table</a></li><li><a href="/fitment-factor">Fitment Factor Scenarios</a></li><li><a href="/comparison-7th-vs-8th">7th vs 8th CPC Comparison</a></li></ul></div>
+        <div class="mobile-acc-item"><button class="mobile-acc-btn">Allowances <span>▾</span></button><ul class="mobile-sub-menu"><li><a href="/dearness-allowance">DA &amp; AICPI Tracker</a></li><li><a href="/hra-rules">HRA (X, Y, Z Cities)</a></li><li><a href="/transport-allowance">Travel &amp; TA Rules</a></li><li><a href="/cea-rules">Children Education Allowance</a></li></ul></div>
+        <div class="mobile-acc-item"><button class="mobile-acc-btn">Sector-Wise Pay <span>▾</span></button><ul class="mobile-sub-menu"><li><a href="/defence-pay-scale">Defence &amp; MSP Matrix</a></li><li><a href="/railway-pay-structure">Railway Employee Rules</a></li><li><a href="/teachers-pay-scale">Teachers &amp; University Staff</a></li><li><a href="/state-wise-status">State Govt Status</a></li></ul></div>
+        <p><a href="/latest-news"><strong>Latest Updates</strong></a></p>
+      </div>
+    </aside>
+
+    <main class="page-content"><slot /></main>
+    <script is:inline>
+      const menuBtn = document.getElementById('menuBtn');
+      const drawer = document.getElementById('drawer');
+      const backdrop = document.getElementById('backdrop');
+      const close = document.getElementById('drawerClose');
+      const toggle = (open) => { drawer.classList.toggle('open', open); backdrop.classList.toggle('active', open); };
+      menuBtn?.addEventListener('click', () => toggle(true));
+      close?.addEventListener('click', () => toggle(false));
+      backdrop?.addEventListener('click', () => toggle(false));
+      document.querySelectorAll('.mobile-acc-btn').forEach((button) => button.addEventListener('click', () => button.parentElement.classList.toggle('expanded')));
+    </script>
+  </body>
+</html>
