@@ -1,0 +1,962 @@
+---
+// src/pages/comparison-7th-vs-8th.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "7th vs 8th Pay Commission Comparison: Salary Hike, Matrix & Policy Shifts";
+const pageDescription = "Compare the 7th vs 8th Central Pay Commission: detailed side-by-side analysis of fitment factors, Level 1 to 18 pay matrices, in-hand salary increases, and UPS pensions.";
+
+// Complete Level 1 to 18 Comparative Grid Data
+const comparisonData = [
+  { level: "Level 1", gp: "GP 1800", post: "MTS, Group D, Trackman", base7th: 18000, base8th_225: 40500, base8th_286: 51480 },
+  { level: "Level 2", gp: "GP 1900", post: "LDC, Junior Clerk", base7th: 19900, base8th_225: 44775, base8th_286: 56914 },
+  { level: "Level 3", gp: "GP 2000", post: "Constable, Senior Clerk, Driver", base7th: 21700, base8th_225: 48825, base8th_286: 62062 },
+  { level: "Level 4", gp: "GP 2400", post: "UDC, Head Constable, Tax Asst", base7th: 25500, base8th_225: 57375, base8th_286: 72930 },
+  { level: "Level 5", gp: "GP 2800", post: "Auditor, Accountant, ASI", base7th: 29200, base8th_225: 65700, base8th_286: 83512 },
+  { level: "Level 6", gp: "GP 4200", post: "Sub-Inspector, Primary Teacher, JE", base7th: 35400, base8th_225: 79650, base8th_286: 101244 },
+  { level: "Level 7", gp: "GP 4600", post: "ASO, Section Engineer, Inspector", base7th: 44900, base8th_225: 101025, base8th_286: 128414 },
+  { level: "Level 8", gp: "GP 4800", post: "AAO, Section Officer", base7th: 47600, base8th_225: 107100, base8th_286: 136136 },
+  { level: "Level 9", gp: "GP 5400", post: "Senior Section Officer", base7th: 53100, base8th_225: 119475, base8th_286: 151866 },
+  { level: "Level 10", gp: "GP 5400", post: "Group A Entry, SDM, DSP, Capt", base7th: 56100, base8th_225: 126225, base8th_286: 160446 },
+  { level: "Level 11", gp: "GP 6600", post: "Under Secretary, Executive Eng", base7th: 67700, base8th_225: 152325, base8th_286: 193622 },
+  { level: "Level 12", gp: "GP 7600", post: "Deputy Secretary, Lt Colonel", base7th: 78800, base8th_225: 177300, base8th_286: 225368 },
+  { level: "Level 13", gp: "GP 8700", post: "Director, Chief Engineer, Colonel", base7th: 123100, base8th_225: 276975, base8th_286: 352066 },
+  { level: "Level 13A", gp: "GP 8900", post: "Senior Director, DIG Selection", base7th: 139600, base8th_225: 314100, base8th_286: 399256 },
+  { level: "Level 14", gp: "GP 10000", post: "Joint Secretary, IG Police, Brigadier", base7th: 144200, base8th_225: 324450, base8th_286: 412412 },
+  { level: "Level 15", gp: "HAG", post: "Principal Secretary, Major General", base7th: 182200, base8th_225: 409950, base8th_286: 521092 },
+  { level: "Level 16", gp: "HAG+", post: "Special Secretary, Director General", base7th: 205400, base8th_225: 462150, base8th_286: 587444 },
+  { level: "Level 17", gp: "Apex Scale", post: "Secretary to Government of India", base7th: 225000, base8th_225: 506250, base8th_286: 643500 },
+  { level: "Level 18", gp: "Cabinet Sec", post: "Cabinet Secretary of India", base7th: 250000, base8th_225: 562500, base8th_286: 715000 }
+];
+
+const faqs = [
+  {
+    q: "What is the primary difference between the 7th and 8th Pay Commissions?",
+    a: "The 7th CPC replaced the older Grade Pay bands with a structured 18-level Pay Matrix and scaled the minimum basic wage to ₹18,000 using a 2.57x fitment multiplier. The 8th CPC preserves this matrix architecture while absorbing accumulated 50%+ Dearness Allowance into an expanded basic pay floor (projected between ₹40,500 and ₹51,480) and resetting the DA counter to 0%."
+  },
+  {
+    q: "Why does take-home pay not multiply by 2.86x if the fitment factor is 2.86x?",
+    a: "The fitment factor applies strictly to Basic Pay, not to gross or net take-home salary. Because accumulated Dearness Allowance (which accounts for over 50% of 7th CPC basic pay) is merged into the base, the new DA rate drops to 0% at rollout. The net salary hike reflects real wage expansion rather than a triple multiplication of the payslip."
+  },
+  {
+    q: "How does the Unified Pension Scheme (UPS) change pension outcomes in the 8th CPC?",
+    a: "Under the 7th CPC, employees joining after January 1, 2004, were covered exclusively under the market-linked NPS. Ahead of the 8th CPC, the Unified Pension Scheme (UPS) guarantees an assured lifelong pension equal to 50% of the average basic pay drawn during the last 12 months of qualifying service. A higher 8th CPC basic salary directly boosts assured lifetime pension payouts."
+  },
+  {
+    q: "What is the key policy debate regarding the commuted pension restoration period?",
+    a: "Under the 7th CPC, commuted pension is recovered for 15 years. Pensioner confederations have demanded this timeline be reduced to 12 years for the 8th CPC, citing actuarial evidence that the commuted advance along with interest is completely recovered within 11 to 12 years under prevailing interest rates."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="7th vs 8th pay commission, 7th vs 8th cpc salary comparison, fitment factor comparison, pay matrix level 1 to 18, ups vs nps pension hike, hra revision x y z" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Interactive Comparison Widget */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Table */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* Level Badges Grid */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.65rem;
+      margin: 1.25rem 0;
+    }
+    .level-pill {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 0.75rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .level-pill:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      background: #eff6ff;
+    }
+    .level-pill strong { display: block; font-size: 0.95rem; color: var(--text); }
+    .level-pill span { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--accent-green); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Public Remuneration Comparative Analysis</div>
+      <h1>7th Pay vs 8th Pay Commission Comparison</h1>
+      <p>Detailed structural breakdown of fitment factor variations, Level 1 to 18 salary matrix transitions, in-hand monthly hike modeling, and retirement pension mechanisms.</p>
+    </header>
+
+    <!-- INTERACTIVE 7TH VS 8TH COMPARISON SIMULATOR -->
+    <section class="calc-box" aria-label="7th vs 8th CPC Interactive Comparison Widget">
+      
+      <!-- Multiplier Pills -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Projected 8th CPC Fitment Factor:</span>
+        <div class="chip-bar" id="factorPills">
+          <button class="chip-btn" data-f="1.92">1.92x (Conservative Baseline)</button>
+          <button class="chip-btn" data-f="2.25">2.25x (Consensus Model)</button>
+          <button class="chip-btn" data-f="2.57">2.57x (7th CPC Parity)</button>
+          <button class="chip-btn active" data-f="2.86">2.86x (Federation Target)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="compLevelSelect">Pay Matrix Level (Preset)</label>
+          <select id="compLevelSelect">
+            {comparisonData.map((row) => (
+              <option value={row.base7th} data-level={row.level} data-gp={row.gp} selected={row.level === "Level 6"}>
+                {row.level} ({row.gp}) - Min 7th: ₹{row.base7th.toLocaleString('en-IN')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="compBasicInput">Current 7th CPC Basic (₹)</label>
+          <input type="number" id="compBasicInput" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="compFitmentSelect">Fitment Multiplier</label>
+          <select id="compFitmentSelect">
+            <option value="1.92">1.92x (Conservative DA Merge)</option>
+            <option value="2.10">2.10x (Moderate Growth)</option>
+            <option value="2.25">2.25x (Consensus Baseline)</option>
+            <option value="2.57">2.57x (Equivalent to 7th CPC)</option>
+            <option value="2.86" selected>2.86x (Federation Target)</option>
+            <option value="3.00">3.00x (High Wage Benchmark)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="compCitySelect">City Tier (HRA Rate)</label>
+          <select id="compCitySelect">
+            <option value="0.30" selected>Class X (30% - Metro Cities)</option>
+            <option value="0.20">Class Y (20% - Tier-2 Centers)</option>
+            <option value="0.10">Class Z (10% - Small Towns/Rural)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">7th CPC Gross Pay (With 53% DA)</div>
+          <div class="kpi-val" id="disp7thGross">₹70,290</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Projected 8th CPC Gross Pay</div>
+          <div class="kpi-val" id="disp8thGross">₹1,35,217</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Estimated Monthly Gross Hike</div>
+          <div class="kpi-val" id="dispGrossDiff">+₹64,927</div>
+        </div>
+      </div>
+
+      <!-- Live Side-by-Side Payslip Breakdown -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Side-by-Side Monthly Salary Comparison</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Level 6 (GP 4200)</span>
+        </div>
+        <table class="breakdown-table">
+          <thead>
+            <tr style="font-weight: 700; color: #475569; font-size: 0.84rem;">
+              <td>Component</td>
+              <td class="num" style="text-align: right;">7th CPC Status (~53% DA)</td>
+              <td class="num" style="text-align: right;">Projected 8th CPC (0% DA)</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Basic Pay Baseline</td>
+              <td class="num" id="slip7thBasic">₹35,400</td>
+              <td class="num" id="slip8thBasic" style="color: var(--primary);">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>Dearness Allowance (DA)</td>
+              <td class="num" id="slip7thDa">₹18,762</td>
+              <td class="num" style="color: var(--text-muted);">₹0 (Reset)</td>
+            </tr>
+            <tr>
+              <td>House Rent Allowance (HRA)</td>
+              <td class="num" id="slip7thHra">₹10,620</td>
+              <td class="num" id="slip8thHra">₹30,373</td>
+            </tr>
+            <tr>
+              <td>Transport Allowance (TA)</td>
+              <td class="num" id="slip7thTa">₹5,508</td>
+              <td class="num" id="slip8thTa">₹3,600</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Estimated Monthly Gross</td>
+              <td class="num" id="slip7thGross">₹70,290</td>
+              <td class="num" id="slip8thGross" style="color: var(--primary);">₹1,35,217</td>
+            </tr>
+            <tr>
+              <td>Mandatory Pension Deduction (10% NPS/UPS)</td>
+              <td class="num" id="slip7thNps" style="color: #dc2626;">-₹5,416</td>
+              <td class="num" id="slip8thNps" style="color: #dc2626;">-₹10,124</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Estimated Net In-Hand Monthly Pay</td>
+              <td class="num" id="slip7thNet" style="color: var(--accent-green);">₹64,874</td>
+              <td class="num" id="slip8thNet" style="color: var(--accent-green);">₹1,25,093</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,200+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. High-Level Structural Overview: 7th CPC vs. 8th CPC</h2>
+      <p>
+        The debate over the <strong>7th vs. 8th Central Pay Commission (CPC)</strong> marks a defining transition for more than 4.8 million central government employees and over 6.7 million pensioners. Every decade, India's public sector compensation shifts from an aging baseline to an updated framework designed to reflect modern cost-of-living metrics, consumption baskets, and economic growth.
+      </p>
+      <p>
+        The transition from the 7th to the 8th Pay Commission involves more than just higher take-home pay. It fundamentally recalibrates basic wage structures, allowance trigger thresholds, pension parity formulas, and entry-level minimum earnings.
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Compensation Metric</th>
+              <th>7th Central Pay Commission (2016)</th>
+              <th>8th Central Pay Commission (Expected)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Official Implementation Year</strong></td>
+              <td>January 1, 2016</td>
+              <td>2026 Cycle (Projected)</td>
+            </tr>
+            <tr>
+              <td><strong>Minimum Basic Pay (Level 1)</strong></td>
+              <td>₹18,000 per month</td>
+              <td>₹40,500 – ₹51,480 per month</td>
+            </tr>
+            <tr>
+              <td><strong>Maximum Basic Pay (Level 18 - Cabinet Sec)</strong></td>
+              <td>₹2,50,000 per month</td>
+              <td>₹5,62,500 – ₹7,15,000 per month</td>
+            </tr>
+            <tr>
+              <td><strong>Fitment Factor Multiplier</strong></td>
+              <td>2.57x (Uniform Entry Baseline)</td>
+              <td>2.25x – 2.86x (Consensus Range)</td>
+            </tr>
+            <tr>
+              <td><strong>Dearness Allowance (DA) Status at Launch</strong></td>
+              <td>Absorbed 125% accumulated DA; reset to 0%</td>
+              <td>Absorbs 50%+ accumulated DA; resets to 0%</td>
+            </tr>
+            <tr>
+              <td><strong>House Rent Allowance (HRA) Slabs</strong></td>
+              <td>24% (X), 16% (Y), 8% (Z) base tiers</td>
+              <td>30% (X), 20% (Y), 10% (Z) updated base tiers</td>
+            </tr>
+            <tr>
+              <td><strong>Gratuity Statutory Ceiling</strong></td>
+              <td>Increased from ₹10 Lakhs to ₹20 Lakhs (later ₹25L)</td>
+              <td>Projected revision to ₹30 Lakhs – ₹40 Lakhs</td>
+            </tr>
+            <tr>
+              <td><strong>Minimum Pension Floor</strong></td>
+              <td>₹9,000 per month</td>
+              <td>₹20,250 – ₹25,740 per month</td>
+            </tr>
+            <tr>
+              <td><strong>Pension System Framework</strong></td>
+              <td>National Pension System (NPS) / OPS Legacy</td>
+              <td>Unified Pension Scheme (UPS) / NPS / OPS Parity</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>2. Minimum Wage and Fitment Factor Evolution</h2>
+      <p>
+        The single most influential figure in any Pay Commission is the <strong>fitment factor</strong>—the arithmetic multiplier applied directly to an employee's existing basic pay to determine their new starting salary.
+      </p>
+
+      <h3>The 7th CPC Precedent</h3>
+      <p>
+        The 7th CPC established a uniform multiplier of <strong>2.57x</strong> for entry-level cadres. This scaled the minimum entry wage from ₹7,000 (under the 6th CPC) to ₹18,000 per month. The 2.57x factor absorbed the 125% Dearness Allowance that had accumulated by late 2015, while delivering a net real wage increase of approximately 14.29%.
+      </p>
+
+      <h3>The 8th CPC Baseline Expectations</h3>
+      <p>
+        For the 8th Pay Commission, the formula must absorb a Dearness Allowance baseline that breached the critical 50% milestone:
+      </p>
+      <ul>
+        <li><strong>The Conservative Baseline (1.92x to 2.10x):</strong> Primarily covers the basic DA absorption with modest real wage growth, setting minimum pay near ₹34,560 – ₹37,800.</li>
+        <li><strong>The Consensus Economic Model (2.25x to 2.57x):</strong> Balances central fiscal deficit targets with retail inflation indices, placing minimum entry pay between ₹40,500 and ₹46,260.</li>
+        <li><strong>The Employee Confederation Demand (2.86x to 3.00x):</strong> Demanded by the National Council of the Joint Consultative Machinery (JCM) using the 15th Indian Labour Conference (ILC) <strong>Aykroyd Nutritional Formula</strong>, which targets an entry floor of ₹51,480.</li>
+      </ul>
+
+      <div class="formula-banner">
+        8th CPC Revised Basic = Existing 7th CPC Basic × Approved Fitment Factor
+      </div>
+
+      <h2>3. Pay Matrix Progression: Level 1 to Level 18 Comparative Projections</h2>
+      <p>
+        Under the 7th CPC, employees were mapped across <strong>18 distinct Pay Levels</strong>. Below is a side-by-side comparison of entry basic pay across every level, contrasting 7th CPC baselines with projected 8th CPC scales at <strong>2.25x</strong> (economic baseline) and <strong>2.86x</strong> (federation target):
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Matrix Level</th>
+              <th>Equivalent 6th CPC Grade Pay</th>
+              <th>Typical Cadre Posts</th>
+              <th>7th CPC Entry Pay</th>
+              <th>Projected 8th CPC (2.25x)</th>
+              <th>Projected 8th CPC (2.86x)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparisonData.map((row) => (
+              <tr>
+                <td><strong>{row.level}</strong></td>
+                <td>{row.gp}</td>
+                <td>{row.post}</td>
+                <td>₹{row.base7th.toLocaleString('en-IN')}</td>
+                <td>₹{row.base8th_225.toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{row.base8th_286.toLocaleString('en-IN')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>4. Quick Matrix Level Selector: Inspect Starting Baselines</h2>
+      <p>
+        Select any level pill below to instantly populate its entry parameters into the interactive comparison simulator above:
+      </p>
+
+      <div class="level-grid">
+        {comparisonData.map((item) => (
+          <div class="level-pill" data-base7th={item.base7th} data-level={item.level} data-gp={item.gp}>
+            <strong>{item.level}</strong>
+            <span>7th: ₹{item.base7th.toLocaleString('en-IN')}</span>
+          </div>
+        ))}
+      </div>
+
+      <h2>5. Worked Monthly Payslip Comparison: Level 1 vs. Level 6</h2>
+      <p>
+        A common mistake when analyzing pay revisions is assuming net take-home salary triples alongside the fitment multiplier. In reality, Dearness Allowance resets to 0% because the accumulated DA is merged into the revised basic salary.
+      </p>
+      <p>
+        The worked examples below evaluate actual monthly emoluments in a <strong>Class X Metro City (30% HRA)</strong> under an expected <strong>2.86x fitment factor</strong>:
+      </p>
+
+      <h3>Case 1: Entry Level 1 (MTS / Group D)</h3>
+      <ul>
+        <li><strong>7th CPC Baseline:</strong> Basic Pay = ₹18,000 | DA (~53%) = ₹9,540 | HRA (30%) = ₹5,400 | TA = ₹2,066 | <strong>Gross = ₹35,006</strong></li>
+        <li><strong>8th CPC Revision (2.86x):</strong> Revised Basic = ₹51,480 | DA (Reset) = ₹0 | HRA (30%) = ₹15,444 | TA = ₹1,350 | <strong>Gross = ₹68,274</strong></li>
+        <li><strong>Estimated Net Monthly Take-Home:</strong> After deducting mandatory NPS/UPS (10% = ₹5,148), net take-home adjusts from ~₹32,252 to <strong>~₹63,126</strong>, representing an approximate monthly in-hand hike of <strong>+₹30,874</strong>.</li>
+      </ul>
+
+      <h3>Case 2: Level 6 Officer (Inspector / Sub-Inspector / ASO)</h3>
+      <ul>
+        <li><strong>7th CPC Baseline:</strong> Basic Pay = ₹35,400 | DA (~53%) = ₹18,762 | HRA (30%) = ₹10,620 | TA = ₹5,508 | <strong>Gross = ₹70,290</strong></li>
+        <li><strong>8th CPC Revision (2.86x):</strong> Revised Basic = ₹1,01,244 | DA (Reset) = ₹0 | HRA (30%) = ₹30,373 | TA = ₹3,600 | <strong>Gross = ₹1,35,217</strong></li>
+        <li><strong>Estimated Net Monthly Take-Home:</strong> After accounting for NPS contributions (10% = ₹10,124) and estimated tax withholdings (~₹6,300), net monthly earnings scale from ~₹63,074 to <strong>~₹1,18,793</strong>, yielding a monthly hike of <strong>+₹55,719</strong>.</li>
+      </ul>
+
+      <h2>6. Allowances & Deductions: Key Policy Differences</h2>
+
+      <h3>1. House Rent Allowance (HRA) Rationalization</h3>
+      <ul>
+        <li><strong>Under the 7th CPC:</strong> The commission controversially slashed HRA base rates from 30%, 20%, and 10% down to <strong>24%, 16%, and 8%</strong> for Class X, Y, and Z cities respectively. It incorporated automated upward trigger mechanisms: rates climbed back to 27%, 18%, and 9% once DA breached 25%, and returned to <strong>30%, 20%, and 10%</strong> once DA breached 50%.</li>
+        <li><strong>Under the 8th CPC:</strong> The primary policy demand is establishing the base HRA floor directly at <strong>30% (X), 20% (Y), and 10% (Z)</strong> from day one, rather than slashing rates back to conservative minimums. Because HRA applies directly to an expanded basic pay, the absolute cash disbursement for rental assistance will more than double.</li>
+      </ul>
+
+      <h3>2. Transport Allowance (TA) and Fuel Indexation</h3>
+      <p>
+        The 7th CPC fixed transport allowances across two geographic tiers (Higher Transport Cities vs. Other Places) with DA added on top. The 8th CPC requires restructuring to reflect modern urban transit patterns, automated fuel indexation, and expanded metropolitan boundaries across Tier-2 development corridors.
+      </p>
+
+      <h3>3. Children Education Allowance (CEA) & Hostel Subsidy</h3>
+      <p>
+        The 7th CPC pegged CEA at ₹2,250 per month (₹27,000 annually) per child for up to two children, with a built-in provision to increase rates by 25% whenever DA crossed 50% (scaling CEA to ₹2,812.50/month). The 8th CPC is expected to recalibrate baseline CEA allocations to approximately <strong>₹4,500 – ₹5,000 per month</strong>, reflecting secondary and higher education tuition cost realities.
+      </p>
+
+      <h2>7. Retirement & Pension Revisions: NPS, UPS, and Parity</h2>
+      <p>
+        The landscape of post-retirement benefits has shifted significantly between the 7th and 8th Pay Commissions:
+      </p>
+
+      <h3>Introduction of the Unified Pension Scheme (UPS)</h3>
+      <p>
+        When the 7th CPC took effect, non-defence central employees recruited after January 1, 2004, were covered under the market-linked National Pension System (NPS), creating widespread demand for guaranteed pensions. Ahead of the 8th CPC, the introduction of the <strong>Unified Pension Scheme (UPS)</strong> altered this dynamic by guaranteeing an assured pension of <strong>50% of the average basic pay drawn in the final 12 months</strong> of service (for a minimum 25 years of qualifying service).
+      </p>
+      <p>
+        Under the 8th Pay Commission, this substantial jump in basic pay directly enhances the baseline for guaranteed lifetime pensions under UPS, providing market-insulated stability comparable to the Old Pension Scheme (OPS).
+      </p>
+
+      <h3>Commutation Restoration Period</h3>
+      <p>
+        Under current 7th CPC rules, employees can commute up to 40% of their basic pension into a lump-sum advance, which is recovered through monthly deductions for a period of <strong>15 years</strong>. Staff confederations and pensioner federations have lobbied to reduce this recovery timeline from <strong>15 years down to 12 years</strong>. Actuarial data demonstrates that the initial capital advanced along with nominal interest is fully recovered by the exchequer within 11 to 12 years, making continued deductions across years 13, 14, and 15 an unnecessary burden on elderly pensioners.
+      </p>
+
+      <h3>Gratuity Ceiling Enhancements</h3>
+      <p>
+        Under the 7th CPC, the statutory maximum limit for Death-cum-Retirement Gratuity (DCRG) was initially set at ₹20 Lakhs, scaling to <strong>₹25 Lakhs</strong> once Dearness Allowance reached 50%. The 8th Pay Commission is projected to recommend lifting this ceiling to between <strong>₹30 Lakhs and ₹40 Lakhs</strong>.
+      </p>
+
+      <h2>8. Strategic Financial Planning Ahead of the Transition</h2>
+      <ol>
+        <li><strong>Tax Regime Optimization:</strong> As gross salaries expand into higher tax brackets, employees must evaluate whether the simplified <strong>New Tax Regime</strong> (with its revised standard deduction and slab rates) or the deduction-heavy <strong>Old Tax Regime</strong> (Sections 80C, 80D, 24b) yields lower liability. For middle and senior administrative levels, the New Tax Regime is often mathematically advantageous unless high home loan interest deductions apply.</li>
+        <li><strong>Arrears and Section 89(1) Relief:</strong> Because Pay Commissions are frequently approved months after their effective date, retrospective salary arrears can create a concentrated tax liability in a single financial year. Preparing tax relief claims under <strong>Section 89(1)</strong> (supported by online submission of <strong>Form 10E</strong>) is vital to avoid bracket creep.</li>
+        <li><strong>Mandatory Retirement Contributions:</strong> Because statutory pension deductions (10% under NPS/UPS) scale alongside basic pay, retirement savings will automatically surge. Reviewing discretionary voluntary provident allocations (VPF/PPF) will help maintain liquid monthly cash flow.</li>
+      </ol>
+
+      <h2>9. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or any official Central Pay Commission authority. All cell progressions, fitment multipliers, and comparative salary projections are computed estimates based on historical pay commission mechanics, gazette precedents, and publicly submitted employee memoranda. Official notifications must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Estimated Monthly Hike</div>
+      <div class="val" id="stickyGrossDiff">+₹64,927</div>
+    </div>
+    <a href="#compBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const compBasicInput = document.getElementById('compBasicInput');
+    const compLevelSelect = document.getElementById('compLevelSelect');
+    const compFitmentSelect = document.getElementById('compFitmentSelect');
+    const compCitySelect = document.getElementById('compCitySelect');
+
+    const disp7thGross = document.getElementById('disp7thGross');
+    const disp8thGross = document.getElementById('disp8thGross');
+    const dispGrossDiff = document.getElementById('dispGrossDiff');
+    const stickyGrossDiff = document.getElementById('stickyGrossDiff');
+
+    const slip7thBasic = document.getElementById('slip7thBasic');
+    const slip8thBasic = document.getElementById('slip8thBasic');
+    const slip7thDa = document.getElementById('slip7thDa');
+    const slip7thHra = document.getElementById('slip7thHra');
+    const slip8thHra = document.getElementById('slip8thHra');
+    const slip7thTa = document.getElementById('slip7thTa');
+    const slip8thTa = document.getElementById('slip8thTa');
+    const slip7thGross = document.getElementById('slip7thGross');
+    const slip8thGross = document.getElementById('slip8thGross');
+    const slip7thNps = document.getElementById('slip7thNps');
+    const slip8thNps = document.getElementById('slip8thNps');
+    const slip7thNet = document.getElementById('slip7thNet');
+    const slip8thNet = document.getElementById('slip8thNet');
+    const slipLevelLabel = document.getElementById('slipLevelLabel');
+
+    function calculateComparison() {
+      const basic7th = parseFloat(compBasicInput.value) || 0;
+      const factor = parseFloat(compFitmentSelect.value) || 2.86;
+      const hraRate = parseFloat(compCitySelect.value) || 0.30;
+
+      // 7th CPC Arithmetic (53% DA, HRA, TA with DA loading)
+      const da7th = Math.round(basic7th * 0.53);
+      const hra7th = Math.round(basic7th * hraRate);
+      const baseTa7th = basic7th >= 35400 ? 3600 : 1350;
+      const ta7th = Math.round(baseTa7th * 1.53);
+      const gross7th = basic7th + da7th + hra7th + ta7th;
+      const nps7th = Math.round((basic7th + da7th) * 0.10);
+      const net7th = gross7th - nps7th;
+
+      // 8th CPC Arithmetic (0% initial DA, HRA on new basic, base TA)
+      const basic8th = Math.round(basic7th * factor);
+      const hra8th = Math.round(basic8th * hraRate);
+      const ta8th = basic7th >= 35400 ? 3600 : 1350;
+      const gross8th = basic8th + hra8th + ta8th;
+      const nps8th = Math.round(basic8th * 0.10);
+      const net8th = gross8th - nps8th;
+
+      const grossDiff = gross8th - gross7th;
+
+      // Update Formats
+      disp7thGross.textContent = '₹' + gross7th.toLocaleString('en-IN');
+      disp8thGross.textContent = '₹' + gross8th.toLocaleString('en-IN');
+      dispGrossDiff.textContent = '+₹' + grossDiff.toLocaleString('en-IN');
+      if (stickyGrossDiff) stickyGrossDiff.textContent = '+₹' + grossDiff.toLocaleString('en-IN');
+
+      slip7thBasic.textContent = '₹' + basic7th.toLocaleString('en-IN');
+      slip8thBasic.textContent = '₹' + basic8th.toLocaleString('en-IN');
+      slip7thDa.textContent = '₹' + da7th.toLocaleString('en-IN');
+      slip7thHra.textContent = '₹' + hra7th.toLocaleString('en-IN');
+      slip8thHra.textContent = '₹' + hra8th.toLocaleString('en-IN');
+      slip7thTa.textContent = '₹' + ta7th.toLocaleString('en-IN');
+      slip8thTa.textContent = '₹' + ta8th.toLocaleString('en-IN');
+      slip7thGross.textContent = '₹' + gross7th.toLocaleString('en-IN');
+      slip8thGross.textContent = '₹' + gross8th.toLocaleString('en-IN');
+      slip7thNps.textContent = '-₹' + nps7th.toLocaleString('en-IN');
+      slip8thNps.textContent = '-₹' + nps8th.toLocaleString('en-IN');
+      slip7thNet.textContent = '₹' + net7th.toLocaleString('en-IN');
+      slip8thNet.textContent = '₹' + net8th.toLocaleString('en-IN');
+
+      // Update Level Subtitle Label
+      const selectedOption = compLevelSelect.options[compLevelSelect.selectedIndex];
+      if (selectedOption) {
+        const lvlName = selectedOption.getAttribute('data-level') || 'Level 6';
+        const gpName = selectedOption.getAttribute('data-gp') || 'GP 4200';
+        slipLevelLabel.textContent = `${lvlName} (${gpName})`;
+      }
+    }
+
+    // Input Listeners
+    compBasicInput.addEventListener('input', calculateComparison);
+    compLevelSelect.addEventListener('change', (e) => {
+      compBasicInput.value = e.target.value;
+      calculateComparison();
+    });
+    compFitmentSelect.addEventListener('change', calculateComparison);
+    compCitySelect.addEventListener('change', calculateComparison);
+
+    // Multiplier Button Pills
+    const pills = document.querySelectorAll('#factorPills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        compFitmentSelect.value = pill.getAttribute('data-f');
+        calculateComparison();
+      });
+    });
+
+    // Quick Matrix Level Pills
+    document.querySelectorAll('.level-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const val = pill.getAttribute('data-base7th');
+        compBasicInput.value = val;
+        compLevelSelect.value = val;
+        calculateComparison();
+        document.querySelector('.calc-box').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateComparison();
+  </script>
+
+</body>
+</html>
