@@ -1,16 +1,17 @@
 ---
-// src/pages/arrears-calculator.astro
+import SiteLayout from '../layouts/SiteLayout.astro';
+
 const siteUrl = "https://8paycommission.com";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const pageTitle = "8th Pay Commission Arrears Calculator: Monthly Due vs Drawn & Tax Relief (2026)";
-const pageDescription = "Calculate your expected 8th Pay Commission retrospective arrears. Compare old drawn salary vs new revised entitlement with monthly DA, basic pay, and Section 89(1) tax relief.";
+const pageDescription = "Calculate your expected 8th Pay Commission retrospective arrears. Compare old drawn salary vs new revised entitlement with monthly DA, basic pay, and Section 89(1) tax relief planning.";
 
 // Historical Pay Commission Arrears Precedents
 const arrearsTimeline = [
   { cpc: "5th Pay Commission", appointed: "1994", effective: "Jan 1, 1996", notified: "Sep 1997", lagMonths: "20 Months", disbursement: "Paid in 2 installments (Cash + GPF credit)" },
   { cpc: "6th Pay Commission", appointed: "Oct 2006", effective: "Jan 1, 2006", notified: "Aug 2008", lagMonths: "32 Months", disbursement: "40% in FY 2008-09, 60% in FY 2009-10" },
   { cpc: "7th Pay Commission", appointed: "Feb 2014", effective: "Jan 1, 2016", notified: "Jul 2016", lagMonths: "7 Months", disbursement: "Lump-sum single installment in Aug/Sep 2016" },
-  { cpc: "8th Pay Commission", appointed: "Deliberation", effective: "Jan 1, 2026 (Projected)", notified: "Expected 2026-27", lagMonths: "6 to 18 Months", disbursement: "Lump-sum bank transfer projected" }
+  { cpc: "8th Pay Commission", appointed: "Deliberation", effective: "Jan 1, 2026 (Projected)", notified: "Expected 2026-27", lagMonths: "6 to 18 Months", disbursement: "Lump-sum bank transfer projected" },
 ];
 
 const faqs = [
@@ -37,755 +38,114 @@ const faqs = [
 ];
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>{pageTitle}</title>
-  <meta name="description" content={pageDescription} />
-  <meta name="keywords" content="8th pay commission arrears calculator, 8th cpc arrears calculation formula, due vs drawn salary, section 89 1 tax relief form 10e, retroactive salary hike 2026" />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
-  <link rel="canonical" href={canonicalURL} />
-
-  <!-- Open Graph -->
-  <meta property="og:locale" content="en_IN" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content={pageTitle} />
-  <meta property="og:description" content={pageDescription} />
-  <meta property="og:url" content={canonicalURL} />
-  <meta property="og:site_name" content="8th Pay Commission Portal" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Schema.org WebApplication + FAQPage -->
+<SiteLayout title={pageTitle} description={pageDescription}>
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "WebApplication",
-        "name": "8th Pay Commission Arrears Calculator",
-        "url": canonicalURL.toString(),
-        "operatingSystem": "All",
-        "applicationCategory": "FinanceApplication",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": faqs.map((f) => ({
-          "@type": "Question",
-          "name": f.q,
-          "acceptedAnswer": { "@type": "Answer", "text": f.a }
-        }))
-      }
+      { "@type": "WebApplication", "name": "8th Pay Commission Arrears Calculator", "url": canonicalURL.toString(), "operatingSystem": "All", "applicationCategory": "FinanceApplication", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" } },
+      { "@type": "FAQPage", "mainEntity": faqs.map((f) => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) }
     ]
   })} />
 
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-subtle: #f1f5f9;
-      --border: #e2e8f0;
-      --primary: #1d4ed8;
-      --primary-hover: #1e40af;
-      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --accent-green: #15803d;
-      --accent-green-bg: #dcfce7;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
-    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
-    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
-    a:hover { color: var(--primary-hover); }
-
-    .layout-wrap { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
-
-    /* Hero */
-    .hero-header {
-      text-align: center;
-      padding: 3rem 1rem 1.75rem;
-    }
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      color: #1d4ed8;
-      padding: 0.25rem 0.85rem;
-      border-radius: 30px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.85rem;
-    }
-    .hero-header h1 {
-      font-size: clamp(1.85rem, 4vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -0.035em;
-      line-height: 1.22;
-      margin-bottom: 0.75rem;
-      color: var(--text);
-    }
-    .hero-header p {
-      color: var(--text-muted);
-      max-width: 760px;
-      margin: 0 auto;
-      font-size: 1.05rem;
-    }
-
-    /* Calculator Widget */
-    .calc-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 3.5rem;
-    }
-    .chip-bar {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-      padding: 0.5rem 0 1.25rem;
-      scrollbar-width: none;
-    }
-    .chip-bar::-webkit-scrollbar { display: none; }
-    .chip-btn {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: #475569;
-      padding: 0.5rem 1.1rem;
-      border-radius: 30px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .chip-btn:hover { background: #e2e8f0; }
-    .chip-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .form-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .form-item label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .form-item input, .form-item select {
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      color: var(--text);
-      padding: 0.75rem 0.9rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.96rem;
-      font-weight: 600;
-      outline: none;
-      transition: all 0.2s;
-    }
-    .form-item input:focus, .form-item select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    /* Live Summary Cards */
-    .summary-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .kpi-unit {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem;
-      text-align: center;
-      position: relative;
-    }
-    .kpi-unit.highlight {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-    }
-    .kpi-unit.success {
-      background: var(--accent-green-bg);
-      border-color: #86efac;
-    }
-    .kpi-unit .kpi-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 0.35rem;
-    }
-    .kpi-unit .kpi-val {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .kpi-unit.highlight .kpi-val { color: var(--primary); }
-    .kpi-unit.success .kpi-val { color: var(--accent-green); }
-
-    /* Breakdown Slip */
-    .breakdown-box {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    .breakdown-title {
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--text);
-      margin-bottom: 0.85rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .breakdown-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.94rem;
-    }
-    .breakdown-table td {
-      padding: 0.65rem 0.5rem;
-      border-bottom: 1px dashed #cbd5e1;
-    }
-    .breakdown-table tr:last-child td { border-bottom: none; }
-    .breakdown-table td.num {
-      text-align: right;
-      font-weight: 700;
-    }
-
-    /* Content Area */
-    .article-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.75rem;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 3.5rem;
-    }
-    .article-wrap h2 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.025em;
-      margin: 2.5rem 0 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid #eff6ff;
-    }
-    .article-wrap h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin: 1.6rem 0 0.65rem;
-    }
-    .article-wrap p {
-      margin-bottom: 1.25rem;
-      color: #334155;
-      font-size: 1.02rem;
-    }
-    .article-wrap ul, .article-wrap ol {
-      margin-bottom: 1.5rem;
-      padding-left: 1.5rem;
-      color: #334155;
-    }
-    .article-wrap li { margin-bottom: 0.45rem; }
-
-    .formula-banner {
-      background: #eff6ff;
-      border-left: 4px solid var(--primary);
-      padding: 1.15rem 1.35rem;
-      border-radius: 0 8px 8px 0;
-      margin: 1.5rem 0;
-      font-family: monospace;
-      font-size: 0.96rem;
-      color: #1e40af;
-    }
-
-    /* Table */
-    .table-responsive {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      margin: 1.5rem 0;
-    }
-    table.data-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.92rem;
-    }
-    table.data-table th, table.data-table td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    table.data-table th {
-      background: #f8fafc;
-      color: #475569;
-      font-weight: 700;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    table.data-table tr:hover td { background: #f8fafc; }
-
-    /* FAQ */
-    .faq-unit {
-      border-bottom: 1px solid var(--border);
-      padding: 1.15rem 0;
-    }
-    .faq-quest {
-      font-weight: 700;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.02rem;
-    }
-    .faq-ans {
-      display: none;
-      padding-top: 0.65rem;
-      color: #475569;
-      font-size: 0.96rem;
-      line-height: 1.7;
-    }
-    .faq-unit.open .faq-ans { display: block; }
-    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
-    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
-
-    /* Mobile Sticky Summary Bar */
-    .mobile-sticky-bar {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.96);
-      border-top: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-      padding: 0.75rem 1.25rem;
-      z-index: 990;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    }
-    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
-    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--accent-green); }
-    @media (max-width: 768px) {
-      .mobile-sticky-bar { display: flex; }
-      body { padding-bottom: 4.5rem; }
-    }
-
-    /* Disclaimer */
-    .disclaimer-strip {
-      max-width: 1100px;
-      margin: 2rem auto 4rem;
-      padding: 1.25rem;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-left: 4px solid #94a3b8;
-      border-radius: var(--radius-sm);
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: #64748b;
-    }
-  </style>
-</head>
-<body>
-
   <main class="layout-wrap">
-
-    <!-- HERO HEADER -->
     <header class="hero-header">
       <div class="badge-pill">Retrospective Payout Estimation (2026)</div>
       <h1>8th Pay Commission Arrears Calculator</h1>
       <p>Calculate your prospective retrospective salary arrears, compare monthly due vs. drawn emoluments, and evaluate Section 89(1) tax relief planning.</p>
     </header>
 
-    <!-- ARREARS CALCULATOR WIDGET -->
     <section class="calc-box" aria-label="8th Pay Commission Arrears Calculator Widget">
-      
-      <!-- Quick Duration Pills -->
-      <div style="margin-bottom: 1.25rem;">
-        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Expected Retrospective Lag Period:</span>
-        <div class="chip-bar" id="monthPills">
-          <button class="chip-btn" data-m="6">6 Months</button>
-          <button class="chip-btn" data-m="9">9 Months</button>
-          <button class="chip-btn active" data-m="12">12 Months (1 Year)</button>
-          <button class="chip-btn" data-m="18">18 Months</button>
-          <button class="chip-btn" data-m="24">24 Months (2 Years)</button>
-        </div>
-      </div>
-
-      <!-- Form Inputs Grid -->
+      <div style="margin-bottom: 1.25rem;"><span class="factor-label">Expected Retrospective Lag Period:</span><div class="chip-bar" id="monthPills"><button class="chip-btn" data-m="6">6 Months</button><button class="chip-btn" data-m="9">9 Months</button><button class="chip-btn active" data-m="12">12 Months (1 Year)</button><button class="chip-btn" data-m="18">18 Months</button><button class="chip-btn" data-m="24">24 Months (2 Years)</button></div></div>
       <div class="form-grid">
-        <div class="form-item">
-          <label for="oldDrawnBasic">Current 7th CPC Basic Pay (₹)</label>
-          <input type="number" id="oldDrawnBasic" value="35400" min="18000" step="100" />
-        </div>
-
-        <div class="form-item">
-          <label for="arrearsFitment">Fitment Multiplier</label>
-          <select id="arrearsFitment">
-            <option value="1.92">1.92x (Conservative DA Merge)</option>
-            <option value="2.10">2.10x (Moderate Growth)</option>
-            <option value="2.25">2.25x (Baseline Model)</option>
-            <option value="2.57">2.57x (7th CPC Parity)</option>
-            <option value="2.86" selected>2.86x (Federation Demand)</option>
-            <option value="3.00">3.00x (High Demand)</option>
-          </select>
-        </div>
-
-        <div class="form-item">
-          <label for="arrearsMonthsInput">Retroactive Duration (Months)</label>
-          <input type="number" id="arrearsMonthsInput" value="12" min="1" max="48" step="1" />
-        </div>
-
-        <div class="form-item">
-          <label for="drawnDaRate">Drawn DA Rate at Implementation (%)</label>
-          <select id="drawnDaRate">
-            <option value="0.50">50% DA Drawn</option>
-            <option value="0.53" selected>53% DA Drawn</option>
-            <option value="0.56">56% DA Drawn</option>
-            <option value="0.60">60% DA Drawn</option>
-          </select>
-        </div>
+        <div class="form-item"><label for="oldDrawnBasic">Current 7th CPC Basic Pay (₹)</label><input type="number" id="oldDrawnBasic" value="35400" min="18000" step="100" /></div>
+        <div class="form-item"><label for="arrearsFitment">Fitment Multiplier</label><select id="arrearsFitment"><option value="1.92">1.92x (Conservative DA Merge)</option><option value="2.10">2.10x (Moderate Growth)</option><option value="2.25">2.25x (Baseline Model)</option><option value="2.57">2.57x (7th CPC Parity)</option><option value="2.86" selected>2.86x (Federation Demand)</option><option value="3.00">3.00x (High Demand)</option></select></div>
+        <div class="form-item"><label for="arrearsMonthsInput">Retroactive Duration (Months)</label><input type="number" id="arrearsMonthsInput" value="12" min="1" max="48" step="1" /></div>
+        <div class="form-item"><label for="drawnDaRate">Drawn DA Rate at Implementation (%)</label><select id="drawnDaRate"><option value="0.50">50% DA Drawn</option><option value="0.53" selected>53% DA Drawn</option><option value="0.56">56% DA Drawn</option><option value="0.60">60% DA Drawn</option></select></div>
       </div>
-
-      <!-- KPI Highlights -->
-      <div class="summary-cards">
-        <div class="kpi-unit">
-          <div class="kpi-label">Monthly Gross Difference (Due - Drawn)</div>
-          <div class="kpi-val" id="dispMonthlyDiff">₹47,082</div>
-        </div>
-        <div class="kpi-unit highlight">
-          <div class="kpi-label">Pension / NPS Contribution Offset</div>
-          <div class="kpi-val" id="dispNpsOffset">₹56,496</div>
-        </div>
-        <div class="kpi-unit success">
-          <div class="kpi-label">Estimated Gross Arrears Payable</div>
-          <div class="kpi-val" id="dispTotalArrears">₹5,64,984</div>
-        </div>
-      </div>
-
-      <!-- Detailed Arithmetic Slip -->
-      <div class="breakdown-box">
-        <div class="breakdown-title">
-          <span>Monthly Retrospective Due vs Drawn Calculation Breakdown</span>
-          <span style="color: var(--primary); font-size: 0.85rem;" id="slipDurationLabel">12 Months Retroactive</span>
-        </div>
-        <table class="breakdown-table">
-          <tbody>
-            <tr>
-              <td>Revised Monthly Basic Pay Entitled (Current Basic × Fitment)</td>
-              <td class="num" id="slipNewBasic">₹1,01,244</td>
-            </tr>
-            <tr>
-              <td>Old Basic Pay Actually Drawn under 7th CPC</td>
-              <td class="num" id="slipOldBasic" style="color: #dc2626;">-₹35,400</td>
-            </tr>
-            <tr>
-              <td>Less: Dearness Allowance (DA) Already Drawn (Rolled into new basic)</td>
-              <td class="num" id="slipOldDaDrawn" style="color: #dc2626;">-₹18,762</td>
-            </tr>
-            <tr style="font-weight: 700; background: #f8fafc;">
-              <td>Net Monthly Basic Wage Difference (Due - Drawn)</td>
-              <td class="num" id="slipNetMonthlyDiff" style="color: var(--primary);">₹47,082</td>
-            </tr>
-            <tr>
-              <td>Cumulative Gross Arrears for Selected Duration</td>
-              <td class="num" id="slipGrossArrears">₹5,64,984</td>
-            </tr>
-            <tr>
-              <td>Less: Employee NPS Contribution Adjustment (10% on incremental basic)</td>
-              <td class="num" id="slipNpsDeduct" style="color: #dc2626;">-₹56,496</td>
-            </tr>
-            <tr style="font-weight: 800; background: var(--accent-green-bg);">
-              <td style="color: var(--accent-green);">Estimated Net Cash Arrears Credited to Bank</td>
-              <td class="num" id="slipNetCashArrears" style="color: var(--accent-green);">₹5,08,488</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+      <div class="summary-cards"><div class="kpi-unit"><div class="kpi-label">Monthly Gross Difference (Due - Drawn)</div><div class="kpi-val" id="dispMonthlyDiff">₹47,082</div></div><div class="kpi-unit highlight"><div class="kpi-label">Pension / NPS Contribution Offset</div><div class="kpi-val" id="dispNpsOffset">₹56,496</div></div><div class="kpi-unit success"><div class="kpi-label">Estimated Gross Arrears Payable</div><div class="kpi-val" id="dispTotalArrears">₹5,64,984</div></div></div>
+      <div class="breakdown-box"><div class="breakdown-title"><span>Monthly Retrospective Due vs Drawn Calculation Breakdown</span><span class="breakdown-duration" id="slipDurationLabel">12 Months Retroactive</span></div><table class="breakdown-table"><tbody><tr><td>Revised Monthly Basic Pay Entitled (Current Basic × Fitment)</td><td class="num" id="slipNewBasic">₹1,01,244</td></tr><tr><td>Old Basic Pay Actually Drawn under 7th CPC</td><td class="num negative" id="slipOldBasic">-₹35,400</td></tr><tr><td>Less: Dearness Allowance (DA) Already Drawn</td><td class="num negative" id="slipOldDaDrawn">-₹18,762</td></tr><tr class="emphasis-row"><td>Net Monthly Basic Wage Difference (Due - Drawn)</td><td class="num" id="slipNetMonthlyDiff">₹47,082</td></tr><tr><td>Cumulative Gross Arrears for Selected Duration</td><td class="num" id="slipGrossArrears">₹5,64,984</td></tr><tr><td>Less: Employee NPS Contribution Adjustment</td><td class="num negative" id="slipNpsDeduct">-₹56,496</td></tr><tr class="net-row"><td>Estimated Net Cash Arrears Credited to Bank</td><td class="num" id="slipNetCashArrears">₹5,08,488</td></tr></tbody></table></div>
     </section>
 
-    <!-- 1,200+ WORDS IN-DEPTH SEO ARTICLE -->
     <article class="article-wrap">
-      <h2>The Mechanics of 8th Pay Commission Arrears Calculation</h2>
-      <p>
-        For Central Government employees, defence service personnel, and pensioners, the prospect of an <strong>8th Central Pay Commission (CPC)</strong> carries both wage revision anticipation and significant retrospective compensation: <strong>salary arrears</strong>. Because Central Pay Commissions require exhaustive terms of reference, committee hearings, and cabinet ratifications, there is almost always a multi-month lag between the official <em>effective implementation date</em> and the date the gazette notification is issued and updated pay slips are executed.
-      </p>
-      <p>
-        When the government notifies revised pay scales with retrospective effect, employees are legally entitled to receive the financial differential for all elapsed months in a lump-sum disbursement. Accurately calculating this entitlement requires understanding the statutory <strong>Due vs. Drawn formula</strong>, allowance treatment rules, mandatory pension adjustments, and tax relief mechanisms under Section 89(1) of the Income Tax Act.
-      </p>
-
-      <h2>1. The Due vs. Drawn Arrears Formula Explained</h2>
-      <p>
-        The calculation of salary arrears does not simply involve multiplying your new gross salary by the number of elapsed months. Because employees have already received a base salary along with Dearness Allowance (DA) during the retroactive period, the exchequer only disburses the <strong>incremental difference</strong>.
-      </p>
-      <p>
-        The universal statutory formula applied by drawing and disbursing officers (DDOs) across ministries is:
-      </p>
-
-      <div class="formula-banner">
-        Gross Salary Arrears = Total Emoluments Due (Revised 8th CPC) − Total Emoluments Drawn (Existing 7th CPC)
-      </div>
-
-      <p>
-        The calculation is broken into distinct components:
-      </p>
-      <ul>
-        <li><strong>Basic Pay Difference:</strong> The revised basic pay determined by the approved fitment factor minus the old basic pay drawn for each retroactive month.</li>
-        <li><strong>Dearness Allowance (DA) Adjustment:</strong> Because accumulated DA is subsumed into the new basic pay, the DA previously drawn on the old scale is deducted from the gross entitlement.</li>
-        <li><strong>Allowances Treatment:</strong> Revisions to compensatory allowances such as House Rent Allowance (HRA), Transport Allowance (TA), and Children Education Allowance (CEA) are almost universally made effective <strong>prospectively</strong> (from the date of cabinet notification), rather than retrospectively, based on precedent from the 6th and 7th CPCs.</li>
-        <li><strong>Statutory NPS / Pension Deductions:</strong> Employees under the National Pension System (NPS) or Unified Pension Scheme (UPS) must contribute 10% of their incremental basic pay toward their pension PRAN account, which is automatically withheld from the gross arrears payout.</li>
-      </ul>
-
-      <h2>2. Historical Precedents: How Earlier Commissions Handled Arrears</h2>
-      <p>
-        Reviewing previous Pay Commission implementations illustrates the typical timeline, processing duration, and disbursement mechanics:
-      </p>
-
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Pay Commission</th>
-              <th>Effective Date</th>
-              <th>Notification Date</th>
-              <th>Retroactive Lag</th>
-              <th>Disbursement Method</th>
-            </tr>
-          </thead>
-          <tbody>
-            {arrearsTimeline.map((row) => (
-              <tr>
-                <td><strong>{row.cpc}</strong></td>
-                <td>{row.effective}</td>
-                <td>{row.notified}</td>
-                <td><strong style="color: var(--primary);">{row.lagMonths}</strong></td>
-                <td>{row.disbursement}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <p>
-        During the <strong>6th CPC</strong>, the government faced substantial fiscal constraints due to the 2008 global financial crisis. As a result, arrears covering 32 months were split into two fiscal tranches: 40% in FY 2008–09 and 60% in FY 2009–10. In contrast, during the <strong>7th CPC</strong>, the notification gap was relatively short (January 2016 to July 2016), enabling the exchequer to disburse the entire 7-month arrears package as a single cash credit in the August/September 2016 pay cycle.
-      </p>
-
-      <h2>3. Worked Case Studies: Level 1 and Level 6 Arrears Projections</h2>
-      <p>
-        To illustrate how the arithmetic functions across different ranks, examine two worked scenarios assuming a <strong>12-month retrospective gap</strong> with an approved <strong>2.86x fitment factor</strong>:
-      </p>
-
-      <h3>Case A: Level 1 Staff (MTS / Group D)</h3>
-      <ul>
-        <li><strong>Current 7th CPC Monthly Basic:</strong> ₹18,000</li>
-        <li><strong>Monthly Drawn Pay (Basic + 53% DA):</strong> ₹18,000 + ₹9,540 = ₹27,540</li>
-        <li><strong>Projected 8th CPC Monthly Basic (2.86x):</strong> ₹51,480</li>
-        <li><strong>Monthly Arrears Difference (Due - Drawn):</strong> ₹51,480 − ₹27,540 = <strong>₹23,940 per month</strong></li>
-        <li><strong>Gross Arrears for 12 Months:</strong> ₹23,940 × 12 = <strong>₹2,87,280</strong></li>
-        <li><strong>Less: 10% NPS Pension Adjustment:</strong> −₹28,728</li>
-        <li><strong>Net Cash Credited to Bank:</strong> <strong>₹2,58,552</strong></li>
-      </ul>
-
-      <h3>Case B: Level 6 Officer (Inspector / Sub-Inspector / ASO)</h3>
-      <ul>
-        <li><strong>Current 7th CPC Monthly Basic:</strong> ₹35,400</li>
-        <li><strong>Monthly Drawn Pay (Basic + 53% DA):</strong> ₹35,400 + ₹18,762 = ₹54,162</li>
-        <li><strong>Projected 8th CPC Monthly Basic (2.86x):</strong> ₹1,01,244</li>
-        <li><strong>Monthly Arrears Difference (Due - Drawn):</strong> ₹1,01,244 − ₹54,162 = <strong>₹47,082 per month</strong></li>
-        <li><strong>Gross Arrears for 12 Months:</strong> ₹47,082 × 12 = <strong>₹5,64,984</strong></li>
-        <li><strong>Less: 10% NPS Pension Adjustment:</strong> −₹56,496</li>
-        <li><strong>Net Cash Credited to Bank:</strong> <strong>₹5,08,488</strong></li>
-      </ul>
-
-      <h2>4. Income Tax Implications: Section 89(1) Relief and Form 10E</h2>
-      <p>
-        One of the most critical aspects of receiving a lump-sum salary arrears payout is its tax liability. Under Indian tax law, salary is taxed on either a "due" or "receipt" basis, whichever occurs earlier. When arrears for 12 or 18 months are credited in a single financial year, your annual taxable income can jump substantially, pushing you into higher tax brackets (e.g., from 10% or 15% up to 20% or 30%).
-      </p>
-      
-      <h3>How Section 89(1) Protects Employees</h3>
-      <p>
-        To prevent employees from suffering unfair tax penalties solely because arrears were paid in a lump sum rather than spread across their original earned months, the Income Tax Act provides relief under <strong>Section 89(1)</strong>.
-      </p>
-      <p>
-        The mechanism recalibrates the tax liability as follows:
-      </p>
-      <ol>
-        <li>Calculate total tax on your current year's income <em>including</em> the full arrears payout.</li>
-        <li>Calculate total tax on your current year's income <em>excluding</em> the arrears payout.</li>
-        <li>Calculate the tax that would have been payable in each preceding past assessment year if the arrears had been received in those years.</li>
-        <li>If the tax calculated in Step 1 exceeds the cumulative past tax calculated in Step 3, the difference is granted as a tax deduction (relief) under Section 89(1).</li>
-      </ol>
-
-      <div class="formula-banner">
-        Mandatory Compliance: File Form 10E electronically on the Income Tax e-filing portal before submitting your ITR. Relief under Section 89(1) is invalid without Form 10E acknowledgment.
-      </div>
-
-      <h2>5. Pensioner Arrears & Commutation Restoration Impact</h2>
-      <p>
-        Central Government retirees and family pensioners are entitled to retroactive arrears on their basic pension and Dearness Relief (DR):
-      </p>
-      <ul>
-        <li><strong>Basic Pension Arrears:</strong> Pegged at 50% of the active employee arrears for the corresponding Pay Matrix level.</li>
-        <li><strong>Dearness Relief Offset:</strong> DR drawn during the retrospective span is adjusted against the revised consolidated pension.</li>
-        <li><strong>Commutation Recovery Adjustment:</strong> If the 8th CPC accepts the primary demand of pensioner confederations to restore commuted pensions after 12 years instead of 15 years, pensioners who have completed 12 to 15 years of retirement will be eligible for substantial retroactive commutation recovery refunds.</li>
-      </ul>
-
-      <h2>6. Frequently Asked Questions (FAQ)</h2>
-      <div class="faq-list">
-        {faqs.map((faq) => (
-          <div class="faq-unit">
-            <div class="faq-quest">
-              <span>{faq.q}</span>
-              <span class="faq-arrow">▼</span>
-            </div>
-            <div class="faq-ans">{faq.a}</div>
-          </div>
-        ))}
-      </div>
+      <h2>The Mechanics of 8th Pay Commission Arrears Calculation</h2><p>For Central Government employees, defence service personnel, and pensioners, the prospect of an <strong>8th Central Pay Commission (CPC)</strong> carries both wage revision anticipation and detailed financial planning.</p><p>When the government notifies revised pay scales with retrospective effect, employees are legally entitled to receive the financial differential for all elapsed months in a lump-sum disbursement.</p>
+      <h2>1. The Due vs. Drawn Arrears Formula Explained</h2><p>The calculation does not simply involve multiplying your new gross salary by the number of elapsed months. Because employees have already received a base salary along with allowances, the amount due is compared with the amount drawn.</p><div class="formula-banner">Gross Salary Arrears = Total Emoluments Due (Revised 8th CPC) − Total Emoluments Drawn (Existing 7th CPC)</div><ul><li><strong>Basic Pay Difference:</strong> Revised basic pay minus old basic pay for each retroactive month.</li><li><strong>Dearness Allowance Adjustment:</strong> Previously drawn DA is deducted from gross entitlement.</li><li><strong>Allowances Treatment:</strong> HRA, Transport Allowance, and CEA revisions may follow separate notification dates.</li><li><strong>Statutory NPS / Pension Deductions:</strong> NPS or UPS contributions can reduce net cash arrears.</li></ul>
+      <h2>2. Historical Precedents: How Earlier Commissions Handled Arrears</h2><div class="table-responsive"><table class="data-table"><thead><tr><th>Pay Commission</th><th>Effective Date</th><th>Notification Date</th><th>Retroactive Lag</th><th>Disbursement Method</th></tr></thead><tbody>{arrearsTimeline.map((row) => <tr><td><strong>{row.cpc}</strong></td><td>{row.effective}</td><td>{row.notified}</td><td><strong>{row.lagMonths}</strong></td><td>{row.disbursement}</td></tr>)}</tbody></table></div>
+      <h2>3. Worked Case Studies: Level 1 and Level 6 Arrears Projections</h2><p>Assuming a 12-month retrospective gap and a 2.86x fitment factor:</p><h3>Case A: Level 1 Staff</h3><ul><li>Current basic: ₹18,000</li><li>Drawn pay with 53% DA: ₹27,540</li><li>Projected basic: ₹51,480</li><li>Gross arrears for 12 months: <strong>₹2,87,280</strong></li><li>Estimated net cash after 10% NPS adjustment: <strong>₹2,58,552</strong></li></ul><h3>Case B: Level 6 Officer</h3><ul><li>Current basic: ₹35,400</li><li>Drawn pay with 53% DA: ₹54,162</li><li>Projected basic: ₹1,01,244</li><li>Gross arrears for 12 months: <strong>₹5,64,984</strong></li><li>Estimated net cash after 10% NPS adjustment: <strong>₹5,08,488</strong></li></ul>
+      <h2>4. Income Tax Implications: Section 89(1) Relief and Form 10E</h2><p>Lump-sum salary arrears can push employees into higher tax brackets. Employees can claim tax relief under Section 89(1) by filing Form 10E online before submitting their annual return.</p><ol><li>Calculate tax including the full arrears payout.</li><li>Calculate tax excluding the arrears payout.</li><li>Calculate tax that would have applied in each prior assessment year.</li><li>Claim the difference as relief under Section 89(1).</li></ol><div class="formula-banner">File Form 10E electronically on the Income Tax e-filing portal before submitting your ITR.</div>
+      <h2>5. Pensioner Arrears &amp; Commutation Restoration Impact</h2><p>Central Government retirees and family pensioners may receive retrospective arrears on basic pension and Dearness Relief. The treatment depends on the final government notification.</p>
+      <h2>6. Frequently Asked Questions (FAQ)</h2><div class="faq-list">{faqs.map((faq) => <div class="faq-unit"><div class="faq-quest"><span>{faq.q}</span><span class="faq-arrow">▼</span></div><div class="faq-ans">{faq.a}</div></div>)}</div>
     </article>
-
-    <!-- DISCLAIMER STRIP -->
-    <div class="disclaimer-strip">
-      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or any Central Pay Commission authority. All calculation formulas, fitment ratios, and arrears projections are computed estimates based on historical pay commission precedence and publicly submitted staff memoranda. Official notifications and gazette releases must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
-    </div>
-
+    <div class="disclaimer-strip"><strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with or endorsed by the Government of India. Calculator values are estimates.</div>
+    <div class="mobile-sticky-bar"><div><div class="lbl">Estimated Cash Arrears</div><div class="val" id="stickyArrears">₹5,08,488</div></div><a href="#oldDrawnBasic" class="chip-btn active">Recalculate</a></div>
   </main>
+</SiteLayout>
 
-  <!-- STICKY MOBILE SUMMARY BAR -->
-  <div class="mobile-sticky-bar">
-    <div>
-      <div class="lbl">Estimated Cash Arrears</div>
-      <div class="val" id="stickyArrears">₹5,08,488</div>
-    </div>
-    <a href="#oldDrawnBasic" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
-  </div>
+<style>
+  :global(body) { background: #f8fafc; color: #0f172a; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .layout-wrap { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+  .hero-header { text-align: center; padding: 3rem 1rem 1.75rem; }
+  .badge-pill { display: inline-flex; align-items: center; gap: .4rem; background: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; padding: .25rem .85rem; border-radius: 30px; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .85rem; }
+  .hero-header h1 { font-size: clamp(1.85rem, 4vw, 2.75rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.22; margin-bottom: .75rem; }
+  .hero-header p { color: #64748b; max-width: 760px; margin: 0 auto; font-size: 1.05rem; }
+  .calc-box, .article-wrap { background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 16px 32px -4px rgba(15,23,42,.08); }
+  .calc-box { padding: 2rem; margin-bottom: 3.5rem; }
+  .factor-label { display: inline-block; font-size: .8rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .75rem; }
+  .chip-bar { display: flex; gap: .5rem; overflow-x: auto; padding: .5rem 0 1.25rem; scrollbar-width: none; }
+  .chip-btn { background: #f1f5f9; border: 1px solid #e2e8f0; color: #475569; padding: .5rem 1.1rem; border-radius: 30px; font-size: .84rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
+  .chip-btn.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; }
+  .form-item { display: flex; flex-direction: column; gap: .4rem; }
+  .form-item label { font-size: .82rem; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: .03em; }
+  .form-item input, .form-item select { background: #fff; border: 1.5px solid #cbd5e1; color: #0f172a; padding: .75rem .9rem; border-radius: 8px; font-size: .96rem; font-weight: 600; }
+  .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .kpi-unit { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.25rem; text-align: center; }
+  .kpi-unit.highlight { background: #eff6ff; border-color: #bfdbfe; } .kpi-unit.success { background: #dcfce7; border-color: #86efac; }
+  .kpi-label { font-size: .75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: .35rem; } .kpi-val { font-size: 1.5rem; font-weight: 800; }
+  .breakdown-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.5rem; } .breakdown-title { font-weight: 800; margin-bottom: .85rem; display: flex; justify-content: space-between; gap: 1rem; } .breakdown-duration { color: #1d4ed8; font-size: .85rem; }
+  .breakdown-table, .data-table { width: 100%; border-collapse: collapse; font-size: .94rem; } .breakdown-table td, .data-table th, .data-table td { padding: .7rem .5rem; border-bottom: 1px solid #e2e8f0; } .num { text-align: right; font-weight: 700; } .negative { color: #dc2626; } .emphasis-row { font-weight: 700; background: #f8fafc; } .net-row { font-weight: 800; background: #dcfce7; }
+  .article-wrap { padding: 2.75rem; margin-bottom: 3.5rem; } .article-wrap h2 { font-size: 1.6rem; margin: 2.5rem 0 1rem; padding-bottom: .5rem; border-bottom: 2px solid #eff6ff; } .article-wrap h3 { margin: 1.6rem 0 .65rem; } .article-wrap p, .article-wrap li { color: #334155; line-height: 1.7; } .article-wrap p { margin-bottom: 1.25rem; } .article-wrap ul, .article-wrap ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  .formula-banner { background: #eff6ff; border-left: 4px solid #1d4ed8; padding: 1.15rem 1.35rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; font-family: monospace; color: #1e40af; } .table-responsive { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 14px; margin: 1.5rem 0; } .data-table { min-width: 700px; text-align: left; } .data-table th { background: #f8fafc; color: #475569; font-size: .8rem; text-transform: uppercase; }
+  .faq-unit { border-bottom: 1px solid #e2e8f0; padding: 1.15rem 0; } .faq-quest { font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; } .faq-ans { display: none; padding-top: .65rem; color: #475569; line-height: 1.7; } .faq-unit.open .faq-ans { display: block; } .faq-unit.open .faq-arrow { transform: rotate(180deg); } .faq-arrow { transition: transform .2s ease; color: #64748b; }
+  .disclaimer-strip { max-width: 1100px; margin: 2rem auto 4rem; padding: 1.25rem; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #94a3b8; border-radius: 8px; font-size: .82rem; color: #64748b; }
+  .mobile-sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,.96); border-top: 1px solid #e2e8f0; padding: .75rem 1.25rem; z-index: 990; justify-content: space-between; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,.06); } .mobile-sticky-bar .lbl { font-size: .74rem; color: #64748b; text-transform: uppercase; font-weight: 700; } .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: #15803d; }
+  @media (max-width: 768px) { .mobile-sticky-bar { display: flex; } :global(body) { padding-bottom: 4.5rem; } .calc-box, .article-wrap { padding: 1.25rem; } .breakdown-title { display: block; } }
+</style>
 
-  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
-  <script is:inline>
-    const oldDrawnBasic = document.getElementById('oldDrawnBasic');
-    const arrearsFitment = document.getElementById('arrearsFitment');
-    const arrearsMonthsInput = document.getElementById('arrearsMonthsInput');
-    const drawnDaRate = document.getElementById('drawnDaRate');
-
-    const dispMonthlyDiff = document.getElementById('dispMonthlyDiff');
-    const dispNpsOffset = document.getElementById('dispNpsOffset');
-    const dispTotalArrears = document.getElementById('dispTotalArrears');
-    const stickyArrears = document.getElementById('stickyArrears');
-
-    const slipNewBasic = document.getElementById('slipNewBasic');
-    const slipOldBasic = document.getElementById('slipOldBasic');
-    const slipOldDaDrawn = document.getElementById('slipOldDaDrawn');
-    const slipNetMonthlyDiff = document.getElementById('slipNetMonthlyDiff');
-    const slipGrossArrears = document.getElementById('slipGrossArrears');
-    const slipNpsDeduct = document.getElementById('slipNpsDeduct');
-    const slipNetCashArrears = document.getElementById('slipNetCashArrears');
-    const slipDurationLabel = document.getElementById('slipDurationLabel');
-
-    function calculateArrears() {
-      const basic = parseFloat(oldDrawnBasic.value) || 0;
-      const fitment = parseFloat(arrearsFitment.value) || 2.86;
-      const months = parseInt(arrearsMonthsInput.value) || 12;
-      const daRate = parseFloat(drawnDaRate.value) || 0.53;
-
-      // Arithmetic Engine
-      const revisedBasic = Math.round(basic * fitment);
-      const oldDaDrawnMonthly = Math.round(basic * daRate);
-      const totalOldDrawnMonthly = basic + oldDaDrawnMonthly;
-
-      // Net Monthly Difference (Due Basic - Total Old Drawn)
-      const monthlyDiff = Math.max(0, revisedBasic - totalOldDrawnMonthly);
-      const grossArrears = monthlyDiff * months;
-
-      // 10% NPS Deduction on the incremental Basic Pay portion
-      const incrementalBasicMonthly = Math.max(0, revisedBasic - basic);
-      const npsDeductionTotal = Math.round(incrementalBasicMonthly * 0.10 * months);
-
-      // Net Cash Arrears Credited
-      const netCashArrears = Math.max(0, grossArrears - npsDeductionTotal);
-
-      // DOM Updates
-      dispMonthlyDiff.textContent = '₹' + monthlyDiff.toLocaleString('en-IN');
-      dispNpsOffset.textContent = '₹' + npsDeductionTotal.toLocaleString('en-IN');
-      dispTotalArrears.textContent = '₹' + grossArrears.toLocaleString('en-IN');
-      if (stickyArrears) stickyArrears.textContent = '₹' + netCashArrears.toLocaleString('en-IN');
-
-      slipNewBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
-      slipOldBasic.textContent = '-₹' + basic.toLocaleString('en-IN');
-      slipOldDaDrawn.textContent = '-₹' + oldDaDrawnMonthly.toLocaleString('en-IN');
-      slipNetMonthlyDiff.textContent = '₹' + monthlyDiff.toLocaleString('en-IN');
-      slipGrossArrears.textContent = '₹' + grossArrears.toLocaleString('en-IN');
-      slipNpsDeduct.textContent = '-₹' + npsDeductionTotal.toLocaleString('en-IN');
-      slipNetCashArrears.textContent = '₹' + netCashArrears.toLocaleString('en-IN');
-
-      slipDurationLabel.textContent = months + ' Months Retroactive Period';
-    }
-
-    // Input Listeners
-    oldDrawnBasic.addEventListener('input', calculateArrears);
-    arrearsFitment.addEventListener('change', calculateArrears);
-    arrearsMonthsInput.addEventListener('input', calculateArrears);
-    drawnDaRate.addEventListener('change', calculateArrears);
-
-    // Duration Pill Buttons
-    const pills = document.querySelectorAll('#monthPills .chip-btn');
-    pills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        pills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        arrearsMonthsInput.value = pill.getAttribute('data-m');
-        calculateArrears();
-      });
-    });
-
-    // FAQ Accordion
-    document.querySelectorAll('.faq-quest').forEach(q => {
-      q.addEventListener('click', () => {
-        q.parentElement.classList.toggle('open');
-      });
-    });
-
-    // Initial Execution
-    calculateArrears();
-  </script>
-
-</body>
-</html>
+<script is:inline>
+  const oldDrawnBasic = document.getElementById('oldDrawnBasic');
+  const arrearsFitment = document.getElementById('arrearsFitment');
+  const arrearsMonthsInput = document.getElementById('arrearsMonthsInput');
+  const drawnDaRate = document.getElementById('drawnDaRate');
+  const dispMonthlyDiff = document.getElementById('dispMonthlyDiff');
+  const dispNpsOffset = document.getElementById('dispNpsOffset');
+  const dispTotalArrears = document.getElementById('dispTotalArrears');
+  const stickyArrears = document.getElementById('stickyArrears');
+  const slipNewBasic = document.getElementById('slipNewBasic');
+  const slipOldBasic = document.getElementById('slipOldBasic');
+  const slipOldDaDrawn = document.getElementById('slipOldDaDrawn');
+  const slipNetMonthlyDiff = document.getElementById('slipNetMonthlyDiff');
+  const slipGrossArrears = document.getElementById('slipGrossArrears');
+  const slipNpsDeduct = document.getElementById('slipNpsDeduct');
+  const slipNetCashArrears = document.getElementById('slipNetCashArrears');
+  const slipDurationLabel = document.getElementById('slipDurationLabel');
+  const money = (value) => '₹' + Math.round(value).toLocaleString('en-IN');
+  function calculateArrears() {
+    const basic = parseFloat(oldDrawnBasic.value) || 0;
+    const fitment = parseFloat(arrearsFitment.value) || 2.86;
+    const months = parseInt(arrearsMonthsInput.value) || 12;
+    const daRate = parseFloat(drawnDaRate.value) || 0.53;
+    const revisedBasic = Math.round(basic * fitment);
+    const oldDaDrawnMonthly = Math.round(basic * daRate);
+    const monthlyDiff = Math.max(0, revisedBasic - basic - oldDaDrawnMonthly);
+    const grossArrears = monthlyDiff * months;
+    const npsDeductionTotal = Math.round(Math.max(0, revisedBasic - basic) * 0.1 * months);
+    const netCashArrears = Math.max(0, grossArrears - npsDeductionTotal);
+    dispMonthlyDiff.textContent = money(monthlyDiff); dispNpsOffset.textContent = money(npsDeductionTotal); dispTotalArrears.textContent = money(grossArrears); stickyArrears.textContent = money(netCashArrears);
+    slipNewBasic.textContent = money(revisedBasic); slipOldBasic.textContent = '-₹' + basic.toLocaleString('en-IN'); slipOldDaDrawn.textContent = '-₹' + oldDaDrawnMonthly.toLocaleString('en-IN'); slipNetMonthlyDiff.textContent = money(monthlyDiff); slipGrossArrears.textContent = money(grossArrears); slipNpsDeduct.textContent = '-₹' + npsDeductionTotal.toLocaleString('en-IN'); slipNetCashArrears.textContent = money(netCashArrears); slipDurationLabel.textContent = months + ' Months Retroactive Period';
+  }
+  [oldDrawnBasic, arrearsFitment, arrearsMonthsInput, drawnDaRate].forEach((element) => element.addEventListener('input', calculateArrears));
+  [arrearsFitment, drawnDaRate].forEach((element) => element.addEventListener('change', calculateArrears));
+  document.querySelectorAll('#monthPills .chip-btn').forEach((pill) => pill.addEventListener('click', () => { document.querySelectorAll('#monthPills .chip-btn').forEach((p) => p.classList.remove('active')); pill.classList.add('active'); arrearsMonthsInput.value = pill.dataset.m; calculateArrears(); }));
+  document.querySelectorAll('.faq-quest').forEach((question) => question.addEventListener('click', () => question.parentElement.classList.toggle('open')));
+  calculateArrears();
+</script>
