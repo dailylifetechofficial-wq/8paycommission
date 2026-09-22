@@ -2,52 +2,48 @@
 // src/pages/pay-matrix.astro
 const siteUrl = "https://8paycommission.com";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
-const pageTitle = "8th Pay Commission Pay Matrix Table: Levels 1 to 18 Comparative Grid & Stages";
-const pageDescription = "Explore the complete 8th Pay Commission Pay Matrix table across Levels 1 to 18. Comparative analysis of 7th vs 8th CPC starting basic pay, 3% annual increments, and career stages.";
+const pageTitle = "8th Pay Commission Pay Matrix Table: Levels 1-18 Stages, Increments & Fitment";
+const pageDescription = "Explore the complete 8th Central Pay Commission Pay Matrix. Analyze Level 1 to 18 cell progressions, annual 3% compounding increments, promotion jump rules, and career stage benchmarks.";
 
-// Complete Level 1 to 18 Comprehensive Pay Matrix Data
-const fullMatrixData = [
-  { level: "Level 1", gp: "GP 1800", pb: "PB-1 (5200-20200)", roles: "MTS, Peon, Group D, Track Maintainer", min7th: 18000, max7th: 56900, min8th_225: 40500, max8th_225: 128025, min8th_286: 51480, max8th_286: 162734, cells: 40 },
-  { level: "Level 2", gp: "GP 1900", pb: "PB-1 (5200-20200)", roles: "Lower Division Clerk (LDC), Junior Constable", min7th: 19900, max7th: 63200, min8th_225: 44775, max8th_225: 142200, min8th_286: 56914, max8th_286: 180752, cells: 40 },
-  { level: "Level 3", gp: "GP 2000", pb: "PB-1 (5200-20200)", roles: "Police Constable, Senior Clerk, Driver, Postal Assistant", min7th: 21700, max7th: 69100, min8th_225: 48825, max8th_225: 155475, min8th_286: 62062, max8th_286: 197626, cells: 40 },
-  { level: "Level 4", gp: "GP 2400", pb: "PB-1 (5200-20200)", roles: "Head Constable, Upper Division Clerk (UDC), Tax Assistant", min7th: 25500, max7th: 81100, min8th_225: 57375, max8th_225: 182475, min8th_286: 72930, max8th_286: 231946, cells: 40 },
-  { level: "Level 5", gp: "GP 2800", pb: "PB-1 (5200-20200)", roles: "Auditor, Accountant, Assistant Sub-Inspector (ASI)", min7th: 29200, max7th: 92300, min8th_225: 65700, max8th_225: 207675, min8th_286: 83512, max8th_286: 263978, cells: 40 },
-  { level: "Level 6", gp: "GP 4200", pb: "PB-2 (9300-34800)", roles: "Sub-Inspector (SI), Inspector, Primary Teacher, Junior Engineer", min7th: 35400, max7th: 112400, min8th_225: 79650, max8th_225: 252900, min8th_286: 101244, max8th_286: 321464, cells: 40 },
-  { level: "Level 7", gp: "GP 4600", pb: "PB-2 (9300-34800)", roles: "Assistant Section Officer (ASO), Section Engineer, Inspector", min7th: 44900, max7th: 142400, min8th_225: 101025, max8th_225: 320400, min8th_286: 128414, max8th_286: 407264, cells: 40 },
-  { level: "Level 8", gp: "GP 4800", pb: "PB-2 (9300-34800)", roles: "Assistant Accounts Officer (AAO), Section Officer (SO)", min7th: 47600, max7th: 151100, min8th_225: 107100, max8th_225: 339975, min8th_286: 136136, max8th_286: 432146, cells: 40 },
-  { level: "Level 9", gp: "GP 5400 (PB-2)", pb: "PB-2 (9300-34800)", roles: "Senior Section Officer, Senior Accounts Officer", min7th: 53100, max7th: 167800, min8th_225: 119475, max8th_225: 377550, min8th_286: 151866, max8th_286: 479908, cells: 40 },
-  { level: "Level 10", gp: "GP 5400 (PB-3)", pb: "PB-3 (15600-39100)", roles: "Group-A Entry, SDM, DSP, Assistant Commissioner, Capt/Lt", min7th: 56100, max7th: 177500, min8th_225: 126225, max8th_225: 399375, min8th_286: 160446, max8th_286: 507650, cells: 40 },
-  { level: "Level 11", gp: "GP 6600", pb: "PB-3 (15600-39100)", roles: "Under Secretary, Executive Engineer, Major", min7th: 67700, max7th: 208700, min8th_225: 152325, max8th_225: 469575, min8th_286: 193622, max8th_286: 596882, cells: 39 },
-  { level: "Level 12", gp: "GP 7600", pb: "PB-3 (15600-39100)", roles: "Deputy Secretary, Superintending Engineer, Lt Colonel", min7th: 78800, max7th: 209200, min8th_225: 177300, max8th_225: 470700, min8th_286: 225368, max8th_286: 598312, cells: 34 },
-  { level: "Level 13", gp: "GP 8700", pb: "PB-4 (37400-67000)", roles: "Director, Chief Engineer, Colonel", min7th: 123100, max7th: 215900, min8th_225: 276975, max8th_225: 485775, min8th_286: 352066, max8th_286: 617474, cells: 20 },
-  { level: "Level 13A", gp: "GP 8900", pb: "PB-4 (37400-67000)", roles: "Senior Director, DIG, Chief Engineer Non-Functional", min7th: 139600, max7th: 217600, min8th_225: 314100, max8th_225: 489600, min8th_286: 399256, max8th_286: 622336, cells: 18 },
-  { level: "Level 14", gp: "GP 10000", pb: "PB-4 (37400-67000)", roles: "Joint Secretary, Inspector General (IG), Brigadier", min7th: 144200, max7th: 218200, min8th_225: 324450, max8th_225: 490950, min8th_286: 412412, max8th_286: 624052, cells: 16 },
-  { level: "Level 15", gp: "HAG", pb: "HAG Scale", roles: "Principal Secretary, Additional Director General, Major General", min7th: 182200, max7th: 224100, min8th_225: 409950, max8th_225: 504225, min8th_286: 521092, max8th_286: 640926, cells: 9 },
-  { level: "Level 16", gp: "HAG+", pb: "HAG+ Scale", roles: "Special Secretary, Director General of Police (DG), Lt General", min7th: 205400, max7th: 224400, min8th_225: 462150, max8th_225: 504900, min8th_286: 587444, max8th_286: 641784, cells: 5 },
-  { level: "Level 17", gp: "Apex Scale", pb: "Apex Scale", roles: "Secretary to Government of India, Vice Chief of Army Staff", min7th: 225000, max7th: 225000, min8th_225: 506250, max8th_225: 506250, min8th_286: 643500, max8th_286: 643500, cells: 1 },
-  { level: "Level 18", gp: "Cabinet Sec", pb: "Cabinet Sec Scale", roles: "Cabinet Secretary of India, Chief of Army/Navy/Air Staff", min7th: 250000, max7th: 250000, min8th_225: 562500, max8th_225: 562500, min8th_286: 715000, max8th_286: 715000, cells: 1 }
+// Comprehensive Pay Matrix Data with Structural Benchmarks
+const matrixData = [
+  { level: "Level 1", gp: "GP 1800", group: "Group C (MTS / Operational)", entry7th: 18000, ceil7th: 56900, entry225: 40500, ceil225: 128025, entry286: 51480, ceil286: 162734, steps: 40 },
+  { level: "Level 2", gp: "GP 1900", group: "Group C (LDC / Clerical)", entry7th: 19900, ceil7th: 63200, entry225: 44775, ceil225: 142200, entry286: 56914, ceil286: 180752, steps: 40 },
+  { level: "Level 3", gp: "GP 2000", group: "Group C (Constable / Driver)", entry7th: 21700, ceil7th: 69100, entry225: 48825, ceil225: 155475, entry286: 62062, ceil286: 197626, steps: 40 },
+  { level: "Level 4", gp: "GP 2400", group: "Group C (UDC / Technical Assistant)", entry7th: 25500, ceil7th: 81100, entry225: 57375, ceil225: 182475, entry286: 72930, ceil286: 231946, steps: 40 },
+  { level: "Level 5", gp: "GP 2800", group: "Group C (Auditor / Accountant)", entry7th: 29200, ceil7th: 92300, entry225: 65700, ceil225: 207675, entry286: 83512, ceil286: 263978, steps: 40 },
+  { level: "Level 6", gp: "GP 4200", group: "Group B Non-Gazetted (SI / Inspector)", entry7th: 35400, ceil7th: 112400, entry225: 79650, ceil225: 252900, entry286: 101244, ceil286: 321464, steps: 40 },
+  { level: "Level 7", gp: "GP 4600", group: "Group B Non-Gazetted (ASO / Section Eng)", entry7th: 44900, ceil7th: 142400, entry225: 101025, ceil225: 320400, entry286: 128414, ceil286: 407264, steps: 40 },
+  { level: "Level 8", gp: "GP 4800", group: "Group B Gazetted (AAO / Section Officer)", entry7th: 47600, ceil7th: 151100, entry225: 107100, ceil225: 339975, entry286: 136136, ceil286: 432146, steps: 40 },
+  { level: "Level 9", gp: "GP 5400", group: "Group B Gazetted (Senior Accounts Officer)", entry7th: 53100, ceil7th: 167800, entry225: 119475, ceil225: 377550, entry286: 151866, ceil286: 479908, steps: 40 },
+  { level: "Level 10", gp: "GP 5400", group: "Group A (Direct Recruit SDM / DSP / Assistant Comm)", entry7th: 56100, ceil7th: 177500, entry225: 126225, ceil225: 399375, entry286: 160446, ceil286: 507650, steps: 40 },
+  { level: "Level 11", gp: "GP 6600", group: "Group A (Under Secretary / Executive Eng)", entry7th: 67700, ceil7th: 208700, entry225: 152325, ceil225: 469575, entry286: 193622, ceil286: 596882, steps: 39 },
+  { level: "Level 12", gp: "GP 7600", group: "Group A (Deputy Secretary / Joint Director)", entry7th: 78800, ceil7th: 209200, entry225: 177300, ceil225: 470700, entry286: 225368, ceil286: 598312, steps: 34 },
+  { level: "Level 13", gp: "GP 8700", group: "Group A (Director / Chief Engineer)", entry7th: 123100, ceil7th: 215900, entry225: 276975, ceil225: 485775, entry286: 352066, ceil286: 617474, steps: 20 },
+  { level: "Level 13A", gp: "GP 8900", group: "Group A (Senior Director / DIG Selection)", entry7th: 139600, ceil7th: 217600, entry225: 314100, ceil225: 489600, entry286: 399256, ceil286: 622336, steps: 18 },
+  { level: "Level 14", gp: "GP 10000", group: "Group A (Joint Secretary / IG Police)", entry7th: 144200, ceil7th: 218200, entry225: 324450, ceil225: 490950, entry286: 412412, ceil286: 624052, steps: 16 },
+  { level: "Level 15", gp: "HAG", group: "Senior Leadership (Principal Sec / ADG)", entry7th: 182200, ceil7th: 224100, entry225: 409950, ceil225: 504225, entry286: 521092, ceil286: 640926, steps: 9 },
+  { level: "Level 16", gp: "HAG+", group: "Executive Directorship (Special Sec / DG Police)", entry7th: 205400, ceil7th: 224400, entry225: 462150, ceil225: 504900, entry286: 587444, ceil286: 641784, steps: 5 },
+  { level: "Level 17", gp: "Apex Scale", group: "Departmental Secretary to Govt of India", entry7th: 225000, ceil7th: 225000, entry225: 506250, ceil225: 506250, entry286: 643500, ceil286: 643500, steps: 1 },
+  { level: "Level 18", gp: "Cabinet Sec", group: "Cabinet Secretary of India", entry7th: 250000, ceil7th: 250000, entry225: 562500, ceil225: 562500, entry286: 715000, ceil286: 715000, steps: 1 }
 ];
 
 const faqs = [
   {
-    q: "What is the 8th Pay Commission Pay Matrix?",
-    a: "The 8th Pay Commission Pay Matrix is a comprehensive two-dimensional grid that defines the compensation structure for Indian Central Government employees. It arranges posts vertically into 18 hierarchy levels and horizontally into progressive index cells that represent 3% annual compound increments across an employee's service career."
+    q: "How does the Pay Matrix prevent pay anomalies between seniors and juniors?",
+    a: "Under older running pay bands, junior recruits joining after a dearness allowance hike often drew comparable basic salaries to seniors who had served for years. The Pay Matrix eliminates this through distinct index stages. When a senior's basic salary is eclipsed or matched by a newly appointed or promoted junior within the same cadre, administrative 'stepping-up of pay' rules adjust the senior's basic pay upward to preserve seniority hierarchy."
   },
   {
-    q: "How does an employee progress through the Pay Matrix cells?",
-    a: "Employees advance in two ways: Vertically through annual performance increments (moving down one cell within the same level, worth ~3%), and Horizontally upon promotion or financial upgradation under MACP (moving to the next higher Pay Level, where pay is fitted at the nearest matching higher cell)."
+    q: "What is 'bunching of stages' and how will it be addressed in the 8th Pay Matrix?",
+    a: "Bunching occurs when consecutive salary stages from an older scale are compressed into a single identical cell in a new matrix. To prevent loss of earned seniority, pay revision rules mandate that whenever two or more consecutive stages in an older scale fall into the same cell of the revised scale, an additional increment (3% step) is added for every two completed stages to maintain clear seniority separation."
   },
   {
-    q: "Why was the Grade Pay system replaced by the Pay Matrix?",
-    a: "The 7th CPC abolished the running Pay Band and Grade Pay framework introduced in the 6th CPC because it created severe wage compression, promotion pay anomalies, and confusion regarding allowances. The 18-level matrix provides complete transparency, uniform progression steps, and predictability."
+    q: "How does horizontal cell progression operate during an MACP financial upgradation?",
+    a: "Under the Modified Assured Career Progression (MACP) scheme, an employee who completes 10, 20, or 30 years without functional promotion is upgraded to the immediate next vertical Pay Level. Their salary is computed by adding one annual increment in their existing level, and then fitting that resulting figure into the cell that equals or immediately exceeds it in the higher Pay Level."
   },
   {
-    q: "What is the anticipated minimum entry salary in Level 1 under the 8th CPC?",
-    a: "Level 1 starting basic pay is ₹18,000 under the 7th CPC. Under the projected 8th CPC fitment factors, minimum basic pay will adjust to ₹40,500 at a 2.25x baseline multiplier, ₹46,260 at a 2.57x parity multiplier, and ₹51,480 at a 2.86x staff federation target multiplier."
-  },
-  {
-    q: "What is the maximum salary ceiling under Level 18 of the Pay Matrix?",
-    a: "Level 18 represents the apex executive post: the Cabinet Secretary of India. Its basic salary is capped at ₹2,50,000 under the 7th CPC. Under the 8th CPC, this apex figure is projected to adjust between ₹5,62,500 (at 2.25x) and ₹7,15,000 (at 2.86x)."
+    q: "Why do senior bureaucratic levels (15 to 18) contain fewer index cells?",
+    a: "Levels 1 to 12 contain between 34 and 40 cells to accommodate careers spanning 30 to 40 years without stagnation. In contrast, Higher Administrative Grade (HAG) and Apex posts (Levels 15 to 18) are typically reached near the twilight of an official's career. As officers serve limited tenures (usually 1 to 5 years) before superannuation, fewer annual increment stages are mathematically required."
   }
 ];
 ---
@@ -59,7 +55,7 @@ const faqs = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>{pageTitle}</title>
   <meta name="description" content={pageDescription} />
-  <meta name="keywords" content="8th pay commission pay matrix, pay matrix level 1 to 18, 7th vs 8th cpc pay matrix table, macp promotion pay matrix, central government salary index cells, annual increment formula" />
+  <meta name="keywords" content="8th pay commission pay matrix table, 7th cpc vs 8th cpc salary grid, level 1 to 18 basic pay cells, macp promotion pay adjustment, annual increment 3 percent compounding, stepping up of pay rules" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
   <link rel="canonical" href={canonicalURL} />
 
@@ -69,13 +65,12 @@ const faqs = [
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDescription} />
   <meta property="og:url" content={canonicalURL} />
-  <meta property="og:site_name" content="8th Pay Commission Hub" />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Schema.org WebPage + Table + FAQPage -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
@@ -103,7 +98,6 @@ const faqs = [
       --surface: #ffffff;
       --surface-subtle: #f1f5f9;
       --border: #e2e8f0;
-      --border-focus: #2563eb;
       --primary: #1d4ed8;
       --primary-hover: #1e40af;
       --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
@@ -126,7 +120,7 @@ const faqs = [
 
     .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
 
-    /* Hero Header */
+    /* Hero */
     .hero-header {
       text-align: center;
       padding: 3rem 1rem 1.75rem;
@@ -161,7 +155,7 @@ const faqs = [
       font-size: 1.05rem;
     }
 
-    /* Interactive Matrix Explorer Widget */
+    /* Interactive Matrix Simulator Widget */
     .calc-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -200,7 +194,7 @@ const faqs = [
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.25rem;
       margin-bottom: 1.5rem;
     }
@@ -349,7 +343,7 @@ const faqs = [
       color: #1e40af;
     }
 
-    /* Tables */
+    /* Table */
     .table-responsive {
       overflow-x: auto;
       border: 1px solid var(--border);
@@ -471,13 +465,13 @@ const faqs = [
 
     <!-- HERO HEADER -->
     <header class="hero-header">
-      <div class="badge-pill">Central Civil & Defence Services Grid (2026)</div>
+      <div class="badge-pill">Public Remuneration & Cadre Matrix Analysis</div>
       <h1>8th Pay Commission Pay Matrix Table</h1>
-      <p>Complete comparative guide to Levels 1 to 18: starting baseline pay, 3% compound increment stages, promotional jumps, and compression ratios under expected fitment factors.</p>
+      <p>Analyze cell-by-cell progression schedules, annual 3% compounding increments, horizontal promotion jumps, and comparative Level 1-18 starting baselines under projected fitment multipliers.</p>
     </header>
 
-    <!-- INTERACTIVE MATRIX STAGE CALCULATOR WIDGET -->
-    <section class="calc-box" aria-label="8th Pay Commission Matrix Stage Calculator">
+    <!-- INTERACTIVE MATRIX SIMULATOR WIDGET -->
+    <section class="calc-box" aria-label="8th Pay Commission Matrix Stage Simulator">
       
       <!-- Multiplier Pills -->
       <div style="margin-bottom: 1.25rem;">
@@ -493,28 +487,28 @@ const faqs = [
       <!-- Controls Grid -->
       <div class="form-grid">
         <div class="form-item">
-          <label for="matrixLevelSelect">Select Pay Matrix Level</label>
+          <label for="matrixLevelSelect">Current Pay Matrix Level</label>
           <select id="matrixLevelSelect">
-            {fullMatrixData.map((row) => (
-              <option value={row.min7th} data-level={row.level} data-gp={row.gp} selected={row.level === "Level 6"}>
-                {row.level} ({row.gp}) - Min 7th: ₹{row.min7th.toLocaleString('en-IN')}
+            {matrixData.map((row) => (
+              <option value={row.entry7th} data-level={row.level} data-gp={row.gp} selected={row.level === "Level 6"}>
+                {row.level} ({row.gp}) - Min 7th: ₹{row.entry7th.toLocaleString('en-IN')}
               </option>
             ))}
           </select>
         </div>
 
         <div class="form-item">
-          <label for="matrixStageInput">Current Service Stage (Index Cell)</label>
+          <label for="matrixStageInput">Completed Service Years (Cell Index)</label>
           <select id="matrixStageInput">
-            <option value="1">Cell 1 (Entry Starting Pay)</option>
-            <option value="2">Cell 2 (1 Year Completed - 1 Increment)</option>
-            <option value="3">Cell 3 (2 Years Completed - 2 Increments)</option>
-            <option value="5" selected>Cell 5 (4 Years Completed)</option>
-            <option value="10">Cell 10 (9 Years Completed)</option>
-            <option value="15">Cell 15 (14 Years Completed)</option>
-            <option value="20">Cell 20 (19 Years Completed)</option>
-            <option value="25">Cell 25 (24 Years Completed)</option>
-            <option value="30">Cell 30 (29 Years Completed)</option>
+            <option value="1">Cell 1 (Fresh Entry Starting Pay)</option>
+            <option value="2">Cell 2 (1 Increment / 1 Year Service)</option>
+            <option value="3">Cell 3 (2 Increments / 2 Years Service)</option>
+            <option value="5" selected>Cell 5 (4 Increments / 4 Years Service)</option>
+            <option value="10">Cell 10 (9 Increments / Mid-Career)</option>
+            <option value="15">Cell 15 (14 Increments / Senior Stage)</option>
+            <option value="20">Cell 20 (19 Increments / Advanced Stage)</option>
+            <option value="25">Cell 25 (24 Increments / Pre-Retirement)</option>
+            <option value="30">Cell 30 (29 Increments / Terminal Stage)</option>
           </select>
         </div>
 
@@ -531,7 +525,7 @@ const faqs = [
         </div>
 
         <div class="form-item">
-          <label for="citySelect">City Tier for HRA Projection</label>
+          <label for="citySelect">City Tier (HRA Allowance)</label>
           <select id="citySelect">
             <option value="0.30" selected>Class X (30% - Metro Cities)</option>
             <option value="0.20">Class Y (20% - Tier-2 Centers)</option>
@@ -551,7 +545,7 @@ const faqs = [
           <div class="kpi-val" id="disp8thStage">₹1,14,114</div>
         </div>
         <div class="kpi-unit success">
-          <div class="kpi-label">Est. Gross Pay at Stage</div>
+          <div class="kpi-label">Est. Gross Monthly at Stage</div>
           <div class="kpi-val" id="dispStageGross">₹1,51,948</div>
         </div>
       </div>
@@ -559,17 +553,17 @@ const faqs = [
       <!-- Live Calculation Breakdown -->
       <div class="breakdown-box">
         <div class="breakdown-title">
-          <span>Pay Matrix Progression Breakdown</span>
+          <span>Cell Progression Arithmetic Slip</span>
           <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Level 6 (GP 4200) • Cell 5</span>
         </div>
         <table class="breakdown-table">
           <tbody>
             <tr>
-              <td>Level Starting Baseline (Cell 1 Entry Basic under 8th CPC)</td>
+              <td>Level Baseline (Cell 1 Starting Entry Basic in 8th CPC)</td>
               <td class="num" id="slipCell1">₹1,01,244</td>
             </tr>
             <tr>
-              <td>Compounded Annual Increment Additions (3% per vertical step)</td>
+              <td>Cumulative 3% Compounded Annual Increments across Stages</td>
               <td class="num" id="slipIncrementAdd">+₹12,870</td>
             </tr>
             <tr style="font-weight: 700; background: #f8fafc;">
@@ -577,15 +571,15 @@ const faqs = [
               <td class="num" id="slipFinalBasic" style="color: var(--primary);">₹1,14,114</td>
             </tr>
             <tr>
-              <td>House Rent Allowance (HRA calculated on stage basic)</td>
+              <td>House Rent Allowance (HRA calculated on revised stage basic)</td>
               <td class="num" id="slipHra">₹34,234</td>
             </tr>
             <tr>
-              <td>Transport Allowance (Cadre base rate)</td>
+              <td>Transport Allowance (Cadre-specific base transit rate)</td>
               <td class="num" id="slipTa">₹3,600</td>
             </tr>
             <tr style="font-weight: 800; background: var(--accent-green-bg);">
-              <td style="color: var(--accent-green);">Projected Gross Monthly Emoluments at this Cell</td>
+              <td style="color: var(--accent-green);">Projected Gross Monthly Emoluments at this Stage</td>
               <td class="num" id="slipGross" style="color: var(--accent-green);">₹1,51,948</td>
             </tr>
           </tbody>
@@ -594,32 +588,23 @@ const faqs = [
 
     </section>
 
-    <!-- FULL 1300+ WORDS IN-DEPTH SEO ARTICLE -->
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
     <article class="article-wrap">
-      <h2>Comprehensive Guide: Anatomy of the 8th Central Pay Commission Pay Matrix</h2>
+      <h2>1. The Philosophical Shift: Replacing Pay Bands with a Deterministic Matrix</h2>
       <p>
-        The introduction of the <strong>Pay Matrix</strong> by the 7th Central Pay Commission (enacted January 1, 2016) marked the most profound administrative reform in Indian public administration since independence. Prior to the matrix, Central Government compensation relied on the complicated running <em>Pay Band and Grade Pay</em> framework introduced by the 6th CPC in 2006. That older structure was burdened by structural wage compression, anomalous promotional increments, and contentious disparities between military and civil postings.
-      </p>
-      <p>
-        With employee unions, staff confederations (National Council of JCM), and defense services preparing for the <strong>8th Central Pay Commission (8th CPC)</strong> scheduled for the 2026 calendar cycle, the 18-level Pay Matrix architecture remains the central focal point. Understanding how this two-dimensional mathematical matrix coordinates annual increments, promotion ladders, Modified Assured Career Progression (MACP), and retirement calculations is essential for every government servant.
-      </p>
-
-      <h2>1. The Two Dimensions: How the Matrix Operates</h2>
-      <p>
-        The Pay Matrix functions as a structured cartesian coordinate system designed to eliminate arbitrary salary assignments:
+        The introduction of the Pay Matrix in Indian public administration resolved decades of structural dissonance. Under the 6th Central Pay Commission (2006–2015), public sector compensation depended on running "Pay Bands" coupled with a separate "Grade Pay." While intended to provide flexibility, this dual-variable model created severe operational flaws:
       </p>
       <ul>
-        <li><strong>Vertical Dimension (Levels 1 to 18):</strong> The vertical hierarchy correlates to functional administrative responsibility, posting rank, and previous Grade Pay benchmarks. Level 1 serves as the entry baseline for multi-tasking staff (MTS) and Group D employees, progressing sequentially through supervisory cadres (Levels 6–8), Class-I Gazetted echelons (Level 10), Joint Secretary cadres (Level 14), and culminating in the apex executive post: Level 18 (Cabinet Secretary of India).</li>
-        <li><strong>Horizontal Dimension (Sequential Index Cells):</strong> Moving from left to right along any level reveals a succession of index cells (spanning from 20 up to 40 stages). Each consecutive cell represents an employee's <strong>annual increment</strong>, standardized at approximately <strong>3% compound growth</strong> over the preceding cell.</li>
+        <li><strong>The Senior-Junior Anomaly:</strong> Because dearness allowance increases accrued continuously, newly recruited junior personnel often joined at effective gross earnings that matched or exceeded colleagues with five or more years of service in the same grade.</li>
+        <li><strong>Unintended Wage Compression:</strong> Promotional grade increments often failed to yield meaningful take-home pay differences, reducing incentive for employees to accept posts carrying substantially higher operational accountability.</li>
       </ul>
-
-      <div class="formula-banner">
-        Next Vertical Stage (Annual Increment) = Current Cell Basic Pay × 1.03 (Rounded off to nearest hundred)
-      </div>
-
-      <h2>2. Complete 7th vs 8th CPC Pay Matrix Comparison Table (Levels 1 to 18)</h2>
       <p>
-        The table below provides a comprehensive overview of all 18 Pay Matrix levels, matching historical Grade Pay designations and official cadre designations with starting entry pay (Cell 1) and terminal career maximums under both baseline (2.25x) and federation target (2.86x) fitment scenarios:
+        The 7th Central Pay Commission systematically replaced this system with a <strong>two-dimensional mathematical matrix</strong>, grouping civil, railway, postal, and military cadres into 18 standardized vertical levels. Under the scheduled 8th Pay Commission, this architectural matrix is expected to be maintained, while individual numerical values within its cells will undergo comprehensive recalibration.
+      </p>
+
+      <h2>2. Complete 7th vs 8th CPC Pay Matrix Reference Table (Levels 1 to 18)</h2>
+      <p>
+        The table below provides a comprehensive comparison of all 18 Pay Matrix levels, correlating historical Grade Pay tiers, operational cadre designations, starting entry baselines (Cell 1), and terminal career ceilings under both consensus (2.25x) and federation target (2.86x) fitment scenarios:
       </p>
 
       <div class="table-responsive">
@@ -627,98 +612,130 @@ const faqs = [
           <thead>
             <tr>
               <th>Pay Level</th>
-              <th>Equivalent Grade Pay</th>
-              <th>Cadre / Designation Benchmark</th>
-              <th>7th CPC Entry (Cell 1)</th>
+              <th>Grade Pay</th>
+              <th>Cadre / Administrative Tier</th>
+              <th>7th CPC Base (Cell 1)</th>
               <th>8th CPC (2.25x Baseline)</th>
               <th>8th CPC (2.86x Target)</th>
               <th>Terminal Ceiling</th>
             </tr>
           </thead>
           <tbody>
-            {fullMatrixData.map((row) => (
+            {matrixData.map((row) => (
               <tr>
                 <td><strong>{row.level}</strong></td>
                 <td>{row.gp}</td>
-                <td>{row.roles}</td>
-                <td>₹{row.min7th.toLocaleString('en-IN')}</td>
-                <td>₹{row.min8th_225.toLocaleString('en-IN')}</td>
-                <td style="color: var(--primary); font-weight: 700;">₹{row.min8th_286.toLocaleString('en-IN')}</td>
-                <td style="color: #64748b; font-size: 0.85rem;">₹{row.max8th_286.toLocaleString('en-IN')}</td>
+                <td>{row.group}</td>
+                <td>₹{row.entry7th.toLocaleString('en-IN')}</td>
+                <td>₹{row.entry225.toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{row.entry286.toLocaleString('en-IN')}</td>
+                <td style="color: #64748b; font-size: 0.85rem;">₹{row.ceil286.toLocaleString('en-IN')}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <h2>3. Quick Matrix Level Selector: Inspect Starting Baselines</h2>
+      <h2>3. Quick Level Selector: Instant Baseline Inspection</h2>
       <p>
-        Click any level badge below to automatically load its parameters into the interactive projection engine above:
+        Select any level pill below to populate its specific starting entry figures into the interactive stage calculator above:
       </p>
 
       <div class="level-grid">
-        {fullMatrixData.map((item) => (
-          <div class="level-pill" data-min7th={item.min7th} data-level={item.level} data-gp={item.gp}>
+        {matrixData.map((item) => (
+          <div class="level-pill" data-min7th={item.entry7th} data-level={item.level} data-gp={item.gp}>
             <strong>{item.level}</strong>
-            <span>7th: ₹{item.min7th.toLocaleString('en-IN')}</span>
+            <span>7th: ₹{item.entry7th.toLocaleString('en-IN')}</span>
           </div>
         ))}
       </div>
 
-      <h2>4. Promotional Jumps: Horizontal Movement and MACP Rules</h2>
+      <h2>4. The Minimum Wage Floor: The Dr. Wallace Aykroyd Nutritional Formula</h2>
       <p>
-        One of the greatest achievements of the Pay Matrix system is the transparency it brings to departmental promotions and <strong>Modified Assured Career Progression (MACP)</strong> upgradations (awarded at 10, 20, and 30 years of continuous service).
+        The foundational anchor for Cell 1 of Level 1 is not chosen at random. Since the 15th Indian Labour Conference (ILC) in 1957, statutory minimum pay in Indian public service has been grounded in the <strong>Dr. Wallace Aykroyd Nutritional Formula</strong>.
       </p>
-      
-      <h3>The Exact Promotion Arithmetic in the Matrix</h3>
       <p>
-        When an employee is promoted from a lower level to a higher level (e.g., from Level 6 to Level 7), their new salary is not determined by arbitrary negotiation. Instead, it follows a standardized two-step process:
+        The Aykroyd framework determines the minimum living wage for a standard working-class family unit (defined as 3 consumption units: husband, wife, and two children consuming 0.5 units each) based on concrete physiological necessities:
       </p>
       <ol>
-        <li><strong>Granting Promotional Increment:</strong> Locate the employee’s existing cell in their current Level. Move vertically down by <em>one cell</em> within that same Level (granting a standard 3% promotional increment).</li>
-        <li><strong>Fitting into the Higher Level:</strong> Take the resulting basic pay from Step 1 and look across at the newly promoted Level. Locate the cell that is exactly equal to that figure. If no identical cell exists, the pay is fitted into the <strong>immediate next higher cell</strong> in that level.</li>
+        <li><strong>Caloric Intake:</strong> A minimum daily intake of 2,700 calories per adult consumption unit, factoring in balanced portions of cereals, pulses, milk, vegetables, edible oils, and sugar.</li>
+        <li><strong>Clothing Requirements:</strong> A statutory allowance of 72 yards of fabric per year per family unit.</li>
+        <li><strong>Housing Norms:</strong> Rent expenditure benchmarks assessed against subsidized government accommodation or prevailing urban municipal averages.</li>
+        <li><strong>Social & Contingency Expenditures:</strong> Fuel, lighting, children's education, and medical needs, standardized at 25% of total food and clothing costs following the Supreme Court's directives in the landmark <em>Reptakos Brett & Co.</em> ruling.</li>
       </ol>
+      <p>
+        Applying prevailing wholesale and retail indices across these nutritional standards is why staff side confederations (such as the National Council of JCM) demand a Level 1 minimum basic pay between <strong>₹51,480 and ₹54,000</strong> (a 2.86x to 3.00x multiplier). Conversely, budget analysts advocating for fiscal prudence propose an entry floor near <strong>₹40,500 to ₹46,260</strong> (2.25x to 2.57x) to prevent wage inflation from exceeding planned central expenditure ceilings.
+      </p>
 
+      <h2>5. Horizontal Promotion Mechanics: Standardized Upgradation Rules</h2>
+      <p>
+        The Pay Matrix eliminates ambiguity when calculating pay raises resulting from functional promotions or financial upgradation under the <strong>Modified Assured Career Progression (MACP)</strong> scheme. 
+      </p>
+      
       <div class="formula-banner">
-        Promotion Rule: Current Cell + 1 Vertical Increment in Same Level → Fit into Next Higher Value Cell in Promoted Level
+        Promotion Arithmetic: (Current Cell Pay + 1 Vertical Stage Increment in Same Level) → Match or Move to Immediate Higher Value Cell in New Level
       </div>
 
-      <h2>5. Compression Ratios: Balancing Entry Wages Against Apex Executive Scales</h2>
       <p>
-        A core responsibility of every Central Pay Commission is recalibrating the <strong>compression ratio</strong>—the arithmetic ratio between the lowest basic salary in Level 1 (MTS / Group D) and the highest salary ceiling in Level 18 (Cabinet Secretary of India).
-      </p>
-      <p>
-        Historical compression ratios across Pay Commissions reveal shifting fiscal priorities:
+        The procedure operates in two mandatory steps:
       </p>
       <ul>
-        <li><strong>1st Pay Commission (1946):</strong> Compression ratio of <strong>1:38</strong> (Lowest pay: ₹55; Highest pay: ₹2,000).</li>
-        <li><strong>5th Pay Commission (1996):</strong> Compression ratio compressed down to approximately <strong>1:10.7</strong>.</li>
-        <li><strong>6th Pay Commission (2006):</strong> Ratio relaxed to approximately <strong>1:11.4</strong> (₹7,000 to ₹80,000).</li>
-        <li><strong>7th Pay Commission (2016):</strong> Ratio established at <strong>1:13.9</strong> (₹18,000 minimum basic in Level 1 to ₹2,50,000 maximum basic in Level 18).</li>
-        <li><strong>8th Pay Commission Projections:</strong> Staff federations strongly advocate for a compression ratio of between <strong>1:12 and 1:13</strong>, seeking to lift the lower floor (Level 1) significantly to counteract food, urban housing, and educational cost inflation.</li>
+        <li><strong>Step 1 (Promotional Increment):</strong> Locate the employee’s existing basic pay cell in their current Level. Advance vertically down by one cell in that exact same column, adding a standard 3% promotional increment.</li>
+        <li><strong>Step 2 (Fitting into the Target Matrix Level):</strong> Take the resulting numerical figure from Step 1 and look across at the column for the newly promoted Level. If a cell exists that is exactly identical to that figure, basic pay is fixed at that cell. If no identical value exists, basic pay is fixed at the <strong>immediate next higher cell</strong> in that level.</li>
       </ul>
-
-      <h2>6. Annual Increments: Compounding Dynamics (January 1 vs. July 1)</h2>
       <p>
-        Under Central Government civil service rules, annual increments are uniform and standardized across two universal qualifying dates:
+        This simple, standardized rule prevents subjective interpretations by local accounts offices and ensures that an employee's basic pay upon promotion is always higher than what they would have earned by remaining in their feeder cadre.
+      </p>
+
+      <h2>6. The MACP Paradox & Financial Stagnation Challenges</h2>
+      <p>
+        Under central service guidelines, when an employee completes 10, 20, or 30 years of continuous service without an operational vacancy-based promotion, they receive financial upgradation under MACP. 
+      </p>
+      <p>
+        While MACP moves an employee's pay horizontally into the next higher Pay Level, it presents an administrative challenge known as the <strong>MACP Paradox</strong>:
       </p>
       <ul>
-        <li><strong>January 1st Cycle:</strong> Applicable to employees appointed, promoted, or granted MACP between January 2nd and July 1st of the preceding year.</li>
-        <li><strong>July 1st Cycle:</strong> Applicable to employees appointed, promoted, or granted MACP between July 2nd and January 1st of the preceding year.</li>
+        <li>Employees receive the financial benefits of the higher level (higher basic pay cell and increased allowance ceilings), but their substantive administrative post, rank designation, and statutory responsibilities remain unchanged.</li>
+        <li>In technical departments (e.g., Railways, Defence Production, and Postal engineering wings), personnel frequently spend 15 to 20 years within Levels 6, 7, and 8. Because middle-management cadres feature high employee density, employees progress rapidly through index cells, reaching the terminal stages (Cells 35 to 40) where further vertical movement halts.</li>
       </ul>
       <p>
-        Because each cell in the Pay Matrix compounds the preceding basic by approximately 3%, employees who complete long tenures in a single level receive progressively larger absolute rupee increments with each passing year. For example, in Level 6, early increments add approximately ₹1,100 per month to basic pay, whereas employees in Cell 25 receive increments exceeding ₹2,500 per month.
+        To prevent stagnation at these upper boundaries, the 8th Pay Commission is expected to review proposals to expand cell depth in middle levels or institutionalize guaranteed biennial (once every two years) stagnation increments that continue beyond Cell 40.
       </p>
 
-      <h2>7. Stagnation Relief: Terminal Cell Rules and Biennial Increments</h2>
+      <h2>7. The Compression Ratio: Balancing the Wage Distribution Curve</h2>
       <p>
-        A critical structural challenge in earlier pay commissions was <strong>salary stagnation</strong>: when an employee served in a post for decades without functional promotion, they eventually reached the maximum ceiling of their Pay Band.
-      </p>
-      <p>
-        The 7th CPC addressed this by providing between <strong>34 and 40 sequential cells</strong> for all regular operational cadres (Levels 1 to 12). If an employee reaches the final cell of their matrix level without further promotion, service rules provide for <em>stagnation increments</em>: granting additional biennial (once every two years) increments up to a statutory ceiling, ensuring dedicated personnel never experience a permanent freeze in base remuneration. The 8th CPC is expected to expand cell capacities in middle-management cadres (Levels 13 and 14) to prevent stagnation in technical leadership roles.
+        The <strong>compression ratio</strong> measures the arithmetic relationship between the entry basic salary of the lowest post in Level 1 (MTS) and the apex basic salary of the highest administrative office in Level 18 (Cabinet Secretary of India).
       </p>
 
-      <h2>8. Frequently Asked Questions (FAQ)</h2>
+      <div class="formula-banner">
+        Compression Ratio = Level 18 Cabinet Secretary Basic Pay ÷ Level 1 Entry-Level Basic Pay
+      </div>
+
+      <p>
+        A low compression ratio (e.g., 1:8 or 1:10) compresses the wage distribution, elevating lower-tier living standards but narrowing the salary gaps that reward senior executive liability. A high compression ratio (e.g., 1:20 or 1:30) widens executive incentives but risks leaving entry-level staff behind general cost-of-living increases.
+      </p>
+      <p>
+        Historical progression demonstrates how national pay policy has adjusted this balance:
+      </p>
+      <ul>
+        <li><strong>Post-Independence (1946–1973):</strong> Compression ratios started at an expansive <strong>1:38</strong>, gradually contracting under socialist economic planning models.</li>
+        <li><strong>5th Pay Commission (1996):</strong> Scaled down to an aggressive compression ratio of <strong>1:10.7</strong> (₹2,550 to ₹30,000).</li>
+        <li><strong>6th Pay Commission (2006):</strong> Expanded back to <strong>1:11.4</strong> (₹7,000 to ₹80,000).</li>
+        <li><strong>7th Pay Commission (2016):</strong> Widened to <strong>1:13.9</strong> (₹18,000 to ₹2,50,000), recognizing the complex management responsibilities handled by senior administrative leadership.</li>
+        <li><strong>8th Pay Commission Deliberations:</strong> Staff federations have lobbied for recalibrating the ratio closer to <strong>1:12.5</strong> by setting the minimum wage floor near ₹51,480 while establishing the apex ceiling near ₹6,43,500.</li>
+      </ul>
+
+      <h2>8. Cadre Harmonization Across Civilian, Railway, and Defence Services</h2>
+      <p>
+        A core objective of the modern Pay Matrix is establishing <strong>inter-service cadre parity</strong>. Prior to unified matrix tables, identical technical capabilities across different ministries received disparate pay classifications:
+      </p>
+      <ul>
+        <li><strong>Railway Technical Supervisory Cadres:</strong> Section Engineers and Senior Section Engineers (SSEs) historically contended with promotion caps in Level 7. The Pay Matrix structure enables streamlined movement into Group-B Gazetted supervisory cells without disrupting operational line-of-command hierarchies.</li>
+        <li><strong>Defence Services Pay Matrix:</strong> The armed forces utilize an equivalent military pay matrix that mirrors civil Levels 1 to 18 while integrating **Military Service Pay (MSP)** directly into retirement and dearness allowance calculations, compensating for the hardships and hazards unique to active military service.</li>
+        <li><strong>Central Paramilitary Forces (CAPF):</strong> Subordinate officers (Inspectors and Sub-Inspectors) enjoy exact pay parity with civil police and central investigative agencies through shared placement in Levels 6 and 7.</li>
+      </ul>
+
+      <h2>9. Frequently Asked Questions (FAQ)</h2>
       <div class="faq-list">
         {faqs.map((faq) => (
           <div class="faq-unit">
