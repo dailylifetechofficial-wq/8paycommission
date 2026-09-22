@@ -1,0 +1,863 @@
+---
+// src/pages/pay-matrix.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "8th Pay Commission Pay Matrix Table: Levels 1 to 18 Comparative Grid & Stages";
+const pageDescription = "Explore the complete 8th Pay Commission Pay Matrix table across Levels 1 to 18. Comparative analysis of 7th vs 8th CPC starting basic pay, 3% annual increments, and career stages.";
+
+// Complete Level 1 to 18 Comprehensive Pay Matrix Data
+const fullMatrixData = [
+  { level: "Level 1", gp: "GP 1800", pb: "PB-1 (5200-20200)", roles: "MTS, Peon, Group D, Track Maintainer", min7th: 18000, max7th: 56900, min8th_225: 40500, max8th_225: 128025, min8th_286: 51480, max8th_286: 162734, cells: 40 },
+  { level: "Level 2", gp: "GP 1900", pb: "PB-1 (5200-20200)", roles: "Lower Division Clerk (LDC), Junior Constable", min7th: 19900, max7th: 63200, min8th_225: 44775, max8th_225: 142200, min8th_286: 56914, max8th_286: 180752, cells: 40 },
+  { level: "Level 3", gp: "GP 2000", pb: "PB-1 (5200-20200)", roles: "Police Constable, Senior Clerk, Driver, Postal Assistant", min7th: 21700, max7th: 69100, min8th_225: 48825, max8th_225: 155475, min8th_286: 62062, max8th_286: 197626, cells: 40 },
+  { level: "Level 4", gp: "GP 2400", pb: "PB-1 (5200-20200)", roles: "Head Constable, Upper Division Clerk (UDC), Tax Assistant", min7th: 25500, max7th: 81100, min8th_225: 57375, max8th_225: 182475, min8th_286: 72930, max8th_286: 231946, cells: 40 },
+  { level: "Level 5", gp: "GP 2800", pb: "PB-1 (5200-20200)", roles: "Auditor, Accountant, Assistant Sub-Inspector (ASI)", min7th: 29200, max7th: 92300, min8th_225: 65700, max8th_225: 207675, min8th_286: 83512, max8th_286: 263978, cells: 40 },
+  { level: "Level 6", gp: "GP 4200", pb: "PB-2 (9300-34800)", roles: "Sub-Inspector (SI), Inspector, Primary Teacher, Junior Engineer", min7th: 35400, max7th: 112400, min8th_225: 79650, max8th_225: 252900, min8th_286: 101244, max8th_286: 321464, cells: 40 },
+  { level: "Level 7", gp: "GP 4600", pb: "PB-2 (9300-34800)", roles: "Assistant Section Officer (ASO), Section Engineer, Inspector", min7th: 44900, max7th: 142400, min8th_225: 101025, max8th_225: 320400, min8th_286: 128414, max8th_286: 407264, cells: 40 },
+  { level: "Level 8", gp: "GP 4800", pb: "PB-2 (9300-34800)", roles: "Assistant Accounts Officer (AAO), Section Officer (SO)", min7th: 47600, max7th: 151100, min8th_225: 107100, max8th_225: 339975, min8th_286: 136136, max8th_286: 432146, cells: 40 },
+  { level: "Level 9", gp: "GP 5400 (PB-2)", pb: "PB-2 (9300-34800)", roles: "Senior Section Officer, Senior Accounts Officer", min7th: 53100, max7th: 167800, min8th_225: 119475, max8th_225: 377550, min8th_286: 151866, max8th_286: 479908, cells: 40 },
+  { level: "Level 10", gp: "GP 5400 (PB-3)", pb: "PB-3 (15600-39100)", roles: "Group-A Entry, SDM, DSP, Assistant Commissioner, Capt/Lt", min7th: 56100, max7th: 177500, min8th_225: 126225, max8th_225: 399375, min8th_286: 160446, max8th_286: 507650, cells: 40 },
+  { level: "Level 11", gp: "GP 6600", pb: "PB-3 (15600-39100)", roles: "Under Secretary, Executive Engineer, Major", min7th: 67700, max7th: 208700, min8th_225: 152325, max8th_225: 469575, min8th_286: 193622, max8th_286: 596882, cells: 39 },
+  { level: "Level 12", gp: "GP 7600", pb: "PB-3 (15600-39100)", roles: "Deputy Secretary, Superintending Engineer, Lt Colonel", min7th: 78800, max7th: 209200, min8th_225: 177300, max8th_225: 470700, min8th_286: 225368, max8th_286: 598312, cells: 34 },
+  { level: "Level 13", gp: "GP 8700", pb: "PB-4 (37400-67000)", roles: "Director, Chief Engineer, Colonel", min7th: 123100, max7th: 215900, min8th_225: 276975, max8th_225: 485775, min8th_286: 352066, max8th_286: 617474, cells: 20 },
+  { level: "Level 13A", gp: "GP 8900", pb: "PB-4 (37400-67000)", roles: "Senior Director, DIG, Chief Engineer Non-Functional", min7th: 139600, max7th: 217600, min8th_225: 314100, max8th_225: 489600, min8th_286: 399256, max8th_286: 622336, cells: 18 },
+  { level: "Level 14", gp: "GP 10000", pb: "PB-4 (37400-67000)", roles: "Joint Secretary, Inspector General (IG), Brigadier", min7th: 144200, max7th: 218200, min8th_225: 324450, max8th_225: 490950, min8th_286: 412412, max8th_286: 624052, cells: 16 },
+  { level: "Level 15", gp: "HAG", pb: "HAG Scale", roles: "Principal Secretary, Additional Director General, Major General", min7th: 182200, max7th: 224100, min8th_225: 409950, max8th_225: 504225, min8th_286: 521092, max8th_286: 640926, cells: 9 },
+  { level: "Level 16", gp: "HAG+", pb: "HAG+ Scale", roles: "Special Secretary, Director General of Police (DG), Lt General", min7th: 205400, max7th: 224400, min8th_225: 462150, max8th_225: 504900, min8th_286: 587444, max8th_286: 641784, cells: 5 },
+  { level: "Level 17", gp: "Apex Scale", pb: "Apex Scale", roles: "Secretary to Government of India, Vice Chief of Army Staff", min7th: 225000, max7th: 225000, min8th_225: 506250, max8th_225: 506250, min8th_286: 643500, max8th_286: 643500, cells: 1 },
+  { level: "Level 18", gp: "Cabinet Sec", pb: "Cabinet Sec Scale", roles: "Cabinet Secretary of India, Chief of Army/Navy/Air Staff", min7th: 250000, max7th: 250000, min8th_225: 562500, max8th_225: 562500, min8th_286: 715000, max8th_286: 715000, cells: 1 }
+];
+
+const faqs = [
+  {
+    q: "What is the 8th Pay Commission Pay Matrix?",
+    a: "The 8th Pay Commission Pay Matrix is a comprehensive two-dimensional grid that defines the compensation structure for Indian Central Government employees. It arranges posts vertically into 18 hierarchy levels and horizontally into progressive index cells that represent 3% annual compound increments across an employee's service career."
+  },
+  {
+    q: "How does an employee progress through the Pay Matrix cells?",
+    a: "Employees advance in two ways: Vertically through annual performance increments (moving down one cell within the same level, worth ~3%), and Horizontally upon promotion or financial upgradation under MACP (moving to the next higher Pay Level, where pay is fitted at the nearest matching higher cell)."
+  },
+  {
+    q: "Why was the Grade Pay system replaced by the Pay Matrix?",
+    a: "The 7th CPC abolished the running Pay Band and Grade Pay framework introduced in the 6th CPC because it created severe wage compression, promotion pay anomalies, and confusion regarding allowances. The 18-level matrix provides complete transparency, uniform progression steps, and predictability."
+  },
+  {
+    q: "What is the anticipated minimum entry salary in Level 1 under the 8th CPC?",
+    a: "Level 1 starting basic pay is ₹18,000 under the 7th CPC. Under the projected 8th CPC fitment factors, minimum basic pay will adjust to ₹40,500 at a 2.25x baseline multiplier, ₹46,260 at a 2.57x parity multiplier, and ₹51,480 at a 2.86x staff federation target multiplier."
+  },
+  {
+    q: "What is the maximum salary ceiling under Level 18 of the Pay Matrix?",
+    a: "Level 18 represents the apex executive post: the Cabinet Secretary of India. Its basic salary is capped at ₹2,50,000 under the 7th CPC. Under the 8th CPC, this apex figure is projected to adjust between ₹5,62,500 (at 2.25x) and ₹7,15,000 (at 2.86x)."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="8th pay commission pay matrix, pay matrix level 1 to 18, 7th vs 8th cpc pay matrix table, macp promotion pay matrix, central government salary index cells, annual increment formula" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Hub" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + Table + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-focus: #2563eb;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Interactive Matrix Explorer Widget */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* Level Badges Grid */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.65rem;
+      margin: 1.25rem 0;
+    }
+    .level-pill {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 0.75rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .level-pill:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      background: #eff6ff;
+    }
+    .level-pill strong { display: block; font-size: 0.95rem; color: var(--text); }
+    .level-pill span { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Central Civil & Defence Services Grid (2026)</div>
+      <h1>8th Pay Commission Pay Matrix Table</h1>
+      <p>Complete comparative guide to Levels 1 to 18: starting baseline pay, 3% compound increment stages, promotional jumps, and compression ratios under expected fitment factors.</p>
+    </header>
+
+    <!-- INTERACTIVE MATRIX STAGE CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="8th Pay Commission Matrix Stage Calculator">
+      
+      <!-- Multiplier Pills -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Expected Fitment Multiplier:</span>
+        <div class="chip-bar" id="factorPills">
+          <button class="chip-btn" data-f="1.92">1.92x (Conservative DA Merge)</button>
+          <button class="chip-btn" data-f="2.25">2.25x (Baseline Model)</button>
+          <button class="chip-btn" data-f="2.57">2.57x (7th CPC Parity)</button>
+          <button class="chip-btn active" data-f="2.86">2.86x (Federation Target)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="matrixLevelSelect">Select Pay Matrix Level</label>
+          <select id="matrixLevelSelect">
+            {fullMatrixData.map((row) => (
+              <option value={row.min7th} data-level={row.level} data-gp={row.gp} selected={row.level === "Level 6"}>
+                {row.level} ({row.gp}) - Min 7th: ₹{row.min7th.toLocaleString('en-IN')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="matrixStageInput">Current Service Stage (Index Cell)</label>
+          <select id="matrixStageInput">
+            <option value="1">Cell 1 (Entry Starting Pay)</option>
+            <option value="2">Cell 2 (1 Year Completed - 1 Increment)</option>
+            <option value="3">Cell 3 (2 Years Completed - 2 Increments)</option>
+            <option value="5" selected>Cell 5 (4 Years Completed)</option>
+            <option value="10">Cell 10 (9 Years Completed)</option>
+            <option value="15">Cell 15 (14 Years Completed)</option>
+            <option value="20">Cell 20 (19 Years Completed)</option>
+            <option value="25">Cell 25 (24 Years Completed)</option>
+            <option value="30">Cell 30 (29 Years Completed)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="fitmentSelect">Fitment Multiplier</label>
+          <select id="fitmentSelect">
+            <option value="1.92">1.92x (Conservative Baseline)</option>
+            <option value="2.10">2.10x (Moderate Growth)</option>
+            <option value="2.25">2.25x (Consensus Model)</option>
+            <option value="2.57">2.57x (7th CPC Equivalent)</option>
+            <option value="2.86" selected>2.86x (Federation Benchmark)</option>
+            <option value="3.00">3.00x (High Wage Benchmark)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="citySelect">City Tier for HRA Projection</label>
+          <select id="citySelect">
+            <option value="0.30" selected>Class X (30% - Metro Cities)</option>
+            <option value="0.20">Class Y (20% - Tier-2 Centers)</option>
+            <option value="0.10">Class Z (10% - Small Towns/Rural)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Summaries -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">7th CPC Stage Basic</div>
+          <div class="kpi-val" id="disp7thStage">₹39,900</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Projected 8th CPC Stage Basic</div>
+          <div class="kpi-val" id="disp8thStage">₹1,14,114</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Est. Gross Pay at Stage</div>
+          <div class="kpi-val" id="dispStageGross">₹1,51,948</div>
+        </div>
+      </div>
+
+      <!-- Live Calculation Breakdown -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Pay Matrix Progression Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Level 6 (GP 4200) • Cell 5</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Level Starting Baseline (Cell 1 Entry Basic under 8th CPC)</td>
+              <td class="num" id="slipCell1">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>Compounded Annual Increment Additions (3% per vertical step)</td>
+              <td class="num" id="slipIncrementAdd">+₹12,870</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Revised Basic Pay at Selected Stage (Cell Index)</td>
+              <td class="num" id="slipFinalBasic" style="color: var(--primary);">₹1,14,114</td>
+            </tr>
+            <tr>
+              <td>House Rent Allowance (HRA calculated on stage basic)</td>
+              <td class="num" id="slipHra">₹34,234</td>
+            </tr>
+            <tr>
+              <td>Transport Allowance (Cadre base rate)</td>
+              <td class="num" id="slipTa">₹3,600</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Projected Gross Monthly Emoluments at this Cell</td>
+              <td class="num" id="slipGross" style="color: var(--accent-green);">₹1,51,948</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- FULL 1300+ WORDS IN-DEPTH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>Comprehensive Guide: Anatomy of the 8th Central Pay Commission Pay Matrix</h2>
+      <p>
+        The introduction of the <strong>Pay Matrix</strong> by the 7th Central Pay Commission (enacted January 1, 2016) marked the most profound administrative reform in Indian public administration since independence. Prior to the matrix, Central Government compensation relied on the complicated running <em>Pay Band and Grade Pay</em> framework introduced by the 6th CPC in 2006. That older structure was burdened by structural wage compression, anomalous promotional increments, and contentious disparities between military and civil postings.
+      </p>
+      <p>
+        With employee unions, staff confederations (National Council of JCM), and defense services preparing for the <strong>8th Central Pay Commission (8th CPC)</strong> scheduled for the 2026 calendar cycle, the 18-level Pay Matrix architecture remains the central focal point. Understanding how this two-dimensional mathematical matrix coordinates annual increments, promotion ladders, Modified Assured Career Progression (MACP), and retirement calculations is essential for every government servant.
+      </p>
+
+      <h2>1. The Two Dimensions: How the Matrix Operates</h2>
+      <p>
+        The Pay Matrix functions as a structured cartesian coordinate system designed to eliminate arbitrary salary assignments:
+      </p>
+      <ul>
+        <li><strong>Vertical Dimension (Levels 1 to 18):</strong> The vertical hierarchy correlates to functional administrative responsibility, posting rank, and previous Grade Pay benchmarks. Level 1 serves as the entry baseline for multi-tasking staff (MTS) and Group D employees, progressing sequentially through supervisory cadres (Levels 6–8), Class-I Gazetted echelons (Level 10), Joint Secretary cadres (Level 14), and culminating in the apex executive post: Level 18 (Cabinet Secretary of India).</li>
+        <li><strong>Horizontal Dimension (Sequential Index Cells):</strong> Moving from left to right along any level reveals a succession of index cells (spanning from 20 up to 40 stages). Each consecutive cell represents an employee's <strong>annual increment</strong>, standardized at approximately <strong>3% compound growth</strong> over the preceding cell.</li>
+      </ul>
+
+      <div class="formula-banner">
+        Next Vertical Stage (Annual Increment) = Current Cell Basic Pay × 1.03 (Rounded off to nearest hundred)
+      </div>
+
+      <h2>2. Complete 7th vs 8th CPC Pay Matrix Comparison Table (Levels 1 to 18)</h2>
+      <p>
+        The table below provides a comprehensive overview of all 18 Pay Matrix levels, matching historical Grade Pay designations and official cadre designations with starting entry pay (Cell 1) and terminal career maximums under both baseline (2.25x) and federation target (2.86x) fitment scenarios:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Level</th>
+              <th>Equivalent Grade Pay</th>
+              <th>Cadre / Designation Benchmark</th>
+              <th>7th CPC Entry (Cell 1)</th>
+              <th>8th CPC (2.25x Baseline)</th>
+              <th>8th CPC (2.86x Target)</th>
+              <th>Terminal Ceiling</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fullMatrixData.map((row) => (
+              <tr>
+                <td><strong>{row.level}</strong></td>
+                <td>{row.gp}</td>
+                <td>{row.roles}</td>
+                <td>₹{row.min7th.toLocaleString('en-IN')}</td>
+                <td>₹{row.min8th_225.toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{row.min8th_286.toLocaleString('en-IN')}</td>
+                <td style="color: #64748b; font-size: 0.85rem;">₹{row.max8th_286.toLocaleString('en-IN')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. Quick Matrix Level Selector: Inspect Starting Baselines</h2>
+      <p>
+        Click any level badge below to automatically load its parameters into the interactive projection engine above:
+      </p>
+
+      <div class="level-grid">
+        {fullMatrixData.map((item) => (
+          <div class="level-pill" data-min7th={item.min7th} data-level={item.level} data-gp={item.gp}>
+            <strong>{item.level}</strong>
+            <span>7th: ₹{item.min7th.toLocaleString('en-IN')}</span>
+          </div>
+        ))}
+      </div>
+
+      <h2>4. Promotional Jumps: Horizontal Movement and MACP Rules</h2>
+      <p>
+        One of the greatest achievements of the Pay Matrix system is the transparency it brings to departmental promotions and <strong>Modified Assured Career Progression (MACP)</strong> upgradations (awarded at 10, 20, and 30 years of continuous service).
+      </p>
+      
+      <h3>The Exact Promotion Arithmetic in the Matrix</h3>
+      <p>
+        When an employee is promoted from a lower level to a higher level (e.g., from Level 6 to Level 7), their new salary is not determined by arbitrary negotiation. Instead, it follows a standardized two-step process:
+      </p>
+      <ol>
+        <li><strong>Granting Promotional Increment:</strong> Locate the employee’s existing cell in their current Level. Move vertically down by <em>one cell</em> within that same Level (granting a standard 3% promotional increment).</li>
+        <li><strong>Fitting into the Higher Level:</strong> Take the resulting basic pay from Step 1 and look across at the newly promoted Level. Locate the cell that is exactly equal to that figure. If no identical cell exists, the pay is fitted into the <strong>immediate next higher cell</strong> in that level.</li>
+      </ol>
+
+      <div class="formula-banner">
+        Promotion Rule: Current Cell + 1 Vertical Increment in Same Level → Fit into Next Higher Value Cell in Promoted Level
+      </div>
+
+      <h2>5. Compression Ratios: Balancing Entry Wages Against Apex Executive Scales</h2>
+      <p>
+        A core responsibility of every Central Pay Commission is recalibrating the <strong>compression ratio</strong>—the arithmetic ratio between the lowest basic salary in Level 1 (MTS / Group D) and the highest salary ceiling in Level 18 (Cabinet Secretary of India).
+      </p>
+      <p>
+        Historical compression ratios across Pay Commissions reveal shifting fiscal priorities:
+      </p>
+      <ul>
+        <li><strong>1st Pay Commission (1946):</strong> Compression ratio of <strong>1:38</strong> (Lowest pay: ₹55; Highest pay: ₹2,000).</li>
+        <li><strong>5th Pay Commission (1996):</strong> Compression ratio compressed down to approximately <strong>1:10.7</strong>.</li>
+        <li><strong>6th Pay Commission (2006):</strong> Ratio relaxed to approximately <strong>1:11.4</strong> (₹7,000 to ₹80,000).</li>
+        <li><strong>7th Pay Commission (2016):</strong> Ratio established at <strong>1:13.9</strong> (₹18,000 minimum basic in Level 1 to ₹2,50,000 maximum basic in Level 18).</li>
+        <li><strong>8th Pay Commission Projections:</strong> Staff federations strongly advocate for a compression ratio of between <strong>1:12 and 1:13</strong>, seeking to lift the lower floor (Level 1) significantly to counteract food, urban housing, and educational cost inflation.</li>
+      </ul>
+
+      <h2>6. Annual Increments: Compounding Dynamics (January 1 vs. July 1)</h2>
+      <p>
+        Under Central Government civil service rules, annual increments are uniform and standardized across two universal qualifying dates:
+      </p>
+      <ul>
+        <li><strong>January 1st Cycle:</strong> Applicable to employees appointed, promoted, or granted MACP between January 2nd and July 1st of the preceding year.</li>
+        <li><strong>July 1st Cycle:</strong> Applicable to employees appointed, promoted, or granted MACP between July 2nd and January 1st of the preceding year.</li>
+      </ul>
+      <p>
+        Because each cell in the Pay Matrix compounds the preceding basic by approximately 3%, employees who complete long tenures in a single level receive progressively larger absolute rupee increments with each passing year. For example, in Level 6, early increments add approximately ₹1,100 per month to basic pay, whereas employees in Cell 25 receive increments exceeding ₹2,500 per month.
+      </p>
+
+      <h2>7. Stagnation Relief: Terminal Cell Rules and Biennial Increments</h2>
+      <p>
+        A critical structural challenge in earlier pay commissions was <strong>salary stagnation</strong>: when an employee served in a post for decades without functional promotion, they eventually reached the maximum ceiling of their Pay Band.
+      </p>
+      <p>
+        The 7th CPC addressed this by providing between <strong>34 and 40 sequential cells</strong> for all regular operational cadres (Levels 1 to 12). If an employee reaches the final cell of their matrix level without further promotion, service rules provide for <em>stagnation increments</em>: granting additional biennial (once every two years) increments up to a statutory ceiling, ensuring dedicated personnel never experience a permanent freeze in base remuneration. The 8th CPC is expected to expand cell capacities in middle-management cadres (Levels 13 and 14) to prevent stagnation in technical leadership roles.
+      </p>
+
+      <h2>8. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or any official Central Pay Commission authority. All cell progressions, fitment multipliers, and pay matrix projections are computed estimates based on historical pay commission mechanics, gazette precedents, and publicly submitted employee memoranda. Official notifications must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Stage Basic Pay</div>
+      <div class="val" id="stickyBasic">₹1,14,114</div>
+    </div>
+    <a href="#matrixLevelSelect" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Adjust Level</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const matrixLevelSelect = document.getElementById('matrixLevelSelect');
+    const matrixStageInput = document.getElementById('matrixStageInput');
+    const fitmentSelect = document.getElementById('fitmentSelect');
+    const citySelect = document.getElementById('citySelect');
+
+    const disp7thStage = document.getElementById('disp7thStage');
+    const disp8thStage = document.getElementById('disp8thStage');
+    const dispStageGross = document.getElementById('dispStageGross');
+    const stickyBasic = document.getElementById('stickyBasic');
+
+    const slipCell1 = document.getElementById('slipCell1');
+    const slipIncrementAdd = document.getElementById('slipIncrementAdd');
+    const slipFinalBasic = document.getElementById('slipFinalBasic');
+    const slipHra = document.getElementById('slipHra');
+    const slipTa = document.getElementById('slipTa');
+    const slipGross = document.getElementById('slipGross');
+    const slipLevelLabel = document.getElementById('slipLevelLabel');
+
+    function calculateMatrixStage() {
+      const entry7th = parseFloat(matrixLevelSelect.value) || 18000;
+      const stage = parseInt(matrixStageInput.value) || 1;
+      const factor = parseFloat(fitmentSelect.value) || 2.86;
+      const hraRate = parseFloat(citySelect.value) || 0.30;
+
+      // 7th CPC Stage Calculation (3% compounding rounded to nearest 100)
+      let current7thBasic = entry7th;
+      for (let i = 1; i < stage; i++) {
+        current7thBasic = Math.round((current7thBasic * 1.03) / 100) * 100;
+      }
+
+      // 8th CPC Entry Cell 1
+      const entry8th = Math.round(entry7th * factor);
+
+      // 8th CPC Stage Calculation (compounding from entry 8th cell)
+      let stage8thBasic = entry8th;
+      for (let i = 1; i < stage; i++) {
+        stage8thBasic = Math.round((stage8thBasic * 1.03) / 100) * 100;
+      }
+
+      const incrementAddition = stage8thBasic - entry8th;
+      const hra = Math.round(stage8thBasic * hraRate);
+      const ta = entry7th >= 35400 ? 3600 : 1350;
+      const gross = stage8thBasic + hra + ta;
+
+      // Update Formats
+      const fmt7thStage = '₹' + current7thBasic.toLocaleString('en-IN');
+      const fmt8thStage = '₹' + stage8thBasic.toLocaleString('en-IN');
+      const fmtGross = '₹' + gross.toLocaleString('en-IN');
+
+      disp7thStage.textContent = fmt7thStage;
+      disp8thStage.textContent = fmt8thStage;
+      dispStageGross.textContent = fmtGross;
+      if (stickyBasic) stickyBasic.textContent = fmt8thStage;
+
+      // Breakdown Table
+      slipCell1.textContent = '₹' + entry8th.toLocaleString('en-IN');
+      slipIncrementAdd.textContent = '+₹' + incrementAddition.toLocaleString('en-IN');
+      slipFinalBasic.textContent = fmt8thStage;
+      slipHra.textContent = '₹' + hra.toLocaleString('en-IN');
+      slipTa.textContent = '₹' + ta.toLocaleString('en-IN');
+      slipGross.textContent = fmtGross;
+
+      // Label Update
+      const selectedOption = matrixLevelSelect.options[matrixLevelSelect.selectedIndex];
+      if (selectedOption) {
+        const lvlName = selectedOption.getAttribute('data-level') || 'Level 6';
+        const gpName = selectedOption.getAttribute('data-gp') || 'GP 4200';
+        slipLevelLabel.textContent = `${lvlName} (${gpName}) • Cell ${stage}`;
+      }
+    }
+
+    // Input Listeners
+    matrixLevelSelect.addEventListener('change', calculateMatrixStage);
+    matrixStageInput.addEventListener('change', calculateMatrixStage);
+    fitmentSelect.addEventListener('change', calculateMatrixStage);
+    citySelect.addEventListener('change', calculateMatrixStage);
+
+    // Multiplier Button Pills
+    const pills = document.querySelectorAll('#factorPills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        fitmentSelect.value = pill.getAttribute('data-f');
+        calculateMatrixStage();
+      });
+    });
+
+    // Quick Matrix Level Pills
+    document.querySelectorAll('.level-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const val = pill.getAttribute('data-min7th');
+        matrixLevelSelect.value = val;
+        calculateMatrixStage();
+        document.querySelector('.calc-box').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateMatrixStage();
+  </script>
+
+</body>
+</html>
