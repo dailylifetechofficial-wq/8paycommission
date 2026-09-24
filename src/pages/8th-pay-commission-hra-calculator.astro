@@ -1,1 +1,846 @@
+---
+// src/pages/8th-pay-commission-hra-calculator.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "8th Pay Commission HRA Calculator: X, Y, Z City Slabs & Projected Hike";
+const pageDescription = "Calculate your projected House Rent Allowance (HRA) under the 8th Pay Commission. Analyze Class X (30%), Y (20%), and Z (10%) city tiers, minimum floor caps, and salary impact.";
 
+// Comprehensive Classification of Major Indian Urban Agglomerations
+const cityCategories = [
+  { tier: "Class X (Metro Cities)", rate: "30%", minFloor: "₹5,400", cities: "Delhi (NCT), Mumbai (UA), Bengaluru (UA), Chennai (UA), Kolkata (UA), Hyderabad (UA), Ahmedabad (UA), Pune (UA)" },
+  { tier: "Class Y (Tier-2 Centers)", rate: "20%", minFloor: "₹3,600", cities: "Jaipur, Lucknow, Kanpur, Nagpur, Surat, Patna, Bhopal, Visakhapatnam, Vadodara, Coimbatore, Madurai, Kochi, Chandigarh" },
+  { tier: "Class Z (Tier-3 / Rural)", rate: "10%", minFloor: "₹1,800", cities: "All remaining district headquarters, tehsils, mofussil postings, military outposts, and rural departmental offices" }
+];
+
+// Entry Pay Matrix Level Benchmarks for HRA Impact Assessment
+const hraBenchmarks = [
+  { level: "Level 1 (GP 1800)", post: "MTS / Group D", base7th: 18000, base8th: 51480, hra7thX: 5400, hra8thX: 15444 },
+  { level: "Level 2 (GP 1900)", post: "LDC / Junior Clerk", base7th: 19900, base8th: 56914, hra7thX: 5970, hra8thX: 17074 },
+  { level: "Level 3 (GP 2000)", post: "Constable / Driver", base7th: 21700, base8th: 62062, hra7thX: 6510, hra8thX: 18619 },
+  { level: "Level 4 (GP 2400)", post: "UDC / Head Constable", base7th: 25500, base8th: 72930, hra7thX: 7650, hra8thX: 21879 },
+  { level: "Level 5 (GP 2800)", post: "Auditor / Accountant", base7th: 29200, base8th: 83512, hra7thX: 8760, hra8thX: 25054 },
+  { level: "Level 6 (GP 4200)", post: "Sub-Inspector / Inspector", base7th: 35400, base8th: 101244, hra7thX: 10620, hra8thX: 30373 },
+  { level: "Level 7 (GP 4600)", post: "ASO / Section Engineer", base7th: 44900, base8th: 128414, hra7thX: 13470, hra8thX: 38524 },
+  { level: "Level 8 (GP 4800)", post: "AAO / Section Officer", base7th: 47600, base8th: 136136, hra7thX: 14280, hra8thX: 40841 },
+  { level: "Level 10 (GP 5400)", post: "SDM / DSP / Assistant Comm", base7th: 56100, base8th: 160446, hra7thX: 16830, hra8thX: 48134 },
+  { level: "Level 12 (GP 7600)", post: "Deputy Secretary / SE", base7th: 78800, base8th: 225368, hra7thX: 23640, hra8thX: 67610 },
+  { level: "Level 14 (GP 10000)", post: "Joint Secretary / IG", base7th: 144200, base8th: 412412, hra7thX: 43260, hra8thX: 123724 }
+];
+
+const faqs = [
+  {
+    q: "How does the 8th Pay Commission HRA calculator determine my monthly housing payout?",
+    a: "The calculator multiplies your projected 8th CPC Basic Pay (derived via fitment factor) by the statutory percentage slab for your city classification: 30% for Class X metros, 20% for Class Y cities, or 10% for Class Z towns. It then cross-checks the result against the statutory minimum HRA floor guarantee."
+  },
+  {
+    q: "Why did HRA percentages drop under the 7th Pay Commission, and will that happen again?",
+    a: "The 7th CPC controversially scaled baseline HRA down from 30%, 20%, and 10% to 24%, 16%, and 8% because basic pay had more than doubled. However, it instituted an automatic trigger: rates restored to 27%, 18%, and 9% when Dearness Allowance crossed 25%, and back to 30%, 20%, and 10% when DA surpassed 50%. For the 8th CPC, employee federations demand retaining 30%, 20%, and 10% right from launch."
+  },
+  {
+    q: "What is the minimum floor protection rule for HRA?",
+    a: "Under Department of Expenditure regulations, HRA cannot fall below an absolute minimum rupee amount, regardless of how low an employee's basic pay might be. Under the 7th CPC, these minimum floor limits were ₹5,400 (X), ₹3,600 (Y), and ₹1,800 (Z). Under the 8th CPC, these statutory minimum floors are expected to adjust upwards to ₹12,150 (X), ₹8,100 (Y), and ₹4,050 (Z)."
+  },
+  {
+    q: "Can both husband and wife claim HRA if both are Central Government employees?",
+    a: "No. If both spouses are central or state government servants stationed in the same station, and one spouse occupies government-allotted quarters, neither is eligible for HRA. If they live in rented private housing, only one spouse is entitled to draw House Rent Allowance under Central Civil Services rules."
+  },
+  {
+    q: "Is HRA drawn by Central Government employees fully taxable?",
+    a: "For government servants residing in personal, non-rented ancestral housing, HRA drawn on the payslip is 100% taxable as salary income. However, employees living in rented accommodation can claim tax exemption under Section 10(13A) of the Income Tax Act (under the Old Tax Regime) based on rent paid minus 10% of basic salary."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="8th pay commission hra calculator, house rent allowance x y z cities, hra slab rates 30 20 10 percent, 8th cpc hra hike, minimum hra floor guarantee, section 10 13a tax exemption" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebApplication + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "8th Pay Commission HRA Calculator",
+        "url": canonicalURL.toString(),
+        "operatingSystem": "All",
+        "applicationCategory": "FinanceApplication",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Main Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Housing Compensatory Allowance Analysis</div>
+      <h1>8th Pay Commission HRA Calculator</h1>
+      <p>Estimate revised monthly House Rent Allowance (HRA) across Class X (30%), Class Y (20%), and Class Z (10%) city tiers with statutory minimum floor protection.</p>
+    </header>
+
+    <!-- INTERACTIVE HRA CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="8th Pay Commission HRA Calculator Widget">
+      
+      <!-- Multiplier Pills -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Expected Fitment Multiplier:</span>
+        <div class="chip-bar" id="factorPills">
+          <button class="chip-btn" data-f="1.92">1.92x (Conservative DA Merge)</button>
+          <button class="chip-btn" data-f="2.25">2.25x (Baseline Model)</button>
+          <button class="chip-btn" data-f="2.57">2.57x (7th CPC Parity)</button>
+          <button class="chip-btn active" data-f="2.86">2.86x (Federation Target)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="hraLevelSelect">Pay Matrix Level (Preset)</label>
+          <select id="hraLevelSelect">
+            {hraBenchmarks.map((item) => (
+              <option value={item.base7th} selected={item.level.startsWith("Level 6")}>
+                {item.level} ({item.post}) - Base ₹{item.base7th.toLocaleString('en-IN')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="hraBasicInput">Current 7th CPC Basic (₹)</label>
+          <input type="number" id="hraBasicInput" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="hraFitmentSelect">Fitment Multiplier</label>
+          <select id="hraFitmentSelect">
+            <option value="1.92">1.92x (Conservative DA Merge)</option>
+            <option value="2.10">2.10x (Moderate Growth)</option>
+            <option value="2.25">2.25x (Consensus Baseline)</option>
+            <option value="2.57">2.57x (Equivalent to 7th CPC)</option>
+            <option value="2.86" selected>2.86x (Federation Target)</option>
+            <option value="3.00">3.00x (High Wage Benchmark)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="hraCityTier">City Classification (HRA Slab)</label>
+          <select id="hraCityTier">
+            <option value="0.30" data-minfloor="12150" selected>Class X (Metro: 30% HRA - Min ₹12,150)</option>
+            <option value="0.20" data-minfloor="8100">Class Y (Tier-2: 20% HRA - Min ₹8,100)</option>
+            <option value="0.10" data-minfloor="4050">Class Z (Rural/Small: 10% HRA - Min ₹4,050)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">7th CPC Monthly HRA</div>
+          <div class="kpi-val" id="dispHra7th">₹10,620</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Projected 8th CPC HRA</div>
+          <div class="kpi-val" id="dispHra8th">₹30,373</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Net Monthly HRA Gain</div>
+          <div class="kpi-val" id="dispHraDiff">+₹19,753</div>
+        </div>
+      </div>
+
+      <!-- Detailed Arithmetic Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Monthly HRA Calculation Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Level 6 (GP 4200) • Class X Metro</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Revised 8th CPC Basic Pay Baseline (Current Basic × Fitment)</td>
+              <td class="num" id="slipNewBasic">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>Applicable HRA Rate for Selected Urban Classification</td>
+              <td class="num" id="slipHraRateLabel">30% (Class X Metro)</td>
+            </tr>
+            <tr>
+              <td>Calculated HRA (Revised Basic × Rate)</td>
+              <td class="num" id="slipRawHra">₹30,373</td>
+            </tr>
+            <tr>
+              <td>Statutory Minimum Floor Protection Guarantee</td>
+              <td class="num" id="slipFloorCap">₹12,150</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Final Projected Monthly HRA Disbursal (Greater of Rate vs Floor)</td>
+              <td class="num" id="slipFinalHra" style="color: var(--primary);">₹30,373</td>
+            </tr>
+            <tr>
+              <td>7th CPC Current Disbursed HRA Baseline</td>
+              <td class="num" id="slipOldHra" style="color: #64748b;">₹10,620</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Net Monthly Increase in Housing Compensation</td>
+              <td class="num" id="slipNetHraGain" style="color: var(--accent-green);">+₹19,753</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Evolution of House Rent Allowance in Central Service</h2>
+      <p>
+        <strong>House Rent Allowance (HRA)</strong> represents the second-largest component of a Central Government employee’s monthly earnings, second only to Basic Pay. Unlike Dearness Allowance—which provides broad compensation for general consumer price index inflation—HRA directly offsets urban shelter expenditures, residential tenancy lease surges, and metropolitan property living expenses.
+      </p>
+      <p>
+        Under modern Central Civil Services regulations, HRA is structured around population-based urban agglomeration tiers rather than subjective rank privileges. As the Indian economy undergoes rapid suburbanization, metropolitan perimeter expansion, and rising rental yields, the 8th Central Pay Commission must balance fiscal exchequer obligations against the housing affordability constraints faced by public servants stationed in high-cost tier-1 and tier-2 growth corridors.
+      </p>
+
+      <h2>2. City Classification Architecture: Class X, Class Y, and Class Z Slabs</h2>
+      <p>
+        The Department of Expenditure (DoE) categorizes Indian territories into three distinct geographic classifications based strictly on decennial Census population counts:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Urban Category</th>
+              <th>Population Threshold</th>
+              <th>Current Statutory Slab</th>
+              <th>Minimum Floor Guarantee</th>
+              <th>Representative Geographic Hubs</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cityCategories.map((c) => (
+              <tr>
+                <td><strong>{c.tier}</strong></td>
+                <td>{c.tier.startsWith("Class X") ? "50 Lakhs & Above" : c.tier.startsWith("Class Y") ? "5 to 50 Lakhs" : "Below 5 Lakhs"}</td>
+                <td><strong style="color: var(--primary);">{c.rate}</strong></td>
+                <td>{c.minFloor}</td>
+                <td style="font-size: 0.85rem; color: #475569;">{c.cities}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. The 7th CPC Slashed Rates & The 50% DA Restoration Trigger</h2>
+      <p>
+        The transition under the 7th CPC in 2016 caused significant dissatisfaction regarding housing compensation. Historically, under the 6th CPC, HRA was disbursed at <strong>30% (Class X), 20% (Class Y), and 10% (Class Z)</strong>.
+      </p>
+      <p>
+        However, the 7th Pay Commission observed that because basic salaries were scaling upward by 2.57x, maintaining 30%, 20%, and 10% would create an unsustainable expenditure spike for the union budget. Consequently, the commission controversially slashed initial HRA base rates down to:
+      </p>
+      <ul>
+        <li><strong>Class X:</strong> 24% of Basic Pay</li>
+        <li><strong>Class Y:</strong> 16% of Basic Pay</li>
+        <li><strong>Class Z:</strong> 8% of Basic Pay</li>
+      </ul>
+      <p>
+        To prevent permanent wage suppression, the government introduced an automated, two-stage inflation restoration trigger:
+      </p>
+      <ol>
+        <li><strong>Trigger Stage 1 (DA crosses 25%):</strong> HRA rates adjusted upward to <strong>27%, 18%, and 9%</strong>.</li>
+        <li><strong>Trigger Stage 2 (DA crosses 50%):</strong> HRA rates fully restored to their historical benchmarks of <strong>30%, 20%, and 10%</strong>.</li>
+      </ol>
+      <p>
+        With Dearness Allowance officially surpassing 50% under the 7th CPC, employees currently receive the restored 30%, 20%, and 10% rates. <strong>The core demand for the 8th Pay Commission</strong> is establishing 30%, 20%, and 10% as the permanent baseline floor from day one, rather than resetting allowances downward to reduced percentages when accumulated DA is absorbed into basic pay.
+      </p>
+
+      <div class="formula-banner">
+        Projected 8th CPC Monthly HRA = Revised 8th CPC Basic Pay × City Tier Percentage (30%, 20%, or 10%)
+      </div>
+
+      <h2>4. Comparative HRA Impact Across Pay Matrix Levels (7th vs 8th CPC)</h2>
+      <p>
+        Because HRA applies directly as a multiplier on basic pay, the expansion of the basic wage floor under the 8th CPC will substantially increase monthly housing allowances. The table below illustrates this across key matrix ranks in a Class X Metro (30% rate) assuming a 2.86x fitment factor:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Level</th>
+              <th>Representative Cadre</th>
+              <th>7th CPC Base</th>
+              <th>7th CPC HRA (30%)</th>
+              <th>Projected 8th CPC Base</th>
+              <th>Projected 8th CPC HRA (30%)</th>
+              <th>Monthly Rupee Hike</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hraBenchmarks.map((row) => (
+              <tr>
+                <td><strong>{row.level}</strong></td>
+                <td>{row.post}</td>
+                <td>₹{row.base7th.toLocaleString('en-IN')}</td>
+                <td>₹{row.hra7thX.toLocaleString('en-IN')}</td>
+                <td>₹{row.base8th.toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{row.hra8thX.toLocaleString('en-IN')}</td>
+                <td style="color: var(--accent-green); font-weight: 700;">+₹{(row.hra8thX - row.hra7thX).toLocaleString('en-IN')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>5. The Minimum HRA Floor Protection Rule</h2>
+      <p>
+        A key administrative safeguard in the Central Civil Services (Allowance) Rules is the <strong>Statutory Minimum Floor Protection</strong>. This policy ensures that entry-level personnel stationed in expensive metropolitan or urban centers do not receive housing allowances that fall below the minimum threshold required to secure basic rental shelter.
+      </p>
+      <p>
+        Regardless of how low an employee's starting basic pay might be, their monthly HRA cannot drop below the established floor:
+      </p>
+      <ul>
+        <li><strong>7th CPC Floor Limits:</strong> ₹5,400 per month (Class X), ₹3,600 per month (Class Y), and ₹1,800 per month (Class Z).</li>
+        <li><strong>Projected 8th CPC Floor Limits:</strong> Applying the standard 2.25x to 2.86x fitment expansion, the minimum guaranteed floors are projected to recalibrate to approximately <strong>₹12,150 – ₹15,444</strong> (Class X), <strong>₹8,100 – ₹10,296</strong> (Class Y), and <strong>₹4,050 – ₹5,148</strong> (Class Z).</li>
+      </ul>
+      <p>
+        If the mathematical percentage of basic pay yields an amount lower than the statutory floor, the Accounts Office must disburse the full minimum floor amount automatically.
+      </p>
+
+      <h2>6. Income Tax Implications: Claiming Section 10(13A) Exemption</h2>
+      <p>
+        Unlike allowances that are fully taxable or fully exempt, the tax treatment of House Rent Allowance depends heavily on residency conditions and tax regime selections:
+      </p>
+
+      <h3>1. Living in Self-Owned or Non-Rented Family Housing</h3>
+      <p>
+        If a government employee resides in their own house, or stays in ancestral family property without paying verifiable commercial rent, the entire HRA drawn on their monthly pay slip is treated as taxable salary income.
+      </p>
+
+      <h3>2. Living in Private Rented Accommodations (Old Tax Regime Exemption)</h3>
+      <p>
+        Employees opting for the Old Tax Regime can claim substantial exemptions under <strong>Section 10(13A) of the Income Tax Act</strong>, read in conjunction with Rule 2A. The exempt amount is legally calculated as the <em>least</em> of the following three variables:
+      </p>
+      <ol>
+        <li>The total actual HRA amount received from the government during the financial year.</li>
+        <li>Actual annual rent paid minus 10% of annual Basic Salary (including Dearness Allowance).</li>
+        <li>50% of Basic Salary for employees residing in Delhi, Mumbai, Kolkata, or Chennai (40% for all other non-metro locations).</li>
+      </ol>
+
+      <div class="formula-banner">
+        Compliance Requirement: If annual rent paid exceeds ₹1,00,000, furnishing the landlord's Permanent Account Number (PAN) to the Drawing & Disbursing Officer (DDO) is mandatory.
+      </div>
+
+      <h3>3. The New Tax Regime Dilemma</h3>
+      <p>
+        Under the simplified <strong>New Tax Regime</strong> (which serves as the statutory default since FY 2023–24), Section 10(13A) HRA exemptions are <strong>completely disallowed</strong>. Government servants drawing substantially expanded 8th CPC housing allowances must evaluate whether the lower slab tax rates of the New Regime offset the loss of housing exemptions, standard deductions, and Section 80C allowances under the Old Regime.
+      </p>
+
+      <h2>7. Dual Government Employee Spouses & Allotment Regulations</h2>
+      <p>
+        Specific statutory provisions govern households with multiple public servants:
+      </p>
+      <ul>
+        <li><strong>Government Accommodation (General Pool Residential Accommodation - GPRA):</strong> When a government servant occupies government-allotted quarters, they forfeit their entire monthly HRA entitlement and must pay a nominal license fee.</li>
+        <li><strong>The Dual-Spouse Restriction:</strong> If both husband and wife are government employees (central, state, or autonomous bodies) stationed at the same station, and one spouse accepts government quarters, the other spouse is legally debarred from drawing HRA, even if they maintain separate living quarters.</li>
+        <li><strong>Private Rented Living:</strong> If both spouses reside in a private rented home, only one spouse is permitted to claim HRA disbursement and submit rent receipts for Section 10(13A) tax relief.</li>
+      </ul>
+
+      <h2>8. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or the Directorate of Estates. All HRA percentages, minimum floor projections, and city tier calculations are computed estimates based on historical pay commission precedent, gazette notifications, and published employee memoranda. Official classifications must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Projected 8th CPC HRA</div>
+      <div class="val" id="stickyHra">₹30,373</div>
+    </div>
+    <a href="#hraBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const hraBasicInput = document.getElementById('hraBasicInput');
+    const hraLevelSelect = document.getElementById('hraLevelSelect');
+    const hraFitmentSelect = document.getElementById('hraFitmentSelect');
+    const hraCityTier = document.getElementById('hraCityTier');
+
+    const dispHra7th = document.getElementById('dispHra7th');
+    const dispHra8th = document.getElementById('dispHra8th');
+    const dispHraDiff = document.getElementById('dispHraDiff');
+    const stickyHra = document.getElementById('stickyHra');
+
+    const slipNewBasic = document.getElementById('slipNewBasic');
+    const slipHraRateLabel = document.getElementById('slipHraRateLabel');
+    const slipRawHra = document.getElementById('slipRawHra');
+    const slipFloorCap = document.getElementById('slipFloorCap');
+    const slipFinalHra = document.getElementById('slipFinalHra');
+    const slipOldHra = document.getElementById('slipOldHra');
+    const slipNetHraGain = document.getElementById('slipNetHraGain');
+    const slipLevelLabel = document.getElementById('slipLevelLabel');
+
+    function calculateHRA() {
+      const basic = parseFloat(hraBasicInput.value) || 0;
+      const factor = parseFloat(hraFitmentSelect.value) || 2.86;
+      const rate = parseFloat(hraCityTier.value) || 0.30;
+
+      const selectedOption = hraCityTier.options[hraCityTier.selectedIndex];
+      const minFloor = parseFloat(selectedOption.getAttribute('data-minfloor')) || 12150;
+
+      // Arithmetic Engine
+      const revisedBasic = Math.round(basic * factor);
+      const rawHra8th = Math.round(revisedBasic * rate);
+      const finalHra8th = Math.max(rawHra8th, minFloor);
+
+      // 7th CPC baseline HRA at corresponding current restored rate
+      const hra7th = Math.round(basic * rate);
+      const hraDiff = finalHra8th - hra7th;
+
+      // Update KPI Cards
+      dispHra7th.textContent = '₹' + hra7th.toLocaleString('en-IN');
+      dispHra8th.textContent = '₹' + finalHra8th.toLocaleString('en-IN');
+      dispHraDiff.textContent = '+₹' + hraDiff.toLocaleString('en-IN');
+      if (stickyHra) stickyHra.textContent = '₹' + finalHra8th.toLocaleString('en-IN');
+
+      // Update Arithmetic Breakdown Slip
+      slipNewBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      slipHraRateLabel.textContent = `${Math.round(rate * 100)}% (${selectedOption.text.split(' - ')[0]})`;
+      slipRawHra.textContent = '₹' + rawHra8th.toLocaleString('en-IN');
+      slipFloorCap.textContent = '₹' + minFloor.toLocaleString('en-IN');
+      slipFinalHra.textContent = '₹' + finalHra8th.toLocaleString('en-IN');
+      slipOldHra.textContent = '₹' + hra7th.toLocaleString('en-IN');
+      slipNetHraGain.textContent = '+₹' + hraDiff.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      const selectedLevel = hraLevelSelect.options[hraLevelSelect.selectedIndex];
+      if (selectedLevel) {
+        const levelName = selectedLevel.text.split(' (')[0];
+        const tierName = selectedOption.text.split(' (')[0];
+        slipLevelLabel.textContent = `${levelName} • ${tierName}`;
+      }
+    }
+
+    // Input Listeners
+    hraBasicInput.addEventListener('input', calculateHRA);
+    hraFitmentSelect.addEventListener('change', calculateHRA);
+    hraCityTier.addEventListener('change', calculateHRA);
+
+    // Level Preset Picker
+    hraLevelSelect.addEventListener('change', (e) => {
+      hraBasicInput.value = e.target.value;
+      calculateHRA();
+    });
+
+    // Multiplier Button Pills
+    const pills = document.querySelectorAll('#factorPills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        hraFitmentSelect.value = pill.getAttribute('data-f');
+        calculateHRA();
+      });
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateHRA();
+  </script>
+
+</body>
+</html>
