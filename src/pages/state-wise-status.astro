@@ -1,0 +1,806 @@
+---
+// src/pages/state-wise-status.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "State-Wise 8th Pay Commission Status: Adoption Timelines, Fitment & State Pay Rules";
+const pageDescription = "Explore the state-wise 8th Pay Commission adoption status across India. Track state pay commission committees, cabinet notifications, expected fitment factors, and parity timelines.";
+
+// Comprehensive State-Wise Pay Adoption & Tracking Directory
+const stateStatusData = [
+  { state: "Uttar Pradesh", mechanism: "State Pay Committee", historicalLag: "6 to 10 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Evaluation Phase" },
+  { state: "Maharashtra", mechanism: "State Cabinet Review Panel", historicalLag: "12 to 18 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.57x", status: "Deliberation Phase" },
+  { state: "Tamil Nadu", mechanism: "Official Committee / Finance Dept", historicalLag: "12 to 15 Months", parityStatus: "Modified Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.57x", status: "Preliminary Review" },
+  { state: "West Bengal", mechanism: "6th State Pay Commission / ROPA", historicalLag: "3 to 4 Years (Independent)", parityStatus: "Independent Scale Model", currentDa: "14% – 18%", expectedFitment: "ROPA Revision Model", status: "Autonomous Board" },
+  { state: "Karnataka", mechanism: "7th State Pay Commission (KSPRC)", historicalLag: "5-Year State Cycle", parityStatus: "State Pay Matrix Model", currentDa: "State Formula", expectedFitment: "State Fitment (~27.5%)", status: "State Revision Implemented" },
+  { state: "Kerala", mechanism: "11th / 12th Pay Revision Commission", historicalLag: "5-Year State Cycle", parityStatus: "Independent State PRC", currentDa: "State Slabs", expectedFitment: "State Scale Model", status: "Commission Mandated" },
+  { state: "Madhya Pradesh", mechanism: "Finance Department Notification", historicalLag: "8 to 12 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Parity Expected" },
+  { state: "Rajasthan", mechanism: "Cabinet Sub-Committee on Pay", historicalLag: "6 to 9 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Parity Assured" },
+  { state: "Gujarat", mechanism: "Finance Department Resolution", historicalLag: "6 to 8 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Direct Adoption" },
+  { state: "Andhra Pradesh", mechanism: "Pay Revision Commission (PRC)", historicalLag: "5-Year State Cycle", parityStatus: "State PRC Fitment Model", currentDa: "State Slabs", expectedFitment: "State PRC Negotiation", status: "PRC Deliberation" },
+  { state: "Telangana", mechanism: "Pay Revision Commission (PRC)", historicalLag: "5-Year State Cycle", parityStatus: "State PRC Fitment Model", currentDa: "State Slabs", expectedFitment: "State PRC Negotiation", status: "PRC Committee Formed" },
+  { state: "Bihar", mechanism: "State Pay Revision Committee", historicalLag: "10 to 14 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Parity Mode" },
+  { state: "Odisha", mechanism: "Fitment Committee Notification", historicalLag: "8 to 12 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Evaluation Phase" },
+  { state: "Punjab", mechanism: "6th / 7th Punjab Pay Commission", historicalLag: "Delayed State Cycle", parityStatus: "State Commission Model", currentDa: "State Scale", expectedFitment: "State Formulation", status: "State Commission" },
+  { state: "Haryana", mechanism: "State Finance Department", historicalLag: "2 to 4 Months (Fast-Track)", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Earliest Adopter" },
+  { state: "Assam", mechanism: "Assam Pay & Productivity Council", historicalLag: "12 to 18 Months", parityStatus: "Modified Central Matrix", currentDa: "53%", expectedFitment: "2.25x – 2.57x", status: "Advisory Phase" },
+  { state: "Himachal Pradesh", mechanism: "Punjab Pay Commission Pattern", historicalLag: "Linked to Punjab", parityStatus: "Punjab Matrix Pattern", currentDa: "State Slabs", expectedFitment: "Punjab Pattern Model", status: "Linked Pattern" },
+  { state: "Jharkhand", mechanism: "State Fitment Committee", historicalLag: "9 to 14 Months", parityStatus: "Direct Central Parity", currentDa: "53%", expectedFitment: "2.25x – 2.86x", status: "Parity Mode" }
+];
+
+const faqs = [
+  {
+    q: "Do Central Pay Commission recommendations apply automatically to State Government employees?",
+    a: "No. The recommendations of the Central Pay Commission (CPC) apply legally only to Central Government employees, defence personnel, railways, and Union Territory administrations. State Governments are constitutional entities that have sovereign power over their own state civil service pay rules. However, most states adopt the central pay matrix either directly or with state-specific modifications within 6 to 24 months."
+  },
+  {
+    q: "Why do some states like West Bengal, Kerala, and Karnataka not follow Central Pay Commissions?",
+    a: "States like Karnataka, Kerala, Andhra Pradesh, and Telangana operate their own independent State Pay Revision Commissions (PRCs), traditionally revising salaries every 5 years rather than the 10-year central cycle. West Bengal operates under its autonomous Revision of Pay and Allowances (ROPA) framework, determining its own pay bands, fitment formulas, and dearness allowance announcements independently."
+  },
+  {
+    q: "Which states adopt Central Pay Commission scales the fastest?",
+    a: "States like Haryana, Gujarat, Rajasthan, and Uttar Pradesh traditionally adopt central pay commission recommendations fastest, often notifying matching pay matrices within 2 to 8 months of the central gazette notification and granting retroactive arrears to match central implementation dates."
+  },
+  {
+    q: "Will State Government employees receive the same fitment factor as Central staff?",
+    a: "In states with direct central parity (e.g., Haryana, Rajasthan, Uttar Pradesh, Bihar), the state government typically adopts the exact central fitment factor approved by the Union Cabinet. In states with modified parity or independent pay commissions, the state cabinet negotiates separate fitment multipliers tailored to its own state revenue deficit and debt-to-GSDP ratios."
+  },
+  {
+    q: "Are State Government pensioners eligible for 8th Pay Commission pension parity?",
+    a: "Yes, but through individual state Government Orders (GOs). Once a state cabinet formally accepts the pay commission recommendations, a matching pension revision order is issued, updating basic pensions of state retirees via the approved fitment multiplier while merging accumulated dearness relief."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="state wise 8th pay commission status, state government pay matrix 2026, state pay revision commission prc, state employees dearness allowance parity, ropa west bengal, karnataka pay commission" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Widget Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Inter-State Federal Pay Tracking & Parity Guide</div>
+      <h1>State-Wise 8th Pay Commission Status</h1>
+      <p>Comprehensive tracking of State Government pay revision mechanisms across India: evaluate direct central parity vs. independent state pay commissions, adoption lag timelines, and projected fitment multipliers.</p>
+    </header>
+
+    <!-- INTERACTIVE STATE PAY SIMULATOR WIDGET -->
+    <section class="calc-box" aria-label="State Government Salary Simulator Widget">
+      
+      <!-- Quick State Pattern Pills -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select State Pay Adoption Pattern:</span>
+        <div class="chip-bar" id="patternPills">
+          <button class="chip-btn active" data-state="Uttar Pradesh" data-fit="2.86" data-lag="6">UP / Rajasthan / Haryana (Direct Central Parity)</button>
+          <button class="chip-btn" data-state="Tamil Nadu" data-fit="2.57" data-lag="12">Tamil Nadu (Official Committee Pattern)</button>
+          <button class="chip-btn" data-state="Karnataka" data-fit="2.25" data-lag="0">Karnataka (State PRC 5-Year Cycle)</button>
+          <button class="chip-btn" data-state="West Bengal" data-fit="1.92" data-lag="36">West Bengal (Autonomous ROPA Model)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="stateSelect">Select State Jurisdiction</label>
+          <select id="stateSelect">
+            {stateStatusData.map((s) => (
+              <option value={s.state} data-parity={s.parityStatus} data-lag={s.historicalLag} selected={s.state === "Uttar Pradesh"}>
+                {s.state} — {s.parityStatus} ({s.historicalLag})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="stateBasicInput">Current State Basic Pay (₹)</label>
+          <input type="number" id="stateBasicInput" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="stateFitmentSelect">Simulated State Fitment Factor</label>
+          <select id="stateFitmentSelect">
+            <option value="1.92">1.92x (Conservative / ROPA Pattern)</option>
+            <option value="2.25">2.25x (State PRC Baseline)</option>
+            <option value="2.57">2.57x (7th CPC Historical Parity)</option>
+            <option value="2.86" selected>2.86x (Full Central Federation Target)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="stateHraTier">State City Classification (HRA Slab)</label>
+          <select id="stateHraTier">
+            <option value="0.30" selected>State Capital Metro / Class X (30% or ₹5,400+)</option>
+            <option value="0.20">District Headquarters / Class Y (20% or ₹3,600+)</option>
+            <option value="0.10">Rural Postings / Class Z (10% or ₹1,800+)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Projected State Basic Pay</div>
+          <div class="kpi-val" id="dispStateBasic">₹1,01,244</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Estimated State Monthly HRA</div>
+          <div class="kpi-val" id="dispStateHra">₹30,373</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Projected Gross Monthly Pay</div>
+          <div class="kpi-val" id="dispStateGross">₹1,35,217</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>State Civil Service Remuneration Slip</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipStateLabel">Uttar Pradesh • Direct Central Parity</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Revised State Basic Salary (Current Basic × Fitment)</td>
+              <td class="num" id="slipBasic">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>State Dearness Allowance (DA) — <span style="color: var(--text-muted);">Reset to 0% at implementation</span></td>
+              <td class="num">₹0</td>
+            </tr>
+            <tr>
+              <td>State House Rent Allowance (HRA on expanded base pay)</td>
+              <td class="num" id="slipHra">₹30,373</td>
+            </tr>
+            <tr>
+              <td>Medical & Conveyance Allowance (Standard State Civil Baseline)</td>
+              <td class="num" id="slipAllow">₹3,600</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Estimated Gross Monthly Emoluments</td>
+              <td class="num" id="slipGross" style="color: var(--primary);">₹1,35,217</td>
+            </tr>
+            <tr>
+              <td>Mandatory Pension Contribution (10% NPS / UPS / State CPF)</td>
+              <td class="num" id="slipNps" style="color: #dc2626;">-₹10,124</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Projected Net In-Hand Take-Home Pay</td>
+              <td class="num" id="slipNet" style="color: var(--accent-green);">₹1,25,093</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Federal Reality: How Central Pay Revisions Impact States</h2>
+      <p>
+        In the constitutional framework of the Republic of India, public employment falls strictly under the separate sovereign jurisdictions of the Union and the respective State Governments. Article 309 of the Constitution empowers State Legislatures and Governors to formulate independent service and pay rules for state civil servants. Consequently, notifications issued by the Central Government following a <strong>Central Pay Commission (CPC)</strong> carry no automatic statutory enforcement over state government secretariats, district collectorates, municipal bodies, or state public schools.
+      </p>
+      <p>
+        Despite this legal separation, the announcement of a Central Pay Commission triggers an immediate economic and political chain reaction across all 28 states and union territories. Over 12 million state government employees, school educators, police personnel, and state pensioners benchmark their compensation directly against their central counterparts. To prevent employee discontent, brain drain into central autonomous agencies, and large-scale industrial strikes, state governments routinely adopt matching pay structures—albeit with differing implementation timelines, modified fitment multipliers, and varying arrears policies based on their respective fiscal constraints.
+      </p>
+
+      <h2>2. Complete State-Wise Pay Adoption & Tracking Directory</h2>
+      <p>
+        The table below provides a comprehensive comparison of all primary Indian states, categorizing their formal pay revision mechanisms, historical adoption lag times, current dearness allowance parity statuses, and projected 8th CPC fitment models:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>State Jurisdiction</th>
+              <th>Pay Revision Mechanism</th>
+              <th>Historical Central Lag</th>
+              <th>Parity Classification</th>
+              <th>Current DA Status</th>
+              <th>Projected 8th CPC Fitment</th>
+            </tr>
+          </thead>
+          <tbody>
+            {stateStatusData.map((s) => (
+              <tr>
+                <td><strong>{s.state}</strong></td>
+                <td>{s.mechanism}</td>
+                <td>{s.historicalLag}</td>
+                <td><strong style="color: var(--primary);">{s.parityStatus}</strong></td>
+                <td>{s.currentDa}</td>
+                <td><span style="font-size: 0.85rem; color: #475569;">{s.expectedFitment}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. The Three Distinct State Implementation Models Explained</h2>
+      <p>
+        Across India, state governments navigate Central Pay Commission recommendations through three distinct institutional mechanisms:
+      </p>
+
+      <h3>Model A: The Direct Central Parity Model (Fast-Track Adopters)</h3>
+      <p>
+        States like <strong>Haryana, Rajasthan, Uttar Pradesh, Gujarat, and Madhya Pradesh</strong> operate under direct central parity. Rather than appointing expensive, multi-year state commissions, these state cabinets constitute a high-level administrative committee (often headed by the Additional Chief Secretary of Finance) to examine the central gazette notification. 
+      </p>
+      <ul>
+        <li>They adopt the exact <strong>18-level Central Pay Matrix</strong> without altering cell structures.</li>
+        <li>They implement the identical central fitment multiplier (e.g., 2.57x under the 7th CPC).</li>
+        <li>Their adoption lag is minimal—typically notifying matching Government Orders (GOs) within <strong>2 to 8 months</strong> of the central rollout, often granting retroactive arrears matching central effective dates.</li>
+      </ul>
+
+      <h3>Model B: The Modified Parity Model (Official Review Committee)</h3>
+      <p>
+        States such as <strong>Tamil Nadu, Maharashtra, Bihar, and Odisha</strong> adhere to central pay matrix benchmarks but introduce state-specific adjustments:
+      </p>
+      <ul>
+        <li>They appoint an Official Pay Committee to align distinct state feeder cadres (such as Village Administrative Officers, Police Sub-Inspectors, and State Revenue Inspectors) with central pay levels.</li>
+        <li>While basic pay matrices generally match central scales, state compensatory allowances (such as City Compensatory Allowance - CCA, and House Rent Allowance - HRA) are calculated using separate state ceiling slabs rather than central 30%/20%/10% metro rules.</li>
+        <li>The adoption lag spans between <strong>9 and 15 months</strong>, with arrears often disbursed in staggered cash installments or credited partially to General Provident Fund (GPF) accounts.</li>
+      </ul>
+
+      <h3>Model C: The Autonomous 5-Year PRC & ROPA Models (Independent Systems)</h3>
+      <p>
+        A minority of Indian states operate entirely independent pay revision cycles decoupled from the 10-year Central Pay Commission:
+      </p>
+      <ul>
+        <li><strong>Karnataka:</strong> Operates on an independent 5-year cycle through the Karnataka State Pay Commission (e.g., the 7th KSPRC, which recently awarded a 27.5% fitment hike). Salaries are structured on distinct state master scales rather than the 18-level central grid.</li>
+        <li><strong>Kerala:</strong> Appoints a dedicated State Pay Revision Commission (PRC) every 5 years (e.g., 11th and upcoming 12th PRC), establishing its own unified basic pay slabs and state dearness allowances.</li>
+        <li><strong>Andhra Pradesh & Telangana:</strong> Formulate independent State PRCs every 5 years, determining fitment percentages through intensive tripartite negotiations between state trade union joint action committees (JAC) and state finance cabinets.</li>
+        <li><strong>West Bengal:</strong> Governed by its autonomous Revision of Pay and Allowances (ROPA) framework under state pay commissions (e.g., 6th Pay Commission ROPA-2019). West Bengal does not follow central DA merger percentages, resulting in a distinct DA differential compared to central rates.</li>
+      </ul>
+
+      <h2>4. The Fiscal Divergence: The State Dearness Allowance (DA) Gap</h2>
+      <p>
+        A central structural issue in state civil service remuneration is the widening <strong>Dearness Allowance Gap</strong>. While the Central Government reliably announces DA hikes twice a year (in January and July) based strictly on AICPI-IW index data:
+      </p>
+      <ul>
+        <li>Several states facing severe fiscal deficits or high committed expenditure ratios (where salaries, pensions, and debt servicing consume over 60% of own-tax revenues) delay DA announcements by 6 to 18 months.</li>
+        <li>In states with independent frameworks (such as West Bengal), DA stands at a substantial divergence from the central 53%+ benchmark, creating ongoing legal disputes before State Administrative Tribunals (SAT) and the Supreme Court regarding whether DA constitutes a fundamental legal right or an executive discretion.</li>
+      </ul>
+
+      <h2>5. The Pension Divide: Old Pension Scheme (OPS) vs. NPS vs. UPS</h2>
+      <p>
+        Ahead of the 8th Central Pay Commission, the political and fiscal debate across Indian states centers on post-retirement pensions:
+      </p>
+      <ul>
+        <li><strong>The OPS Reversion Wave:</strong> States such as Himachal Pradesh, Punjab, Rajasthan, Jharkhand, and Chhattisgarh issued notifications reverting from the National Pension System (NPS) back to the non-contributory Old Pension Scheme (OPS), guaranteeing a defined pension of 50% of last drawn basic pay.</li>
+        <li><strong>The Unified Pension Scheme (UPS) Alternative:</strong> In response, the Union Government introduced the Unified Pension Scheme (UPS) to guarantee an assured 50% defined pension backed by an actuarially funded contributory corpus (10% employee + 18.5% government).</li>
+        <li><strong>State Fiscal Impact:</strong> When the 8th Pay Commission increases basic pay via the fitment factor, states that reverted to OPS face exponential unfunded future pension liabilities. States adopting the UPS or NPS model, by contrast, will experience immediate hikes in their required monthly employer contribution matching funds.</li>
+      </ul>
+
+      <h2>6. How State Employees Can Forecast 8th CPC Salary Revisions</h2>
+      <p>
+        For state employees seeking to project their earnings once their state cabinet notifies adoption:
+      </p>
+
+      <div class="formula-banner">
+        Projected State Basic Pay = Current State 7th CPC Basic Pay × Approved State Fitment Factor (2.25x – 2.86x)
+      </div>
+
+      <p>
+        To determine your take-home pay progression:
+      </p>
+      <ol>
+        <li><strong>Check Parity Status:</strong> Confirm whether your state finance department follows direct central matrix parity (e.g., UP, Rajasthan, Haryana) or independent PRC master scales (e.g., Karnataka, Kerala, AP).</li>
+        <li><strong>Apply the Multiplier:</strong> If your state observes central parity, your 7th CPC basic salary in the state matrix will scale by the finalized central fitment factor (e.g., ₹35,400 in Level 6 will adjust to ₹79,650 at 2.25x or ₹101,244 at 2.86x).</li>
+        <li><strong>Account for Allowance Floor Differences:</strong> Note that state HRA rates in tier-2 and tier-3 towns often feature slightly lower percentage slabs or distinct maximum ceiling caps compared to the Central Government's unrestricted 30%/20%/10% formula.</li>
+      </ol>
+
+      <h2>7. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to any State Government, State Finance Department, or State Pay Revision Commission. All state-wise timelines, parity analyses, and fitment estimates are compiled from historical state government orders (GOs), state finance white papers, and published employee federation memoranda. Official orders and gazette notifications must be verified directly through the respective State Government Gazette repositories and Finance Department portals.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Projected State Basic</div>
+      <div class="val" id="stickyStateBasic">₹1,01,244</div>
+    </div>
+    <a href="#stateBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const stateSelect = document.getElementById('stateSelect');
+    const stateBasicInput = document.getElementById('stateBasicInput');
+    const stateFitmentSelect = document.getElementById('stateFitmentSelect');
+    const stateHraTier = document.getElementById('stateHraTier');
+
+    const dispStateBasic = document.getElementById('dispStateBasic');
+    const dispStateHra = document.getElementById('dispStateHra');
+    const dispStateGross = document.getElementById('dispStateGross');
+    const stickyStateBasic = document.getElementById('stickyStateBasic');
+
+    const slipBasic = document.getElementById('slipBasic');
+    const slipHra = document.getElementById('slipHra');
+    const slipAllow = document.getElementById('slipAllow');
+    const slipGross = document.getElementById('slipGross');
+    const slipNps = document.getElementById('slipNps');
+    const slipNet = document.getElementById('slipNet');
+    const slipStateLabel = document.getElementById('slipStateLabel');
+
+    function calculateStatePay() {
+      const basic = parseFloat(stateBasicInput.value) || 0;
+      const fitment = parseFloat(stateFitmentSelect.value) || 2.86;
+      const hraRate = parseFloat(stateHraTier.value) || 0.30;
+
+      // Arithmetic Engine
+      const revisedBasic = Math.round(basic * fitment);
+      const hraAmount = Math.round(revisedBasic * hraRate);
+      
+      // Standard state medical and conveyance allowance allowance baseline
+      const baseAllow = 3600;
+      const gross = revisedBasic + hraAmount + baseAllow;
+
+      // 10% NPS / State Pension Deduction
+      const npsDeduction = Math.round(revisedBasic * 0.10);
+      const netPay = gross - npsDeduction;
+
+      // Update KPI Cards
+      dispStateBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      dispStateHra.textContent = '₹' + hraAmount.toLocaleString('en-IN');
+      dispStateGross.textContent = '₹' + gross.toLocaleString('en-IN');
+      if (stickyStateBasic) stickyStateBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      slipHra.textContent = '₹' + hraAmount.toLocaleString('en-IN');
+      slipAllow.textContent = '₹' + baseAllow.toLocaleString('en-IN');
+      slipGross.textContent = '₹' + gross.toLocaleString('en-IN');
+      slipNps.textContent = '-₹' + npsDeduction.toLocaleString('en-IN');
+      slipNet.textContent = '₹' + netPay.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      const selectedOption = stateSelect.options[stateSelect.selectedIndex];
+      if (selectedOption) {
+        const stateName = selectedOption.value;
+        const parityType = selectedOption.getAttribute('data-parity') || 'Parity Pattern';
+        slipStateLabel.textContent = `${stateName} • ${parityType}`;
+      }
+    }
+
+    // Input Listeners
+    stateSelect.addEventListener('change', calculateStatePay);
+    stateBasicInput.addEventListener('input', calculateStatePay);
+    stateFitmentSelect.addEventListener('change', calculateStatePay);
+    stateHraTier.addEventListener('change', calculateStatePay);
+
+    // Pattern Chip Buttons
+    const pills = document.querySelectorAll('#patternPills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        const targetState = pill.getAttribute('data-state');
+        const targetFitment = pill.getAttribute('data-fit');
+
+        stateFitmentSelect.value = targetFitment;
+        for (let i = 0; i < stateSelect.options.length; i++) {
+          if (stateSelect.options[i].value === targetState) {
+            stateSelect.selectedIndex = i;
+            break;
+          }
+        }
+        calculateStatePay();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateStatePay();
+  </script>
+
+</body>
+</html>
