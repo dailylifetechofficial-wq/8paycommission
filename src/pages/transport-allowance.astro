@@ -1,77 +1,837 @@
 ---
+// src/pages/transport-allowance.astro
 const siteUrl = "https://8paycommission.com";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
-const pageTitle = "Transport Allowance (TA) & Travel Rules: 7th & 8th CPC";
-const pageDescription = "Calculate Transport Allowance with DA and review Central Government travel entitlements.";
-const higherTptaCities = ["Delhi (UA)", "Mumbai (UA)", "Kolkata (UA)", "Chennai (UA)", "Bengaluru (UA)", "Hyderabad (UA)", "Ahmedabad (UA)", "Pune (UA)", "Jaipur (UA)", "Lucknow (UA)", "Kanpur (UA)", "Nagpur (UA)", "Surat (UA)", "Patna (UA)", "Kochi (UA)", "Kozhikode (UA)", "Indore (UA)", "Coimbatore (UA)", "Ghaziabad (UA)"];
-const ratesMap = { high: { higher: 7200, other: 3600 }, mid: { higher: 3600, other: 1800 }, low: { higher: 1350, other: 900 } };
+const pageTitle = "Transport Allowance (TA) & Travel Rules: 7th & 8th CPC Slabs & Tour Entitlements";
+const pageDescription = "Calculate your monthly Transport Allowance (TA with DA) and tour travel entitlements. Explore Higher TPTA city classifications, train/air travel tiers, daily allowances, and CTG rules.";
+
+// 19 Higher TPTA Urban Agglomerations under Central Service Rules
+const higherTptaCities = [
+  "Delhi (UA)", "Mumbai (UA)", "Kolkata (UA)", "Chennai (UA)", "Bengaluru (UA)",
+  "Hyderabad (UA)", "Ahmedabad (UA)", "Pune (UA)", "Jaipur (UA)", "Lucknow (UA)",
+  "Kanpur (UA)", "Nagpur (UA)", "Surat (UA)", "Patna (UA)", "Kochi (UA)",
+  "Kozhikode (UA)", "Indore (UA)", "Coimbatore (UA)", "Ghaziabad (UA)"
+];
+
+// Travel Class Entitlements across Pay Matrix Levels
+const travelEntitlements = [
+  { levels: "Level 14 and Above", air: "Economy / Business Class (Discretionary)", train: "Executive Class / 1st AC", road: "AC Taxi / Premium Sedan", hotel: "Up to ₹7,500/day", food: "₹1,200/day" },
+  { levels: "Level 12 to 13A", air: "Economy Class", train: "1st AC / Executive Class", road: "AC Taxi / Rideshare", hotel: "Up to ₹4,500/day", food: "₹1,000/day" },
+  { levels: "Level 9 to 11", air: "Economy Class (Official sanction)", train: "2nd AC / Chair Car", road: "AC Taxi / Auto", hotel: "Up to ₹2,250/day", food: "₹900/day" },
+  { levels: "Level 6 to 8", air: "Not Entitled (Train Primary)", train: "2nd AC / 3rd AC", road: "Prepaid Taxi / Auto Rickshaw", hotel: "Up to ₹750/day", food: "₹800/day" },
+  { levels: "Level 5 and Below", air: "Not Entitled", train: "3rd AC / Sleeper Class", road: "Ordinary Bus / Shared Auto", hotel: "Up to ₹450/day", food: "₹500/day" }
+];
+
+const faqs = [
+  {
+    q: "How is monthly Transport Allowance (TA) calculated on the payslip?",
+    a: "Transport Allowance is calculated using the formula: Total Disbursed TA = Base Transport Allowance + (Base Transport Allowance × Current DA %). The base rate depends on your Pay Matrix level and whether your station is classified as a Higher TPTA City or Other Location."
+  },
+  {
+    q: "What happens to Transport Allowance when a new Pay Commission is implemented?",
+    a: "When a new Pay Commission begins, base TA rates are recalibrated to reflect updated fuel and transit costs, while the DA on TA temporarily resets to 0%. Over time, as fresh semi-annual DA installments are notified, the allowance compounds on top of the revised baseline."
+  },
+  {
+    q: "Are visually impaired or orthopedically handicapped employees entitled to higher TA?",
+    a: "Yes. Under Central Civil Services regulations, employees with qualifying physical disabilities (including blindness, locomotor disability, and orthopedic handicaps) receive double the normal Transport Allowance rate, subject to a statutory minimum floor (₹2,250 + DA per month under the 7th CPC)."
+  },
+  {
+    q: "What is the Composite Transfer Grant (CTG) and who is eligible?",
+    a: "The Composite Transfer Grant is a lump-sum allowance paid to government servants upon transfer involving a change of station exceeding 20 kilometers. It is calculated at 80% of the last drawn Basic Pay (100% for transfers to/from island territories like Andaman & Nicobar and Lakshadweep)."
+  },
+  {
+    q: "Is Transport Allowance (TA) taxable under Indian income tax laws?",
+    a: "For regular central employees, monthly Transport Allowance is fully taxable as salary income. However, employees with qualifying disabilities are eligible for an income tax exemption of up to ₹3,200 per month under Section 10(14) of the Income Tax Act."
+  }
+];
 ---
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>{pageTitle}</title>
   <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="transport allowance rules central government, ta on da calculator, higher tpta cities list, tour travel entitlement pay matrix, ctg rules transfer grant, daily allowance food hotel limits" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
   <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
   <style>
-    :root { font-family: system-ui, sans-serif; color: #0f172a; background: #f8fafc; }
-    body { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
-    h1 { color: #1d4ed8; } main, section { background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.5rem; margin: 1rem 0; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; }
-    label { display: grid; gap: .35rem; font-weight: 700; } select, input { padding: .7rem; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
-    .result { font-size: 1.25rem; font-weight: 800; color: #15803d; } .tags { display: flex; flex-wrap: wrap; gap: .5rem; } .tag { background: #eff6ff; padding: .35rem .65rem; border-radius: 6px; }
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Widget Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Summary KPI Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* Tag Pills Grid */
+    .tag-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .tag-pill {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Transport Allowance (TA) &amp; Travel Rules</h1>
-    <p>Calculate monthly Transport Allowance with Dearness Allowance and review travel entitlements under Central Government service rules.</p>
-    <section aria-label="Transport Allowance calculator">
-      <div class="grid">
-        <label>Pay Matrix Level
-          <select id="tier"><option value="high">Level 9 and above</option><option value="mid" selected>Levels 3 to 8</option><option value="low">Levels 1 and 2</option></select>
-        </label>
-        <label>Station category
-          <select id="city"><option value="higher" selected>Higher TPTA city</option><option value="other">Other location</option></select>
-        </label>
-        <label>DA rate (%) <input id="da" type="number" value="53" min="0" max="150" /></label>
-        <label>Disability concession
-          <select id="pwd"><option value="no" selected>Standard rate</option><option value="yes">PWD / eligible disability (double rate)</option></select>
-        </label>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Travel Entitlements & Transit Allowance Guide</div>
+      <h1>Transport Allowance (TA) & Travel Rules</h1>
+      <p>Calculate your monthly commuter Transport Allowance (TA with DA), evaluate tour travel class entitlements (Air, Train, Road), and inspect Daily Allowance (DA) ceilings across Pay Matrix levels.</p>
+    </header>
+
+    <!-- INTERACTIVE TA CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="Transport Allowance Interactive Calculation Widget">
+      
+      <!-- Quick Level Preset Chips -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select Cadre Tier Preset:</span>
+        <div class="chip-bar" id="cadrePills">
+          <button class="chip-btn" data-lvl="low">Levels 1 & 2 (MTS / LDC)</button>
+          <button class="chip-btn active" data-lvl="mid">Levels 3 to 8 (Constable to AAO)</button>
+          <button class="chip-btn" data-lvl="high">Level 9 and Above (Gazetted / Group A)</button>
+        </div>
       </div>
-      <p>Base allowance: <strong id="base">₹3,600</strong></p>
-      <p>DA on allowance: <strong id="daValue">₹1,908</strong></p>
-      <p class="result">Total monthly allowance: <span id="total">₹5,508</span></p>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="taCadreTier">Pay Matrix Level Bracket</label>
+          <select id="taCadreTier">
+            <option value="high">Level 9 & Above (GP 5400 PB-3 to Level 18)</option>
+            <option value="mid" selected>Level 3 to 8 (GP 2000 to GP 4800)</option>
+            <option value="low">Level 1 & 2 (GP 1800 & GP 1900)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="taCityType">Station Posting Category</label>
+          <select id="taCityType">
+            <option value="higher" selected>Higher TPTA City (19 Major Metros: Delhi, Mumbai, etc.)</option>
+            <option value="other">Other Locations (All Remaining Stations)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="taDaRate">Applicable DA Rate (%)</label>
+          <input type="number" id="taDaRate" value="53" min="0" max="150" step="1" />
+        </div>
+
+        <div class="form-item">
+          <label for="taPhysicallyHandicapped">Handicapped Concession Status</label>
+          <select id="taPhysicallyHandicapped">
+            <option value="normal" selected>Normal Category (Standard Rates)</option>
+            <option value="pwd">PWD / Blind / Orthopedic (Double Rates)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Base Transport Allowance</div>
+          <div class="kpi-val" id="dispBaseTa">₹3,600</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Dearness Allowance on TA</div>
+          <div class="kpi-val" id="dispDaOnTa">₹1,908</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Total Monthly Disbursed TA</div>
+          <div class="kpi-val" id="dispTotalTa">₹5,508</div>
+        </div>
+      </div>
+
+      <!-- Detailed Arithmetic Breakdown Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Monthly Transport Allowance Calculation Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Levels 3–8 • Higher TPTA City</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Statutory Base Transport Allowance Rate</td>
+              <td class="num" id="slipBase">₹3,600</td>
+            </tr>
+            <tr>
+              <td>Applicable Dearness Allowance (DA) Rate</td>
+              <td class="num" id="slipDaPercent">53%</td>
+            </tr>
+            <tr>
+              <td>DA Component on Transport Allowance (Base TA × DA %)</td>
+              <td class="num" id="slipDaVal">₹1,908</td>
+            </tr>
+            <tr>
+              <td>PWD / Orthopedic Double Allowance Multiplier</td>
+              <td class="num" id="slipMultiplier">1.0x (Standard)</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Net Monthly Transport Allowance Disbursed to Payslip</td>
+              <td class="num" id="slipNetTotal" style="color: var(--accent-green);">₹5,508</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Architecture of Transport Allowance in Central Civil Service</h2>
+      <p>
+        <strong>Transport Allowance (TA)</strong> is a monthly compensatory disbursement provided to Central Government employees, defence personnel, and railway workers to offset commuting costs incurred between their place of residence and their official duty headquarters. Unlike travel allowances granted during official tours or temporary transfer postings, Transport Allowance is an automated, monthly recurring entitlement paid directly on the salary slip.
+      </p>
+      <p>
+        The allowance is governed strictly by the Department of Expenditure (DoE), Ministry of Finance. It operates under a tiered framework determined by two factors: an employee's <strong>Pay Matrix Level</strong> and the <strong>geographic classification</strong> of their duty station (Higher TPTA Cities vs. Other Places).
+      </p>
+
+      <h2>2. Transport Allowance Slabs: Pay Matrix Brackets & City Classifications</h2>
+      <p>
+        The 7th Central Pay Commission simplified the older running Grade Pay groupings into three streamlined hierarchical tiers, each with distinct baseline rates:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Matrix Level Tier</th>
+              <th>Cadre / Administrative Representation</th>
+              <th>Higher TPTA Cities (Base)</th>
+              <th>Other Locations (Base)</th>
+              <th>Total Disbursed (at 53% DA)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Level 9 and Above</strong></td>
+              <td>Group-A Officers, SDM, Under Sec, Joint Sec (PB-2 GP 5400 to Level 18)</td>
+              <td>₹7,200 + DA</td>
+              <td>₹3,600 + DA</td>
+              <td><strong>₹11,016 / ₹5,508</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Level 3 to Level 8</strong></td>
+              <td>Constable, UDC, Auditor, Inspector, ASO, AAO (GP 2000 to GP 4800)</td>
+              <td>₹3,600 + DA</td>
+              <td>₹1,800 + DA</td>
+              <td><strong>₹5,508 / ₹2,754</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Level 1 and Level 2</strong></td>
+              <td>Multi-Tasking Staff (MTS), Support Staff, LDC (GP 1800 & GP 1900)</td>
+              <td>₹1,350 + DA</td>
+              <td>₹900 + DA</td>
+              <td><strong>₹2,066 / ₹1,377</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="formula-banner">
+        Monthly Disbursed TA = Base TA Rate + [Base TA Rate × (Current Dearness Allowance % ÷ 100)]
+      </div>
+
+      <h2>3. The 19 Higher TPTA Urban Agglomerations (Qualifying Metros)</h2>
+      <p>
+        To qualify for the higher Transport Allowance slab, an employee's official duty station must fall within one of the <strong>19 Higher Transport Urban Agglomerations (UA)</strong> formally recognized by the Ministry of Finance:
+      </p>
+
+      <div class="tag-grid">
+        {higherTptaCities.map((city) => (
+          <span class="tag-pill">{city}</span>
+        ))}
+      </div>
+
+      <p>
+        <strong>Suburban Expansion Rule:</strong> Under central service directives, if a central government establishment or military base is situated in an adjoining peripheral municipality or suburban cantonment that forms a continuous urban continuity with an authorized Higher TPTA city (e.g., Gurgaon, Noida, or Faridabad contiguous with Delhi), employees stationed at such establishments are entitled to the higher metropolitan TA rates.
+      </p>
+
+      <h2>4. PWD Concession: Double Transport Allowance for Employees with Disabilities</h2>
+      <p>
+        Central Civil Services rules extend specific statutory welfare protections to public servants with qualifying physical challenges:
+      </p>
+      <ul>
+        <li><strong>Eligibility Categories:</strong> Government servants who are visually impaired (blind or low vision), orthopedically handicapped with locomotor disability of the lower limbs, or deaf/speech impaired.</li>
+        <li><strong>The 2x Rate Benefit:</strong> Eligible personnel receive <strong>double the normal Transport Allowance</strong> rate applicable to their pay level and city tier:
+          <br /><br />
+          Total PWD TA = [2 × Base TA Rate] + [2 × Base TA Rate × (Current DA % ÷ 100)]
+        </li>
+        <li><strong>Minimum Statutory Floor:</strong> Regardless of pay scale, the base allowance for employees with disabilities cannot fall below a statutory minimum of <strong>₹2,250 + DA per month</strong>.</li>
+        <li><strong>Income Tax Exemption:</strong> While normal TA is fully taxable, PWD employees can claim a statutory tax exemption of up to <strong>₹3,200 per month</strong> under Section 10(14) of the Income Tax Act (under the Old Tax Regime).</li>
+      </ul>
+
+      <h2>5. Official Tour Travel Rules: Class Entitlements & Daily Allowance (DA)</h2>
+      <p>
+        When a government servant undertakes an authorized official temporary duty tour away from headquarters, travel reimbursements are governed by strict rank entitlements:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Matrix Level</th>
+              <th>Air Travel Eligibility</th>
+              <th>Train Journey Entitlement</th>
+              <th>Local City Transit Mode</th>
+              <th>Hotel Ceiling (Per Day)</th>
+              <th>Daily Food Reimbursement</th>
+            </tr>
+          </thead>
+          <tbody>
+            {travelEntitlements.map((t) => (
+              <tr>
+                <td><strong>{t.levels}</strong></td>
+                <td>{t.air}</td>
+                <td>{t.train}</td>
+                <td>{t.road}</td>
+                <td><strong style="color: var(--primary);">{t.hotel}</strong></td>
+                <td>{t.food}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Reimbursement Rules for Daily Travel Allowances:</h3>
+      <ul>
+        <li><strong>Absence Duration Calculation:</strong> If official absence from headquarters is less than 6 hours, <strong>30%</strong> of daily food allowance is payable. If between 6 and 12 hours, <strong>70%</strong> is payable. For absence exceeding 12 hours, <strong>100%</strong> of the daily allowance is disbursed.</li>
+        <li><strong>Food Bill Requirements:</strong> Following 7th CPC procedural simplification, food allowance is disbursed as a lump-sum per diem based on the table rates above; submission of hotel dining vouchers or restaurant bills is no longer mandatory.</li>
+        <li><strong>Hotel Accommodation Receipts:</strong> Production of valid commercial hotel tax invoices bearing the hotel's GST registration number is mandatory to claim lodging reimbursement up to the ceiling limits.</li>
+      </ul>
+
+      <h2>6. Composite Transfer Grant (CTG): Relocation on Transfer / Retirement</h2>
+      <p>
+        When a government servant is transferred to a new station for administrative reasons, or relocates following superannuation retirement, they are entitled to the <strong>Composite Transfer Grant (CTG)</strong> alongside personal and family travel passage:
+      </p>
+
+      <div class="formula-banner">
+        Standard CTG = 80% of Last Drawn Monthly Basic Pay (Transfers involving change of station &gt; 20 km)
+      </div>
+
+      <h3>Special Transfer Provisions:</h3>
+      <ul>
+        <li><strong>Island Territories Exception:</strong> For transfers to or from the Andaman & Nicobar Islands or Lakshadweep, the CTG is payable at <strong>100% of last drawn basic pay</strong>.</li>
+        <li><strong>Short-Distance Transfers (&le; 20 km):</strong> If a transfer does not involve a change of residence, no CTG is payable. If an employee is compelled to change their residential dwelling within the same urban area due to transfer beyond 20 km, a reduced CTG of <strong>one-third (33.33%)</strong> of basic pay is admissible.</li>
+        <li><strong>Personal Effects Transport:</strong> In addition to the CTG, employees are reimbursed for personal household luggage transport by train (full 4-wheeler wagon or container load) or by road through accredited logistics carriers up to prescribed weight limits (e.g., 6,000 kg for Levels 6 and above).</li>
+      </ul>
+
+      <h2>7. Leave Travel Concession (LTC) Passage Guidelines</h2>
+      <p>
+        The <strong>Leave Travel Concession (LTC)</strong> allows central employees and their families to visit their declared "Home Town" twice in a four-year block, or visit "Anywhere in India" once in lieu of one Home Town visit:
+      </p>
+      <ul>
+        <li><strong>Air Travel on LTC:</strong> Only employees serving in <strong>Level 9 and above</strong> are entitled to travel by air on official LTC. Officers must book tickets exclusively through three authorized travel agents: Balmer Lawrie & Co., Ashok Travels & Tours, or IRCTC.</li>
+        <li><strong>Special Relaxations:</strong> Non-entitled personnel (Levels 1 to 8) are periodically allowed to travel by air to specific designated regions (Jammu & Kashmir, Ladakh, Andaman & Nicobar, and the North Eastern Region) under special government relaxation orders.</li>
+        <li><strong>Encashment of Earned Leave:</strong> Employees can encash up to 10 days of earned leave at the time of availing LTC, subject to a lifetime career maximum of 60 days across their entire service.</li>
+      </ul>
+
+      <h2>8. The 8th Pay Commission Reset: Projected Transport Allowance Slabs</h2>
+      <p>
+        When the 8th Central Pay Commission takes effect:
+      </p>
+      <ol>
+        <li><strong>DA Reset to 0%:</strong> The current 53%+ DA will be absorbed into basic pay, causing the "DA on TA" component to temporarily reset to zero.</li>
+        <li><strong>Recalibration of Base TA Rates:</strong> To compensate for higher fuel, electricity, and urban transit costs, the baseline TA rates are projected to increase to approximately <strong>₹16,200</strong> (Level 9+), <strong>₹8,100</strong> (Levels 3–8), and <strong>₹3,000</strong> (Levels 1–2) in Higher TPTA cities.</li>
+      </ol>
+
+      <h2>9. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or Indian Railways. All allowance rates, travel entitlement limits, and CTG formulas are compiled from official Office Memorandums (OMs) and gazette notifications. Official orders must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
+    </div>
+
   </main>
-  <section>
-    <h2>Higher TPTA Urban Agglomerations</h2>
-    <div class="tags">{higherTptaCities.map((city) => <span class="tag">{city}</span>)}</div>
-  </section>
-  <section>
-    <h2>Important PWD rule</h2>
-    <p>Eligible employees receive double the normal Transport Allowance rate applicable to their level and city category, subject to the applicable statutory minimum.</p>
-  </section>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Disbursed TA</div>
+      <div class="val" id="stickyTotalTa">₹5,508</div>
+    </div>
+    <a href="#taCadreTier" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
   <script is:inline>
-    const tier = document.querySelector('#tier');
-    const city = document.querySelector('#city');
-    const da = document.querySelector('#da');
-    const pwd = document.querySelector('#pwd');
-    const base = document.querySelector('#base');
-    const daValue = document.querySelector('#daValue');
-    const total = document.querySelector('#total');
-    const money = (value) => '₹' + value.toLocaleString('en-IN');
-    function calculate() {
-      let rate = ratesMap[tier.value][city.value];
-      if (pwd.value === 'yes') rate = Math.max(rate * 2, 4500);
-      const daAmount = Math.round(rate * ((Number(da.value) || 0) / 100));
-      base.textContent = money(rate);
-      daValue.textContent = money(daAmount);
-      total.textContent = money(rate + daAmount);
+    const taCadreTier = document.getElementById('taCadreTier');
+    const taCityType = document.getElementById('taCityType');
+    const taDaRate = document.getElementById('taDaRate');
+    const taPhysicallyHandicapped = document.getElementById('taPhysicallyHandicapped');
+
+    const dispBaseTa = document.getElementById('dispBaseTa');
+    const dispDaOnTa = document.getElementById('dispDaOnTa');
+    const dispTotalTa = document.getElementById('dispTotalTa');
+    const stickyTotalTa = document.getElementById('stickyTotalTa');
+
+    const slipBase = document.getElementById('slipBase');
+    const slipDaPercent = document.getElementById('slipDaPercent');
+    const slipDaVal = document.getElementById('slipDaVal');
+    const slipMultiplier = document.getElementById('slipMultiplier');
+    const slipNetTotal = document.getElementById('slipNetTotal');
+    const slipLevelLabel = document.getElementById('slipLevelLabel');
+
+    // Base TA matrix rates under 7th CPC guidelines
+    const ratesMap = {
+      high: { higher: 7200, other: 3600 },
+      mid: { higher: 3600, other: 1800 },
+      low: { higher: 1350, other: 900 }
+    };
+
+    function calculateTransportAllowance() {
+      const tier = taCadreTier.value;
+      const city = taCityType.value;
+      const da = parseFloat(taDaRate.value) || 0;
+      const isPwd = taPhysicallyHandicapped.value === 'pwd';
+
+      let baseRate = ratesMap[tier][city];
+      if (isPwd) {
+        baseRate = Math.max(baseRate * 2, 2250 * 2);
+      }
+
+      const daComponent = Math.round(baseRate * (da / 100));
+      const totalDisbursed = baseRate + daComponent;
+
+      // Update KPI Cards
+      dispBaseTa.textContent = '₹' + baseRate.toLocaleString('en-IN');
+      dispDaOnTa.textContent = '₹' + daComponent.toLocaleString('en-IN');
+      dispTotalTa.textContent = '₹' + totalDisbursed.toLocaleString('en-IN');
+      if (stickyTotalTa) stickyTotalTa.textContent = '₹' + totalDisbursed.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipBase.textContent = '₹' + baseRate.toLocaleString('en-IN');
+      slipDaPercent.textContent = da + '%';
+      slipDaVal.textContent = '₹' + daComponent.toLocaleString('en-IN');
+      slipMultiplier.textContent = isPwd ? '2.0x (PWD Concession)' : '1.0x (Standard)';
+      slipNetTotal.textContent = '₹' + totalDisbursed.toLocaleString('en-IN');
+
+      // Update Label
+      const tierLabel = tier === 'high' ? 'Level 9 & Above' : tier === 'mid' ? 'Levels 3–8' : 'Levels 1 & 2';
+      const cityLabel = city === 'higher' ? 'Higher TPTA City' : 'Other Location';
+      slipLevelLabel.textContent = `${tierLabel} • ${cityLabel}`;
     }
-    [tier, city, da, pwd].forEach((element) => element.addEventListener('input', calculate));
-    calculate();
+
+    // Input Listeners
+    taCadreTier.addEventListener('change', calculateTransportAllowance);
+    taCityType.addEventListener('change', calculateTransportAllowance);
+    taDaRate.addEventListener('input', calculateTransportAllowance);
+    taPhysicallyHandicapped.addEventListener('change', calculateTransportAllowance);
+
+    // Preset Chip Buttons
+    const pills = document.querySelectorAll('#cadrePills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        taCadreTier.value = pill.getAttribute('data-lvl');
+        calculateTransportAllowance();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateTransportAllowance();
   </script>
+
 </body>
 </html>
