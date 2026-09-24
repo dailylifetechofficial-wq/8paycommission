@@ -1,0 +1,794 @@
+---
+// src/pages/cea-rules.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "Children Education Allowance (CEA) Rules: 7th & 8th CPC Rates, Slabs & Claim Process";
+const pageDescription = "Complete guide to Children Education Allowance (CEA) and Hostel Subsidy for Central Government employees. Explore revised rates, 25% DA trigger hikes, Divyangjan benefits, and claim procedures.";
+
+// CEA and Hostel Subsidy Rate Progression Table
+const allowanceSlabs = [
+  { stage: "7th CPC Base Rate (2016)", daStatus: "0% – 49% DA", ceaPerChild: "₹2,250 / mo (₹27,000 / yr)", hostelPerChild: "₹6,750 / mo (₹81,000 / yr)", divyangjanRate: "₹4,500 / mo (₹54,000 / yr)" },
+  { stage: "7th CPC Restored Rate (Current)", daStatus: "50%+ DA Trigger", ceaPerChild: "₹2,812.50 / mo (₹33,750 / yr)", hostelPerChild: "₹8,437.50 / mo (₹1,01,250 / yr)", divyangjanRate: "₹5,625 / mo (₹67,500 / yr)" },
+  { stage: "8th CPC Projected Baseline (2.25x)", daStatus: "0% DA Reset", ceaPerChild: "₹5,000 / mo (₹60,000 / yr)", hostelPerChild: "₹15,000 / mo (₹1,80,000 / yr)", divyangjanRate: "₹10,000 / mo (₹1,20,000 / yr)" },
+  { stage: "8th CPC Federation Target (2.86x)", daStatus: "Target Demand", ceaPerChild: "₹6,500 / mo (₹78,000 / yr)", hostelPerChild: "₹19,500 / mo (₹2,34,000 / yr)", divyangjanRate: "₹13,000 / mo (₹1,56,000 / yr)" }
+];
+
+const faqs = [
+  {
+    q: "How many children are eligible for Children Education Allowance (CEA)?",
+    a: "Under Department of Personnel and Training (DoPT) guidelines, CEA and Hostel Subsidy are admissible for up to two eldest surviving children. An exception is made if the second childbirth results in twins or triplets, in which case the allowance is admissible for all children born in that multiple birth."
+  },
+  {
+    q: "What classes or age groups are covered under the CEA scheme?",
+    a: "CEA is admissible from nursery (two classes preceding Class 1) up to Class 12. The age limit is 20 years for normally abled children or until passing Class 12, whichever is earlier. For children with disabilities (Divyangjan), the age ceiling is relaxed up to 22 years."
+  },
+  {
+    q: "What documents are required to claim CEA reimbursement annually?",
+    a: "Employees need only submit a standardized certificate from the head of the educational institution confirming that the child studied in the school during the preceding academic year. Alternatively, self-attested copies of the report card or fee receipts confirming full fee payment can be submitted."
+  },
+  {
+    q: "What is the condition for claiming Hostel Subsidy alongside CEA?",
+    a: "Hostel Subsidy is admissible only if the child studies in a residential school located at least 50 kilometers away from the government servant's official residence and duty station. Submission of a bonafide certificate confirming boarding and lodging expenditures is mandatory."
+  },
+  {
+    q: "Can both husband and wife claim CEA if both are government employees?",
+    a: "No. If both spouses are employed in central government, state government, or autonomous bodies, only one parent is legally eligible to draw Children Education Allowance and Hostel Subsidy for their qualifying children."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="children education allowance rules, cea rates 7th pay commission, cea claim form bonafide certificate, hostel subsidy central government, 8th pay commission cea hike, divyangjan child education allowance" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Widget Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Department of Personnel & Training (DoPT) Norms</div>
+      <h1>Children Education Allowance (CEA) Rules</h1>
+      <p>Comprehensive guide to Children Education Allowance (CEA) and Hostel Subsidy for Central Government employees: reimbursement slabs, the 50% DA trigger expansion, Divyangjan benefits, and claim documentation.</p>
+    </header>
+
+    <!-- INTERACTIVE CEA CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="Children Education Allowance Interactive Calculator Widget">
+      
+      <!-- Quick Scenario Preset Chips -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select Allowance Rate Scenario:</span>
+        <div class="chip-bar" id="ratePills">
+          <button class="chip-btn" data-cea="2250" data-hostel="6750">7th CPC Base (₹2,250 / mo)</button>
+          <button class="chip-btn active" data-cea="2812.5" data-hostel="8437.5">7th CPC Restored @ 50% DA (₹2,812.50 / mo)</button>
+          <button class="chip-btn" data-cea="5000" data-hostel="15000">8th CPC Projected (₹5,000 / mo)</button>
+          <button class="chip-btn" data-cea="6500" data-hostel="19500">8th CPC Federation Target (₹6,500 / mo)</button>
+        </div>
+      </div>
+
+      <!-- Form Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="childCountSelect">Number of Eligible Children</label>
+          <select id="childCountSelect">
+            <option value="1">1 Child</option>
+            <option value="2" selected>2 Children (Standard Limit)</option>
+            <option value="3">3 Children (Twins / Triplets Exception)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="hostelEligibleCount">Children Availing Hostel Subsidy</label>
+          <select id="hostelEligibleCount">
+            <option value="0" selected>0 Children (Day Scholars Only)</option>
+            <option value="1">1 Child in Hostel (&gt;50 km)</option>
+            <option value="2">2 Children in Hostel (&gt;50 km)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="divyangjanStatus">Child with Disabilities (Divyangjan)</label>
+          <select id="divyangjanStatus">
+            <option value="0" selected>No (Standard Rates)</option>
+            <option value="1">1 Child with Disability (2x Rate)</option>
+            <option value="2">2 Children with Disability (2x Rate)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="customCeaMonthly">Monthly CEA Rate per Child (₹)</label>
+          <input type="number" id="customCeaMonthly" value="2812.5" step="0.5" />
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Annual CEA Entitlement</div>
+          <div class="kpi-val" id="dispAnnualCea">₹67,500</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Annual Hostel Subsidy</div>
+          <div class="kpi-val" id="dispAnnualHostel">₹0</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Total Annual Claim Reimbursement</div>
+          <div class="kpi-val" id="dispTotalClaim">₹67,500</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Annual CEA & Hostel Subsidy Calculation Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipScenarioLabel">2 Children • Day Scholars</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Applicable Monthly CEA Rate per Normally Abled Child</td>
+              <td class="num" id="slipCeaRate">₹2,812.50 / month</td>
+            </tr>
+            <tr>
+              <td>Applicable Monthly CEA Rate per Divyangjan Child (Double Rate)</td>
+              <td class="num" id="slipDivyangRate">₹5,625.00 / month</td>
+            </tr>
+            <tr>
+              <td>Total Children Education Allowance (Annual Cumulative)</td>
+              <td class="num" id="slipCeaTotal">₹67,500</td>
+            </tr>
+            <tr>
+              <td>Applicable Monthly Hostel Subsidy Rate (3x of Base CEA Rate)</td>
+              <td class="num" id="slipHostelRate">₹8,437.50 / month</td>
+            </tr>
+            <tr>
+              <td>Total Hostel Subsidy Claimed (Annual Cumulative)</td>
+              <td class="num" id="slipHostelTotal">₹0</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Total Reimbursable Amount for the Academic Year</td>
+              <td class="num" id="slipFinalClaim" style="color: var(--accent-green);">₹67,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Foundation and Objectives of Children Education Allowance</h2>
+      <p>
+        <strong>Children Education Allowance (CEA)</strong> is a statutory welfare entitlement administered by the <strong>Department of Personnel and Training (DoPT)</strong>, Ministry of Personnel, Public Grievances and Pensions. It was formulated to ensure that Central Government employees—who are frequently subject to nationwide transfers, difficult border postings, and remote operational deployments—can guarantee quality schooling for their children without financial strain.
+      </p>
+      <p>
+        Prior to the 7th Central Pay Commission, claiming CEA was an administratively burdensome exercise that required submitting voluminous original quarterly tuition vouchers, uniform bills, text-book receipts, and transport invoices. The 7th CPC fundamentally streamlined this protocol: the reimbursement was decoupled from actual itemized receipts and converted into an automated, fixed flat-rate entitlement based on a simple bonafide schooling certificate.
+      </p>
+
+      <h2>2. Current Rates & The 50% Dearness Allowance Escalation Trigger</h2>
+      <p>
+        A core feature of the 7th CPC framework was the introduction of automated allowance triggers linked to inflation. Under initial 2016 orders, base rates were established at:
+      </p>
+      <ul>
+        <li><strong>Base CEA Rate:</strong> ₹2,250 per month (₹27,000 per academic year per child).</li>
+        <li><strong>Base Hostel Subsidy:</strong> ₹6,750 per month (₹81,000 per academic year per child).</li>
+      </ul>
+      <p>
+        The governing DoPT guidelines contained a statutory escalation trigger: <em>whenever Dearness Allowance (DA) crossed the 50% milestone, the allowance rates would automatically increase by 25%</em>.
+      </p>
+      <p>
+        With Dearness Allowance officially exceeding 50% under the 7th CPC, the enhanced reimbursement limits currently standing in force are:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Allowance Component</th>
+              <th>7th CPC Base Rate</th>
+              <th>Restored Rate (DA &gt; 50%)</th>
+              <th>Projected 8th CPC Baseline</th>
+              <th>Projected 8th CPC Federation Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allowanceSlabs.map((s) => (
+              <tr>
+                <td><strong>{s.stage}</strong></td>
+                <td>{s.ceaPerChild}</td>
+                <td><strong style="color: var(--primary);">{s.hostelPerChild}</strong></td>
+                <td>{s.divyangjanRate}</td>
+                <td style="font-size: 0.85rem; color: #475569;">{s.daStatus}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="formula-banner">
+        Current Restored Rate: CEA = ₹2,812.50 / Month (₹33,750 / Year) | Hostel Subsidy = ₹8,437.50 / Month (₹1,01,250 / Year)
+      </div>
+
+      <h2>3. Academic Scope: Classes, Age Ceilings, and Institutional Recognition</h2>
+      <p>
+        To qualify for reimbursement, the child's academic institution and grade level must satisfy specific statutory criteria:
+      </p>
+      <ul>
+        <li><strong>Grade Coverage:</strong> Admissible from <strong>two classes preceding Class 1</strong> (Nursery, LKG, UKG, or preparatory school) through <strong>Class 12</strong>. It is also admissible for initial two-year diploma or polytechnic courses pursued after Class 10 at recognized technical institutes.</li>
+        <li><strong>Institutional Accreditation:</strong> The school must be recognized by the Central Government, State Government, Union Territory Administration, or an authorized educational board (e.g., CBSE, ICSE, NIOS, or State Education Boards).</li>
+        <li><strong>Age Ceilings:</strong> Admissible until the child turns <strong>20 years of age</strong> or passes Class 12, whichever occurs first. A child who fails a class is still eligible for CEA in that class for that academic year; however, failure for more than one year in the same grade terminates reimbursement for that level.</li>
+      </ul>
+
+      <h2>4. Special Provisions for Children with Disabilities (Divyangjan)</h2>
+      <p>
+        Central Civil Services rules provide critical welfare support for government servants with differently abled children:
+      </p>
+      <ul>
+        <li><strong>Double Reimbursement Rate:</strong> Under DoPT guidelines, parents of children with physical, intellectual, or sensory disabilities receive <strong>double the normal CEA rate</strong>. At current restored rates, this stands at <strong>₹5,625 per month (₹67,500 per academic year)</strong> per child.</li>
+        <li><strong>Extended Age Limit:</strong> The maximum age ceiling is relaxed from 20 years to <strong>22 years</strong>.</li>
+        <li><strong>Reimbursement for Specialized Vocational Training:</strong> Even if a child with disabilities does not attend a standard mainstream academic school, expenses incurred at specialized learning institutions, vocational rehabilitation centers, or non-formal day schools recognized by government social justice departments are fully reimbursable.</li>
+      </ul>
+
+      <h2>5. The Multiple Child Exception: Twins, Triplets & Stepchildren</h2>
+      <p>
+        While Central Government rules generally restrict CEA to the <strong>two eldest surviving children</strong>, administrative directives define clear exceptions:
+      </p>
+      <ul>
+        <li><strong>The Twins / Triplets Exception:</strong> If the first childbirth yields a single child and the subsequent second pregnancy results in multiple births (twins or triplets), the allowance is fully admissible for <em>all surviving children born in that second multiple delivery</em> (granting reimbursement for three or four children). However, if the first birth yields twins, no allowance is admissible for any child born in subsequent pregnancies.</li>
+        <li><strong>Stepchildren and Legally Adopted Children:</strong> Stepchildren and legally adopted children are treated on equal footing with natural biological children, provided the employee certifies that the children are wholly dependent on them.</li>
+      </ul>
+
+      <h2>6. Conditions for Claiming Hostel Subsidy</h2>
+      <p>
+        The <strong>Hostel Subsidy</strong> operates as an independent, secondary entitlement designed for employees who are forced to place their children in residential boarding institutions:
+      </p>
+      <ol>
+        <li><strong>The 50-Kilometer Distance Rule:</strong> Hostel Subsidy is strictly non-admissible if the residential boarding school is located within 50 kilometers of the government servant's official duty station or personal residence. The child must be boarded due to administrative necessity or lack of local schooling infrastructure.</li>
+        <li><strong>Simultaneous Claim Permitted:</strong> An employee can claim both Children Education Allowance and Hostel Subsidy concurrently for the same child, yielding a total annual reimbursement ceiling of <strong>₹1,35,000 per year</strong> (₹33,750 CEA + ₹1,01,250 Hostel Subsidy) at current restored rates.</li>
+        <li><strong>Boarding Bill Requirement:</strong> Unlike CEA, which requires only a schooling certificate, claiming Hostel Subsidy requires the school head to certify the actual boarding and lodging expenditures incurred by the student.</li>
+      </ol>
+
+      <h2>7. Procedural Simplification: How to Submit the Annual CEA Claim</h2>
+      <p>
+        Following the 7th Pay Commission reforms, the paperwork required to process annual CEA claims was substantially reduced:
+      </p>
+
+      <div class="formula-banner">
+        Simplified Filing: Submit one standardized Bonafide Certificate after the close of the academic year. No individual fee receipts required.
+      </div>
+
+      <h3>Standard Claim Workflow:</h3>
+      <ul>
+        <li><strong>Single Annual Claim Cycle:</strong> Central Government servants submit their CEA claims once per financial year, immediately following the completion of the academic session (typically in March, April, or May).</li>
+        <li><strong>The Bonafide School Certificate:</strong> Employees need only submit a standardized bonafide certificate issued by the school head confirming that:
+          <ol>
+            <li>The child was a bonafide student of the institution during the preceding academic session.</li>
+            <li>The child studied in the specified grade level during that academic year.</li>
+          </ol>
+        </li>
+        <li><strong>Alternative Documentation:</strong> If obtaining a school certificate proves difficult, employees can submit self-attested copies of the child's final annual grade report card or bank e-receipts confirming payment of school fees for the entire academic year.</li>
+      </ul>
+
+      <h2>8. Taxability and Section 10(14) Exemption Rules</h2>
+      <p>
+        Under Indian income tax law, the tax treatment of Children Education Allowance is divided between statutory exemptions and salary income:
+      </p>
+      <ul>
+        <li><strong>Under the Old Tax Regime:</strong> Employees can claim a minor tax exemption under Section 10(14) of the Income Tax Act read with Rule 2BB:
+          <ul>
+            <li>Children Education Allowance: Exempt up to <strong>₹100 per month per child</strong> for a maximum of two children (₹2,400/year).</li>
+            <li>Hostel Expenditure Allowance: Exempt up to <strong>₹300 per month per child</strong> for a maximum of two children (₹7,200/year).</li>
+            <li>Any reimbursement drawn in excess of these limits is treated as taxable salary income.</li>
+          </ul>
+        </li>
+        <li><strong>Under the New Tax Regime:</strong> Section 10(14) exemptions for education allowances are completely withdrawn. The entire CEA and Hostel Subsidy amount received on the monthly payslip is treated as fully taxable salary income.</li>
+      </ul>
+
+      <h2>9. 8th Pay Commission Projections for CEA</h2>
+      <p>
+        When the 8th Central Pay Commission is formally notified and Dearness Allowance resets to 0%, the baseline CEA rates will be recalibrated upward to reflect modern educational tuition and book inflation. Employee memorandums have recommended:
+      </p>
+      <ul>
+        <li>Raising baseline CEA from ₹2,250 to between <strong>₹5,000 and ₹6,500 per month</strong> per child.</li>
+        <li>Raising baseline Hostel Subsidy to between <strong>₹15,000 and ₹19,500 per month</strong> per child.</li>
+        <li>Expanding coverage to professional undergraduate degrees (B.Tech, MBBS, B.Sc) up to age 23.</li>
+      </ul>
+
+      <h2>10. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, or the Department of Personnel & Training (DoPT). All allowance rates, escalation triggers, and documentation norms are compiled directly from official DoPT Office Memorandums and gazette notifications. Official administrative circulars must be confirmed at <a href="https://dopt.gov.in" target="_blank" rel="noopener noreferrer">dopt.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Annual CEA Reimbursement</div>
+      <div class="val" id="stickyTotalClaim">₹67,500</div>
+    </div>
+    <a href="#childCountSelect" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const childCountSelect = document.getElementById('childCountSelect');
+    const hostelEligibleCount = document.getElementById('hostelEligibleCount');
+    const divyangjanStatus = document.getElementById('divyangjanStatus');
+    const customCeaMonthly = document.getElementById('customCeaMonthly');
+
+    const dispAnnualCea = document.getElementById('dispAnnualCea');
+    const dispAnnualHostel = document.getElementById('dispAnnualHostel');
+    const dispTotalClaim = document.getElementById('dispTotalClaim');
+    const stickyTotalClaim = document.getElementById('stickyTotalClaim');
+
+    const slipCeaRate = document.getElementById('slipCeaRate');
+    const slipDivyangRate = document.getElementById('slipDivyangRate');
+    const slipCeaTotal = document.getElementById('slipCeaTotal');
+    const slipHostelRate = document.getElementById('slipHostelRate');
+    const slipHostelTotal = document.getElementById('slipHostelTotal');
+    const slipFinalClaim = document.getElementById('slipFinalClaim');
+    const slipScenarioLabel = document.getElementById('slipScenarioLabel');
+
+    function calculateCEA() {
+      const totalChildren = parseInt(childCountSelect.value) || 1;
+      const hostelChildren = Math.min(parseInt(hostelEligibleCount.value) || 0, totalChildren);
+      const divyangChildren = Math.min(parseInt(divyangjanStatus.value) || 0, totalChildren);
+      const normalChildren = Math.max(0, totalChildren - divyangChildren);
+
+      const monthlyCeaBase = parseFloat(customCeaMonthly.value) || 2812.5;
+      const monthlyHostelBase = monthlyCeaBase * 3; // Statutory 3x multiplier
+      const monthlyDivyangCea = monthlyCeaBase * 2; // Statutory 2x multiplier
+
+      // Annual Totals
+      const annualNormalCea = normalChildren * (monthlyCeaBase * 12);
+      const annualDivyangCea = divyangChildren * (monthlyDivyangCea * 12);
+      const annualCea = annualNormalCea + annualDivyangCea;
+      const annualHostel = hostelChildren * (monthlyHostelBase * 12);
+      const totalClaim = annualCea + annualHostel;
+
+      // Update KPI Cards
+      dispAnnualCea.textContent = '₹' + annualCea.toLocaleString('en-IN');
+      dispAnnualHostel.textContent = '₹' + annualHostel.toLocaleString('en-IN');
+      dispTotalClaim.textContent = '₹' + totalClaim.toLocaleString('en-IN');
+      if (stickyTotalClaim) stickyTotalClaim.textContent = '₹' + totalClaim.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipCeaRate.textContent = '₹' + monthlyCeaBase.toLocaleString('en-IN') + ' / month';
+      slipDivyangRate.textContent = '₹' + monthlyDivyangCea.toLocaleString('en-IN') + ' / month';
+      slipCeaTotal.textContent = '₹' + annualCea.toLocaleString('en-IN');
+      slipHostelRate.textContent = '₹' + monthlyHostelBase.toLocaleString('en-IN') + ' / month';
+      slipHostelTotal.textContent = '₹' + annualHostel.toLocaleString('en-IN');
+      slipFinalClaim.textContent = '₹' + totalClaim.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      slipScenarioLabel.textContent = `${totalChildren} Children (${divyangChildren} Divyangjan) • ${hostelChildren} in Hostel`;
+    }
+
+    // Input Listeners
+    childCountSelect.addEventListener('change', calculateCEA);
+    hostelEligibleCount.addEventListener('change', calculateCEA);
+    divyangjanStatus.addEventListener('change', calculateCEA);
+    customCeaMonthly.addEventListener('input', calculateCEA);
+
+    // Preset Chip Buttons
+    const pills = document.querySelectorAll('#ratePills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        customCeaMonthly.value = pill.getAttribute('data-cea');
+        calculateCEA();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateCEA();
+  </script>
+
+</body>
+</html>
