@@ -1,1 +1,818 @@
+---
+// src/pages/8th-pay-commission-fitment-factor.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "8th Pay Commission Fitment Factor: Expected Multipliers (1.92x - 3.68x) & Salary Projections";
+const pageDescription = "Explore projected 8th Pay Commission fitment factor scenarios. Analyze salary hike projections at 1.92x, 2.25x, 2.57x, 2.86x, and 3.68x multipliers across Level 1 to 18.";
 
+// Fitment Factor Scenario Benchmarks
+const fitmentScenarios = [
+  { factor: "1.92x", label: "Conservative / DA Merger", desc: "Covers standard 50%+ DA absorption with minimal real wage hike (~4% net growth).", minPay: 34560, maxPay: 480000, minPension: 17280 },
+  { factor: "2.10x", label: "Fiscal Restraint Model", desc: "Maintains tight control on revenue deficit while granting modest purchasing parity.", minPay: 37800, maxPay: 525000, minPension: 18900 },
+  { factor: "2.25x", label: "Moderate Consensus", desc: "The primary macroeconomic equilibrium model balancing inflation and exchequer cost.", minPay: 40500, maxPay: 562500, minPension: 20250 },
+  { factor: "2.57x", label: "7th CPC Historical Parity", desc: "Exact replica of the real wage growth percentage (~14.29%) awarded in the 2016 rollout.", minPay: 46260, maxPay: 642500, minPension: 23130 },
+  { factor: "2.86x", label: "Staff Federation Target", desc: "Demanded by the National Council (JCM) based on the Aykroyd nutritional minimum wage formula.", minPay: 51480, maxPay: 715000, minPension: 25740 },
+  { factor: "3.68x", label: "Aspirational Demand", desc: "Top-tier memorandum submission seeking aggressive urban housing & healthcare parity.", minPay: 66240, maxPay: 920000, minPension: 33120 }
+];
+
+// Matrix Level Comparison Data
+const matrixLevels = [
+  { level: "Level 1 (GP 1800)", post: "MTS / Group D Staff", base7th: 18000 },
+  { level: "Level 2 (GP 1900)", post: "Lower Division Clerk (LDC)", base7th: 19900 },
+  { level: "Level 3 (GP 2000)", post: "Constable / Driver / Senior Clerk", base7th: 21700 },
+  { level: "Level 4 (GP 2400)", post: "Upper Division Clerk (UDC)", base7th: 25500 },
+  { level: "Level 5 (GP 2800)", post: "Auditor / Accountant", base7th: 29200 },
+  { level: "Level 6 (GP 4200)", post: "Sub-Inspector / Primary Teacher", base7th: 35400 },
+  { level: "Level 7 (GP 4600)", post: "Assistant Section Officer (ASO)", base7th: 44900 },
+  { level: "Level 8 (GP 4800)", post: "Assistant Accounts Officer (AAO)", base7th: 47600 },
+  { level: "Level 10 (GP 5400)", post: "Group A Entry / SDM / DSP", base7th: 56100 },
+  { level: "Level 12 (GP 7600)", post: "Deputy Secretary / SE", base7th: 78800 },
+  { level: "Level 14 (GP 10000)", post: "Joint Secretary / IG Police", base7th: 144200 },
+  { level: "Level 18 (Cabinet Sec)", post: "Cabinet Secretary of India", base7th: 250000 }
+];
+
+const faqs = [
+  {
+    q: "What is the fitment factor in the Central Pay Commission?",
+    a: "The fitment factor is a uniform mathematical multiplier applied to an employee's existing basic pay to determine their revised baseline salary under a new Central Pay Commission. It serves two functions: absorbing accumulated Dearness Allowance into base pay and awarding an additional percentage increase as real wage growth."
+  },
+  {
+    q: "What was the fitment factor in previous Pay Commissions?",
+    a: "The 5th Pay Commission (1996) utilized an effective fitment weightage of 40%. The 6th Pay Commission (2006) introduced running pay bands with an effective multiplier of approximately 1.86x. The 7th Pay Commission (2016) established a uniform fitment factor of 2.57x for entry levels (higher for specific senior grades)."
+  },
+  {
+    q: "What is the expected fitment factor for the 8th Pay Commission?",
+    a: "Staff side federations like the National Council of JCM have submitted memorandums demanding a fitment factor between 2.86x and 3.68x based on nutritional and cost-of-living formulas. Economists and fiscal analysts consider a factor between 2.25x and 2.57x to be the most viable consensus range for the exchequer."
+  },
+  {
+    q: "Does a 2.86x fitment factor mean take-home salary triples?",
+    a: "No. The fitment factor applies only to Basic Pay. Because Dearness Allowance (which accounts for over 50% under 7th CPC) merges into basic pay, the new DA rate resets to 0% at implementation. Net take-home salary increases by approximately 25% to 45%, not 286%."
+  },
+  {
+    q: "How does the fitment factor affect retired central pensioners?",
+    a: "Existing pensions are revised in full parity with active staff. A retiree's current basic pension is directly multiplied by the approved fitment factor, updating baseline pensions while resetting Dearness Relief (DR) to 0%."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="8th pay commission fitment factor, fitment factor calculator, 8th cpc salary multiplier, 1.92 vs 2.57 vs 2.86 fitment factor, minimum pay 8th pay commission, aykroyd formula pay commission" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Main Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Multiplier & Fitment Index Modeling (2026)</div>
+      <h1>8th Pay Commission Fitment Factor</h1>
+      <p>Analyze projected fitment multiplier scenarios (1.92x to 3.68x), calculate revised basic pay and pensions, and evaluate the Aykroyd minimum wage formula impact across all levels.</p>
+    </header>
+
+    <!-- INTERACTIVE FITMENT CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="8th Pay Commission Fitment Factor Calculator Widget">
+      
+      <!-- Multiplier Pills -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select Fitment Factor Scenario:</span>
+        <div class="chip-bar" id="factorPills">
+          <button class="chip-btn" data-f="1.92">1.92x (Conservative)</button>
+          <button class="chip-btn" data-f="2.10">2.10x (Fiscal Limit)</button>
+          <button class="chip-btn" data-f="2.25">2.25x (Baseline)</button>
+          <button class="chip-btn" data-f="2.57">2.57x (7th CPC Parity)</button>
+          <button class="chip-btn active" data-f="2.86">2.86x (Federation Target)</button>
+          <button class="chip-btn" data-f="3.68">3.68x (Aspirational)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="fitmentLevelPreset">Pay Matrix Level (Preset)</label>
+          <select id="fitmentLevelPreset">
+            {matrixLevels.map((item) => (
+              <option value={item.base7th} selected={item.level.startsWith("Level 6")}>
+                {item.level} - 7th Base: ₹{item.base7th.toLocaleString('en-IN')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="fitmentBasicInput">Current 7th CPC Basic Pay (₹)</label>
+          <input type="number" id="fitmentBasicInput" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="fitmentMultiplierInput">Selected Fitment Factor Multiplier</label>
+          <input type="number" id="fitmentMultiplierInput" value="2.86" min="1.80" max="4.00" step="0.01" />
+        </div>
+
+        <div class="form-item">
+          <label for="fitmentCityTier">City Tier (HRA Rate)</label>
+          <select id="fitmentCityTier">
+            <option value="0.30" selected>Class X (30% - Metro Cities)</option>
+            <option value="0.20">Class Y (20% - Tier-2 Centers)</option>
+            <option value="0.10">Class Z (10% - Small Towns/Rural)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">7th CPC Monthly Basic</div>
+          <div class="kpi-val" id="disp7thBasic">₹35,400</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Projected 8th CPC Basic</div>
+          <div class="kpi-val" id="disp8thBasic">₹1,01,244</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Est. Monthly Basic Increase</div>
+          <div class="kpi-val" id="dispBasicDiff">+₹65,844</div>
+        </div>
+      </div>
+
+      <!-- Detailed Arithmetic Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Fitment Multiplier Impact Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Level 6 (GP 4200) • 2.86x Multiplier</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Current 7th CPC Starting Basic Pay</td>
+              <td class="num" id="slipCurrentBasic">₹35,400</td>
+            </tr>
+            <tr>
+              <td>Approved / Simulated Fitment Multiplier</td>
+              <td class="num" id="slipFactorLabel">2.86x</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Revised 8th CPC Monthly Basic Pay (Current Basic × Fitment)</td>
+              <td class="num" id="slipRevisedBasic" style="color: var(--primary);">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>Dearness Allowance (DA) Status at Rollout</td>
+              <td class="num" style="color: var(--text-muted);">₹0 (0% - Absorbed into Base)</td>
+            </tr>
+            <tr>
+              <td>Estimated House Rent Allowance (HRA on expanded base)</td>
+              <td class="num" id="slipHra">₹30,373</td>
+            </tr>
+            <tr>
+              <td>Transport Allowance (Base TA allocated to cadre tier)</td>
+              <td class="num" id="slipTa">₹3,600</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Projected Gross Monthly Emoluments</td>
+              <td class="num" id="slipGross" style="color: var(--accent-green);">₹1,35,217</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Centrality of the Fitment Factor in Pay Revisions</h2>
+      <p>
+        In the architecture of Indian Central Pay Commissions, no single metric wields greater influence over public sector finances and individual household budgets than the <strong>fitment factor</strong>. As the primary arithmetic conversion coefficient, the fitment factor dictates the exact multiple by which an employee’s basic salary and a pensioner’s basic annuity advance into a new decennial pay matrix.
+      </p>
+      <p>
+        Beyond setting monthly earnings, the multiplier establishes the baseline for all secondary service emoluments. Because House Rent Allowance (HRA), Transport Allowance (TA), Children Education Allowance (CEA), daily allowances on tour, composite transfer grants, statutory gratuity caps, and lifetime family pensions are directly anchored to Basic Pay, any fractional adjustment in the fitment factor—even by 0.1x—translates to billions of rupees in government expenditure.
+      </p>
+
+      <h2>2. Historical Evolution: How Multipliers Evolved Across Commissions</h2>
+      <p>
+        The methodology for determining pay multipliers has changed significantly across previous Central Pay Commissions:
+      </p>
+      <ul>
+        <li><strong>5th Pay Commission (1996):</strong> Rather than using a uniform decimal multiplier, the 5th CPC applied a base formula that integrated existing pay scales with a <strong>40% fitment weightage</strong> alongside the full absorption of accumulated Dearness Allowance. Minimum basic pay was raised from ₹750 to ₹2,550.</li>
+        <li><strong>6th Pay Commission (2006):</strong> Introduced the running Pay Band and Grade Pay framework. It established an effective multiplier of approximately <strong>1.86x</strong> on basic pay (the sum of Pay in Pay Band plus Grade Pay). Entry minimum wage jumped from ₹2,550 to ₹7,000 per month.</li>
+        <li><strong>7th Pay Commission (2016):</strong> Discontinued Grade Pay entirely, replacing it with the 18-level unified Pay Matrix. The commission adopted a uniform fitment factor of <strong>2.57x</strong> for general entry levels (Levels 1 to 5), with graduated multipliers scaling up to <strong>2.81x</strong> for senior administrative grades (Level 14 and above). Minimum basic pay rose from ₹7,000 to ₹18,000 per month.</li>
+      </ul>
+
+      <div class="formula-banner">
+        Historical Precedents: 5th CPC (~1.40x weightage)  ➔  6th CPC (~1.86x multiplier)  ➔  7th CPC (2.57x multiplier)  ➔  8th CPC (2.25x – 2.86x Projected)
+      </div>
+
+      <h2>3. The Dual Mathematical Function of the Fitment Factor</h2>
+      <p>
+        A frequent misconception is that the fitment factor represents a pure, unencumbered real wage hike. In practice, the multiplier serves two distinct economic purposes:
+      </p>
+      <ol>
+        <li><strong>Absorption of Accumulated Dearness Allowance (DA):</strong> Over a ten-year cycle, inflation pushes Dearness Allowance past the 50% threshold. The fitment factor permanently absorbs this entire accumulated inflation compensation into base pay. In effect, approximately 1.50x to 1.56x of the multiplier merely consolidates DA that employees are already drawing.</li>
+        <li><strong>Real Wage Growth Award:</strong> The portion of the multiplier exceeding accumulated DA represents the actual statutory wage increase awarded to reward service productivity and match broader national GDP expansion.</li>
+      </ol>
+
+      <div class="formula-banner">
+        Fitment Factor Multiplier = (1 + Current Accumulated DA % ÷ 100) + Real Net Wage Hike Rate
+      </div>
+
+      <h2>4. Comparative Analysis of Projected 8th CPC Fitment Scenarios</h2>
+      <p>
+        Staff associations, fiscal analysts, and administrative think tanks model prospective 8th CPC salary outcomes across distinct multiplier scenarios:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Fitment Scenario</th>
+              <th>Classification Model</th>
+              <th>Minimum Pay (Level 1)</th>
+              <th>Apex Pay (Level 18)</th>
+              <th>Minimum Pension</th>
+              <th>Fiscal & Economic Feasibility</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fitmentScenarios.map((s) => (
+              <tr>
+                <td><strong>{s.factor}</strong></td>
+                <td>{s.label}</td>
+                <td>₹{s.minPay.toLocaleString('en-IN')}</td>
+                <td>₹{s.maxPay.toLocaleString('en-IN')}</td>
+                <td>₹{s.minPension.toLocaleString('en-IN')}</td>
+                <td style="font-size: 0.85rem; color: #475569;">{s.desc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>5. The Staff Federation Benchmark: The 2.86x Aykroyd Model</h2>
+      <p>
+        The primary demand submitted by the National Council of the Joint Consultative Machinery (JCM) and major employee confederations centers on a minimum fitment factor of <strong>2.86x</strong>. 
+      </p>
+      <p>
+        This proposal is derived from the <strong>Dr. Wallace Aykroyd Nutritional Formula</strong>, adopted by the 15th Indian Labour Conference (ILC):
+      </p>
+      <ul>
+        <li><strong>Nutritional Intake:</strong> 2,700 calories per adult consumption unit per day, evaluated across wholesale and retail price indices for balanced food baskets (cereals, pulses, milk, vegetables, edible oil, and sugar).</li>
+        <li><strong>Clothing Requirements:</strong> A statutory consumption standard of 72 yards of fabric per year for a standard family unit of three consumption units.</li>
+        <li><strong>Housing & Social Contingencies:</strong> 10% rent allowance plus 25% allocation for children’s education, healthcare emergencies, recreation, and social obligations, as affirmed by the Supreme Court in the <em>Reptakos Brett</em> judgment.</li>
+      </ul>
+      <p>
+        Under modern commodity pricing, this nutritional minimum wage computation yields an entry basic floor of approximately <strong>₹51,480 per month</strong> for Level 1 (MTS/Group D), which translates directly to a 2.86x multiplier on the 7th CPC baseline of ₹18,000.
+      </p>
+
+      <h2>6. The Fiscal Counterbalance: Revenue Deficit and Macroeconomic Impact</h2>
+      <p>
+        While employee confederations emphasize cost-of-living increases, the Ministry of Finance must weigh the broader fiscal impact on the union budget:
+      </p>
+      <ul>
+        <li><strong>Direct Union Wage Bill:</strong> Central civil ministries, defence establishments, and Indian Railways employ over 4.8 million active personnel and disburse pensions to more than 6.7 million retirees.</li>
+        <li><strong>The State Government Ripple Effect:</strong> Individual state governments traditionally follow Central Pay Commission recommendations by adopting matching pay scales and fitment ratios. A high central multiplier strains state fiscal deficits, prompting recommendations for a more balanced baseline of <strong>2.25x to 2.57x</strong>.</li>
+      </ul>
+
+      <h2>7. Level 1 to 18 Benchmark Projections Across Fitment Scenarios</h2>
+      <p>
+        The table below models revised starting basic pay across key Pay Matrix ranks comparing current 7th CPC baselines with 2.25x (consensus), 2.57x (parity), and 2.86x (federation target) fitment multipliers:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Level</th>
+              <th>Typical Cadre Post</th>
+              <th>7th CPC Base</th>
+              <th>At 2.25x Multiplier</th>
+              <th>At 2.57x Multiplier</th>
+              <th>At 2.86x Multiplier</th>
+            </tr>
+          </thead>
+          <tbody>
+            {matrixLevels.map((row) => (
+              <tr>
+                <td><strong>{row.level}</strong></td>
+                <td>{row.post}</td>
+                <td>₹{row.base7th.toLocaleString('en-IN')}</td>
+                <td>₹{Math.round(row.base7th * 2.25).toLocaleString('en-IN')}</td>
+                <td>₹{Math.round(row.base7th * 2.57).toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{Math.round(row.base7th * 2.86).toLocaleString('en-IN')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>8. Impact on Pensions and the Unified Pension Scheme (UPS)</h2>
+      <p>
+        The fitment factor directly determines retirement benefits:
+      </p>
+      <ul>
+        <li><strong>Pension Parity for Past Retirees:</strong> In accordance with the Modified Parity Principle, existing civil and defence pensions are recalculated by applying the finalized fitment multiplier directly to basic pension, resetting Dearness Relief (DR) to 0%.</li>
+        <li><strong>Integration with the Unified Pension Scheme (UPS):</strong> Because the UPS guarantees an assured pension of 50% of the average basic pay drawn in the final 12 months of qualifying service, a higher fitment factor permanently elevates the baseline for assured retirement pensions.</li>
+      </ul>
+
+      <h2>9. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or any official Central Pay Commission authority. All fitment multipliers, minimum wage figures, and salary matrix projections are computed estimates based on historical pay commission mechanics, gazette precedents, and publicly submitted employee memoranda. Official notifications must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Projected 8th CPC Basic</div>
+      <div class="val" id="stickyBasic">₹1,01,244</div>
+    </div>
+    <a href="#fitmentBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const fitmentBasicInput = document.getElementById('fitmentBasicInput');
+    const fitmentLevelPreset = document.getElementById('fitmentLevelPreset');
+    const fitmentMultiplierInput = document.getElementById('fitmentMultiplierInput');
+    const fitmentCityTier = document.getElementById('fitmentCityTier');
+
+    const disp7thBasic = document.getElementById('disp7thBasic');
+    const disp8thBasic = document.getElementById('disp8thBasic');
+    const dispBasicDiff = document.getElementById('dispBasicDiff');
+    const stickyBasic = document.getElementById('stickyBasic');
+
+    const slipCurrentBasic = document.getElementById('slipCurrentBasic');
+    const slipFactorLabel = document.getElementById('slipFactorLabel');
+    const slipRevisedBasic = document.getElementById('slipRevisedBasic');
+    const slipHra = document.getElementById('slipHra');
+    const slipTa = document.getElementById('slipTa');
+    const slipGross = document.getElementById('slipGross');
+    const slipLevelLabel = document.getElementById('slipLevelLabel');
+
+    function calculateFitment() {
+      const basic = parseFloat(fitmentBasicInput.value) || 0;
+      const factor = parseFloat(fitmentMultiplierInput.value) || 2.86;
+      const hraRate = parseFloat(fitmentCityTier.value) || 0.30;
+
+      // Arithmetic Engine
+      const revisedBasic = Math.round(basic * factor);
+      const basicDiff = revisedBasic - basic;
+
+      const hra = Math.round(revisedBasic * hraRate);
+      const ta = basic >= 35400 ? 3600 : 1350;
+      const gross = revisedBasic + hra + ta;
+
+      // Update KPI Cards
+      disp7thBasic.textContent = '₹' + basic.toLocaleString('en-IN');
+      disp8thBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      dispBasicDiff.textContent = '+₹' + basicDiff.toLocaleString('en-IN');
+      if (stickyBasic) stickyBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipCurrentBasic.textContent = '₹' + basic.toLocaleString('en-IN');
+      slipFactorLabel.textContent = factor.toFixed(2) + 'x';
+      slipRevisedBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      slipHra.textContent = '₹' + hra.toLocaleString('en-IN');
+      slipTa.textContent = '₹' + ta.toLocaleString('en-IN');
+      slipGross.textContent = '₹' + gross.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      const selectedLevel = fitmentLevelPreset.options[fitmentLevelPreset.selectedIndex];
+      if (selectedLevel) {
+        const levelName = selectedLevel.text.split(' - ')[0];
+        slipLevelLabel.textContent = `${levelName} • ${factor.toFixed(2)}x Multiplier`;
+      }
+    }
+
+    // Input Listeners
+    fitmentBasicInput.addEventListener('input', calculateFitment);
+    fitmentMultiplierInput.addEventListener('input', calculateFitment);
+    fitmentCityTier.addEventListener('change', calculateFitment);
+
+    // Preset Level Dropdown Handler
+    fitmentLevelPreset.addEventListener('change', (e) => {
+      fitmentBasicInput.value = e.target.value;
+      calculateFitment();
+    });
+
+    // Multiplier Button Pills
+    const pills = document.querySelectorAll('#factorPills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const val = parseFloat(pill.getAttribute('data-f'));
+        fitmentMultiplierInput.value = val;
+        calculateFitment();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateFitment();
+  </script>
+
+</body>
+</html>
