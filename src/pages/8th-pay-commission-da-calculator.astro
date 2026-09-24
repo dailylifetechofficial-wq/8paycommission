@@ -1,1 +1,809 @@
+---
+// src/pages/8th-pay-commission-da-calculator.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "8th Pay Commission DA Calculator: AICPI-IW Index & Expected DA Hike (2026)";
+const pageDescription = "Calculate your projected Dearness Allowance (DA & DR) under the 8th Pay Commission. Forecast DA percentage hikes from 0% baseline using AICPI-IW index numbers.";
 
+// Projected 8th CPC Semi-Annual DA Trajectory Benchmarks (2026 to 2030)
+const daProjectionSchedule = [
+  { period: "January 2026", event: "8th CPC Implementation Benchmark", expectedDa: "0%", avgAicpi: "Base Index Reset", status: "Statutory Reset" },
+  { period: "July 2026", event: "1st Semi-Annual Installment", expectedDa: "3% – 4%", avgAicpi: "144.5 – 146.0", status: "Projected" },
+  { period: "January 2027", event: "2nd Semi-Annual Installment", expectedDa: "7% – 8%", avgAicpi: "148.0 – 150.2", status: "Projected" },
+  { period: "July 2027", event: "3rd Semi-Annual Installment", expectedDa: "11% – 12%", avgAicpi: "152.5 – 154.8", status: "Projected" },
+  { period: "January 2028", event: "4th Semi-Annual Installment", expectedDa: "15% – 16%", avgAicpi: "157.0 – 159.5", status: "Projected" },
+  { period: "July 2028", event: "5th Semi-Annual Installment", expectedDa: "19% – 20%", avgAicpi: "162.0 – 164.2", status: "Projected" },
+  { period: "January 2029", event: "6th Semi-Annual Installment", expectedDa: "23% – 25%", avgAicpi: "167.0 – 169.5", status: "Projected" },
+  { period: "July 2029", event: "7th Semi-Annual Installment (25% Milestone)", expectedDa: "27% – 29%", avgAicpi: "172.0 – 174.8", status: "Allowance Trigger" },
+  { period: "January 2030", event: "8th Semi-Annual Installment", expectedDa: "32% – 34%", avgAicpi: "177.5 – 180.2", status: "Projected" }
+];
+
+// Entry Pay Matrix Level Benchmarks for DA Impact Simulation
+const daLevelBenchmarks = [
+  { level: "Level 1 (GP 1800)", post: "MTS / Group D Staff", base8th: 51480 },
+  { level: "Level 2 (GP 1900)", post: "Lower Division Clerk (LDC)", base8th: 56914 },
+  { level: "Level 3 (GP 2000)", post: "Constable / Driver / Postal Asst", base8th: 62062 },
+  { level: "Level 4 (GP 2400)", post: "Upper Division Clerk (UDC)", base8th: 72930 },
+  { level: "Level 5 (GP 2800)", post: "Auditor / Accountant", base8th: 83512 },
+  { level: "Level 6 (GP 4200)", post: "Inspector / Sub-Inspector / Teacher", base8th: 101244 },
+  { level: "Level 7 (GP 4600)", post: "Assistant Section Officer (ASO)", base8th: 128414 },
+  { level: "Level 8 (GP 4800)", post: "Assistant Accounts Officer (AAO)", base8th: 136136 },
+  { level: "Level 10 (GP 5400)", post: "Group A Entry / SDM / DSP", base8th: 160446 },
+  { level: "Level 12 (GP 7600)", post: "Deputy Secretary / Joint Director", base8th: 225368 },
+  { level: "Level 14 (GP 10000)", post: "Joint Secretary / IG Police", base8th: 412412 }
+];
+
+const faqs = [
+  {
+    q: "Why does Dearness Allowance (DA) drop to zero when the 8th Pay Commission starts?",
+    a: "This follows standard Central Pay Commission protocol. The accumulated inflation compensation (Dearness Allowance) is merged completely into the revised basic pay through the fitment factor multiplier. Because all prior retail inflation is absorbed into the new basic wage floor, the DA rate resets to 0% and starts accumulating anew."
+  },
+  {
+    q: "What is the official mathematical formula used to calculate Dearness Allowance?",
+    a: "For Central Government employees, DA is calculated using the 12-month moving average of the All-India Consumer Price Index for Industrial Workers (AICPI-IW, Base 2016=100): DA % = [((Average of AICPI-IW for last 12 months − Base Index) ÷ Base Index) × 100]. Fractions below 1% are discarded."
+  },
+  {
+    q: "How frequently is Dearness Allowance announced and revised?",
+    a: "Dearness Allowance is revised twice a year by the Union Cabinet: effective January 1st (notified in March/April with arrears) and effective July 1st (notified in September/October with festive arrears)."
+  },
+  {
+    q: "Does Dearness Allowance also apply to Transport Allowance (TA)?",
+    a: "Yes. In addition to basic salary, Central Government employees receive Dearness Allowance on their Transport Allowance: Total TA = [Base Transport Allowance + (Base TA × Current DA %)]. When DA resets to 0% under the 8th CPC, the DA portion on TA will temporarily reset to zero until fresh DA installments accumulate."
+  },
+  {
+    q: "What is the difference between Dearness Allowance (DA) and Dearness Relief (DR)?",
+    a: "DA is paid to active Central Government civil servants, railway staff, and defence personnel. Dearness Relief (DR) is the exact financial equivalent granted to central civil and armed forces pensioners to protect pensions against inflation."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="8th pay commission da calculator, expected da calculator, aicpi index da calculation formula, dearness allowance 0 percent reset, da on transport allowance, dearness relief calculator pensioners" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebApplication + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "8th Pay Commission DA Calculator",
+        "url": canonicalURL.toString(),
+        "operatingSystem": "All",
+        "applicationCategory": "FinanceApplication",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Main Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Inflation Compensation & Index Forecasting</div>
+      <h1>8th Pay Commission DA Calculator</h1>
+      <p>Calculate your projected Dearness Allowance (DA & DR) payouts, evaluate post-reset AICPI-IW accumulation rates, and forecast future semi-annual installment increases.</p>
+    </header>
+
+    <!-- INTERACTIVE DA CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="8th Pay Commission DA Calculator Widget">
+      
+      <!-- Quick DA % Preset Pills -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Simulate Expected 8th CPC DA Installment Rate:</span>
+        <div class="chip-bar" id="daRatePills">
+          <button class="chip-btn" data-da="0">0% (Launch Baseline)</button>
+          <button class="chip-btn active" data-da="4">4% (1st Installment)</button>
+          <button class="chip-btn" data-da="8">8% (2nd Installment)</button>
+          <button class="chip-btn" data-da="12">12% (3rd Installment)</button>
+          <button class="chip-btn" data-da="16">16% (4th Installment)</button>
+          <button class="chip-btn" data-da="25">25% (Allowance Milestone)</button>
+          <button class="chip-btn" data-da="50">50% (Ceiling Milestone)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="daLevelPreset">Pay Matrix Level (Preset)</label>
+          <select id="daLevelPreset">
+            {daLevelBenchmarks.map((item) => (
+              <option value={item.base8th} selected={item.level.startsWith("Level 6")}>
+                {item.level} - Projected Basic: ₹{item.base8th.toLocaleString('en-IN')}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="daBasicInput">Projected 8th CPC Basic Pay (₹)</label>
+          <input type="number" id="daBasicInput" value="101244" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="daPercentInput">Selected DA Percentage (%)</label>
+          <input type="number" id="daPercentInput" value="4" min="0" max="100" step="1" />
+        </div>
+
+        <div class="form-item">
+          <label for="daTransportSelect">Transport Allowance Base Grade</label>
+          <select id="daTransportSelect">
+            <option value="3600" selected>Higher TPTA City - Level 3 to 8 (₹3,600 Base)</option>
+            <option value="7200">Higher TPTA City - Level 9 & Above (₹7,200 Base)</option>
+            <option value="1800">Other Locations - Level 3 to 8 (₹1,800 Base)</option>
+            <option value="3600">Other Locations - Level 9 & Above (₹3,600 Base)</option>
+            <option value="1350">Level 1 & 2 Base TPTA (₹1,350 Base)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Monthly DA on Basic Pay</div>
+          <div class="kpi-val" id="dispDaBasic">₹4,050</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Monthly DA on Transport (TA)</div>
+          <div class="kpi-val" id="dispDaTa">₹144</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Total Monthly DA Disbursal</div>
+          <div class="kpi-val" id="dispTotalDa">₹4,194</div>
+        </div>
+      </div>
+
+      <!-- Detailed Arithmetic Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Monthly Dearness Allowance Disbursal Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipLevelLabel">Level 6 (GP 4200) • 4% DA</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Projected 8th CPC Monthly Basic Pay</td>
+              <td class="num" id="slipBasic">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>Applicable Dearness Allowance Rate</td>
+              <td class="num" id="slipDaRate">4%</td>
+            </tr>
+            <tr>
+              <td>Monthly Dearness Allowance on Basic (Basic × DA %)</td>
+              <td class="num" id="slipBasicDa">₹4,050</td>
+            </tr>
+            <tr>
+              <td>Base Transport Allowance (TA) Entitlement</td>
+              <td class="num" id="slipBaseTa">₹3,600</td>
+            </tr>
+            <tr>
+              <td>Dearness Allowance on Transport Allowance (Base TA × DA %)</td>
+              <td class="num" id="slipTaDa">₹144</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Total Transport Allowance Disbursal (Base TA + DA on TA)</td>
+              <td class="num" id="slipTotalTa" style="color: var(--primary);">₹3,744</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Net Monthly DA Disbursed to Salary (Basic DA + TA DA)</td>
+              <td class="num" id="slipNetDa" style="color: var(--accent-green);">₹4,194</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Mechanics of Inflation Compensation: Understanding Dearness Allowance</h2>
+      <p>
+        <strong>Dearness Allowance (DA)</strong> is the statutory compensatory mechanism instituted by the Government of India to protect the real purchasing power of Central Government employees, defence personnel, and railway staff from the steady erosion caused by consumer retail inflation. Unlike basic pay, which remains structured and standardized across annual 3% increments, DA is a dynamic, fluid wage component that adjusts twice every year in direct correlation with national retail price fluctuations.
+      </p>
+      <p>
+        For pensioners, the identical financial cushion is disbursed under the nomenclature of <strong>Dearness Relief (DR)</strong>. Over a standard ten-year Pay Commission lifecycle, accumulated DA and DR installments expand from a baseline of zero percent to eventually exceed 50% or even 100% of an employee's basic pay. With the impending arrival of the <strong>8th Central Pay Commission</strong>, understanding the mathematical indexation formula, the statutory base reset protocol, and the interaction between DA and compensatory allowances is paramount.
+      </p>
+
+      <h2>2. The Statutory Reset Protocol: Why DA Returns to Zero Percent</h2>
+      <p>
+        A frequent point of confusion among government personnel is why their Dearness Allowance percentage drops to <strong>0%</strong> immediately upon the notification of a new Pay Commission. This is neither a financial penalty nor a salary reduction; rather, it is the foundational rule of Indian pay consolidation.
+      </p>
+      <p>
+        The progression operates in three clear steps:
+      </p>
+      <ol>
+        <li><strong>Absorption into Base Pay:</strong> Under the 7th CPC, Dearness Allowance climbed past the 50% mark. When the 8th Pay Commission takes effect, the entire accumulated DA (e.g., 50%, 53%, or 56%) is permanently folded into the employee’s basic pay via the <strong>fitment factor</strong>.</li>
+        <li><strong>Establishing the New Base:</strong> Because the basic salary expands by 2.25x to 2.86x to fully swallow all preceding inflation, the baseline for calculating future cost-of-living increases is reset.</li>
+        <li><strong>Rebuilding the Metric:</strong> Once the new baseline is officially established, the DA counter is set to <strong>0%</strong> on the effective rollout date. Future price increases are then tracked against this new, higher benchmark.</li>
+      </ol>
+
+      <div class="formula-banner">
+        7th CPC Reality: Basic Pay + 53% DA  ➔  8th CPC Conversion: Expanded Basic Pay (Folded DA) + 0% Initial DA
+      </div>
+
+      <h2>3. The Official AICPI-IW Mathematical Formula</h2>
+      <p>
+        Dearness Allowance is not awarded arbitrarily by executive discretion. It is calculated through an exact, audited mathematical formula pegged to the <strong>All-India Consumer Price Index for Industrial Workers (AICPI-IW)</strong>, compiled and published monthly by the Labour Bureau (Ministry of Labour & Employment).
+      </p>
+      <p>
+        Following the recommendation of previous Pay Commissions, the standard 12-month moving average formula applied to Central Government employees is:
+      </p>
+
+      <div class="formula-banner">
+        DA % = [((12-Month Average of AICPI-IW − Base Index Benchmark) ÷ Base Index Benchmark) × 100]
+      </div>
+
+      <p>
+        <strong>The Truncation Rule:</strong> Under Department of Expenditure rules, fractions occurring in the final percentage are strictly <strong>truncated, not rounded up</strong>. For instance, if the mathematical calculation yields 4.96%, the officially notified DA hike will be exactly <strong>4%</strong>, with the remaining fraction carried over into the next determination cycle.
+      </p>
+
+      <h2>4. Biannual Revision Schedule: The January and July Cycles</h2>
+      <p>
+        Dearness Allowance is revised on a strict semi-annual cadence:
+      </p>
+      <ul>
+        <li><strong>The January Installment:</strong> Calculated based on the 12-month average of the AICPI-IW index spanning from <em>January 1st to December 31st</em> of the preceding year. It is typically ratified by the Union Cabinet in March or April, with retroactive arrears credited for January and February.</li>
+        <li><strong>The July Installment:</strong> Calculated using the 12-month index average spanning from <em>July 1st of the previous year to June 30th</em> of the current year. It is traditionally announced ahead of Diwali in September or October, with retroactive arrears credited for July, August, and September.</li>
+      </ul>
+
+      <h2>5. Projected 8th CPC DA Trajectory: 2026 to 2030 Roadmap</h2>
+      <p>
+        Based on historical 10-year inflationary models from the 6th and 7th CPC rollouts, the table below maps out the expected semi-annual progression of Dearness Allowance as it accumulates from the zero baseline:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Effective Cycle</th>
+              <th>Installment Milestone</th>
+              <th>Expected DA Rate</th>
+              <th>Projected AICPI-IW Range</th>
+              <th>Administrative Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {daProjectionSchedule.map((row) => (
+              <tr>
+                <td><strong>{row.period}</strong></td>
+                <td>{row.event}</td>
+                <td><strong style="color: var(--primary);">{row.expectedDa}</strong></td>
+                <td>{row.avgAicpi}</td>
+                <td><span style="font-size: 0.85rem; color: #475569;">{row.status}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>6. Dearness Allowance on Transport Allowance (DA on TA)</h2>
+      <p>
+        Many government servants overlook that Dearness Allowance is paid on more than just basic salary. Under Central Civil Services (Allowance) Rules, employees are entitled to draw <strong>DA on Transport Allowance</strong> to offset escalating fuel, vehicle maintenance, and urban transit costs.
+      </p>
+      
+      <div class="formula-banner">
+        Total Disbursed Transport Allowance = Base TA Rate + [Base TA Rate × (Current DA % ÷ 100)]
+      </div>
+
+      <p>
+        Transport Allowance is classified into two primary geographical brackets:
+      </p>
+      <ul>
+        <li><strong>Higher TPTA Cities:</strong> 19 major urban agglomerations (including Delhi, Mumbai, Bengaluru, Kolkata, Chennai, Hyderabad, Ahmedabad, Pune, and Patna). Base rates stand at ₹7,200 (Level 9+), ₹3,600 (Levels 3–8), and ₹1,350 (Levels 1–2).</li>
+        <li><strong>Other Locations:</strong> Non-metro postings where base rates stand at ₹3,600 (Level 9+), ₹1,800 (Levels 3–8), and ₹900 (Levels 1–2).</li>
+      </ul>
+      <p>
+        When the 8th Pay Commission resets the DA rate to 0%, the "DA on TA" portion temporarily drops to zero, meaning employees will draw only the baseline TA until fresh DA increments accumulate.
+      </p>
+
+      <h2>7. The 25% and 50% DA Milestones: Allowance Escalation Triggers</h2>
+      <p>
+        Under modern Central Pay Commission guidelines, crossing specific DA thresholds automatically triggers mandatory upward revisions in secondary allowances. Under the 7th CPC framework:
+      </p>
+      <ul>
+        <li><strong>The 25% DA Milestone:</strong> Triggered an upward revision in House Rent Allowance (HRA) from 24%, 16%, and 8% to <strong>27%, 18%, and 9%</strong> across Class X, Y, and Z cities.</li>
+        <li><strong>The 50% DA Milestone:</strong> Fully restored HRA rates to <strong>30%, 20%, and 10%</strong>. Simultaneously, it triggered a statutory 25% increase in multiple child welfare and field allowances:
+          <ul>
+            <li><strong>Children Education Allowance (CEA):</strong> Scaled from ₹2,250 to ₹2,812.50 per month.</li>
+            <li><strong>Hostel Subsidy:</strong> Scaled from ₹6,750 to ₹8,437.50 per month.</li>
+            <li><strong>Retirement Gratuity Ceiling:</strong> Expanded from ₹20 Lakhs to ₹25 Lakhs.</li>
+            <li><strong>Special Duty & Child Care Allowances:</strong> Rose automatically by 25%.</li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+        Under the 8th Pay Commission, this automated trigger architecture will remain vital. As DA crosses future thresholds (projected around 2029 for the 25% mark and 2032–2033 for the 50% mark), secondary allowances will once again expand automatically without requiring separate cabinet interventions.
+      </p>
+
+      <h2>8. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or the Labour Bureau. All AICPI-IW indexing calculations, DA projections, and allowance trigger models are computed based on historical pay commission precedence and statutory formulas. Official notifications must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a> and <a href="https://labourbureau.gov.in" target="_blank" rel="noopener noreferrer">labourbureau.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Total Monthly DA</div>
+      <div class="val" id="stickyTotalDa">₹4,194</div>
+    </div>
+    <a href="#daBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const daBasicInput = document.getElementById('daBasicInput');
+    const daPercentInput = document.getElementById('daPercentInput');
+    const daLevelPreset = document.getElementById('daLevelPreset');
+    const daTransportSelect = document.getElementById('daTransportSelect');
+
+    const dispDaBasic = document.getElementById('dispDaBasic');
+    const dispDaTa = document.getElementById('dispDaTa');
+    const dispTotalDa = document.getElementById('dispTotalDa');
+    const stickyTotalDa = document.getElementById('stickyTotalDa');
+
+    const slipBasic = document.getElementById('slipBasic');
+    const slipDaRate = document.getElementById('slipDaRate');
+    const slipBasicDa = document.getElementById('slipBasicDa');
+    const slipBaseTa = document.getElementById('slipBaseTa');
+    const slipTaDa = document.getElementById('slipTaDa');
+    const slipTotalTa = document.getElementById('slipTotalTa');
+    const slipNetDa = document.getElementById('slipNetDa');
+    const slipLevelLabel = document.getElementById('slipLevelLabel');
+
+    function calculateDA() {
+      const basic = parseFloat(daBasicInput.value) || 0;
+      const daRate = parseFloat(daPercentInput.value) || 0;
+      const baseTa = parseFloat(daTransportSelect.value) || 3600;
+
+      // Arithmetic Engine
+      const daOnBasic = Math.round(basic * (daRate / 100));
+      const daOnTa = Math.round(baseTa * (daRate / 100));
+      const totalTa = baseTa + daOnTa;
+      const totalDa = daOnBasic + daOnTa;
+
+      // Update KPI Cards
+      dispDaBasic.textContent = '₹' + daOnBasic.toLocaleString('en-IN');
+      dispDaTa.textContent = '₹' + daOnTa.toLocaleString('en-IN');
+      dispTotalDa.textContent = '₹' + totalDa.toLocaleString('en-IN');
+      if (stickyTotalDa) stickyTotalDa.textContent = '₹' + totalDa.toLocaleString('en-IN');
+
+      // Update Breakdown Slip
+      slipBasic.textContent = '₹' + basic.toLocaleString('en-IN');
+      slipDaRate.textContent = daRate + '%';
+      slipBasicDa.textContent = '₹' + daOnBasic.toLocaleString('en-IN');
+      slipBaseTa.textContent = '₹' + baseTa.toLocaleString('en-IN');
+      slipTaDa.textContent = '₹' + daOnTa.toLocaleString('en-IN');
+      slipTotalTa.textContent = '₹' + totalTa.toLocaleString('en-IN');
+      slipNetDa.textContent = '₹' + totalDa.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      const selectedLevel = daLevelPreset.options[daLevelPreset.selectedIndex];
+      if (selectedLevel) {
+        const levelName = selectedLevel.text.split(' - ')[0];
+        slipLevelLabel.textContent = `${levelName} • ${daRate}% DA Rate`;
+      }
+    }
+
+    // Input Listeners
+    daBasicInput.addEventListener('input', calculateDA);
+    daPercentInput.addEventListener('input', calculateDA);
+    daTransportSelect.addEventListener('change', calculateDA);
+
+    // Preset Level Picker Handler
+    daLevelPreset.addEventListener('change', (e) => {
+      daBasicInput.value = e.target.value;
+      calculateDA();
+    });
+
+    // Preset DA % Chip Buttons
+    const pills = document.querySelectorAll('#daRatePills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        daPercentInput.value = pill.getAttribute('data-da');
+        calculateDA();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateDA();
+  </script>
+
+</body>
+</html>
