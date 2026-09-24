@@ -1,0 +1,837 @@
+---
+// src/pages/railway-pay-structure.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "Railway Pay Structure & Matrix: 7th & 8th CPC Running Allowance & Cadre Pay";
+const pageDescription = "Explore the Indian Railways Pay Matrix and running staff pay rules. Calculate Running Allowance (KMA), Night Duty Allowance, basic pay, and 8th CPC projections across Levels 1 to 14.";
+
+// Comprehensive Indian Railways Cadre & Pay Matrix Benchmark Data
+const railwayCadres = [
+  { level: "Level 1", gp: "GP 1800", dept: "Engineering / Mechanical / Traffic", designations: "Track Maintainer IV, Pointsman B, Helper, Khalasi", base7th: 18000, base8th_225: 40500, base8th_286: 51480, isRunning: false },
+  { level: "Level 2", gp: "GP 1900", dept: "Operating / Commercial / Mech", designations: "Assistant Loco Pilot (ALP), Pointsman A, Junior Clerk", base7th: 19900, base8th_225: 44775, base8th_286: 56914, isRunning: true },
+  { level: "Level 3", gp: "GP 2000", dept: "Security / Commercial", designations: "RPF Constable, Commercial-cum-Ticket Clerk (Junior)", base7th: 21700, base8th_225: 48825, base8th_286: 62062, isRunning: false },
+  { level: "Level 4", gp: "GP 2400", dept: "Operating (Running Staff)", designations: "Senior ALP, Goods Guard / Train Manager", base7th: 25500, base8th_225: 57375, base8th_286: 72930, isRunning: true },
+  { level: "Level 5", gp: "GP 2800", dept: "Operating / Commercial / RPF", designations: "Loco Pilot Shunting, Senior Goods Guard, RPF Head Constable", base7th: 29200, base8th_225: 65700, base8th_286: 83512, isRunning: true },
+  { level: "Level 6", gp: "GP 4200", dept: "Operating / Electrical / Civil", designations: "Loco Pilot Goods, Mail/Express Guard, Station Master (SM), Junior Engineer (JE)", base7th: 35400, base8th_225: 79650, base8th_286: 101244, isRunning: true },
+  { level: "Level 7", gp: "GP 4600", dept: "Operating / Mechanical / Civil", designations: "Loco Pilot Passenger / Mail, Senior Section Engineer (SSE), Chief Loco Inspector (CLI)", base7th: 44900, base8th_225: 101025, base8th_286: 128414, isRunning: true },
+  { level: "Level 8", gp: "GP 4800", dept: "Operating / Accounts / Personnel", designations: "Assistant Station Master (Supervisory), Assistant Accounts Officer (AAO)", base7th: 47600, base8th_225: 107100, base8th_286: 136136, isRunning: false },
+  { level: "Level 9", gp: "GP 5400 (PB-2)", dept: "Traffic / Accounts / Stores", designations: "Assistant Commercial Manager (ACM), Assistant Operating Manager (AOM)", base7th: 53100, base8th_225: 119475, base8th_286: 151866, isRunning: false },
+  { level: "Level 10", gp: "GP 5400 (PB-3)", dept: "IRSE / IRSME / IRSEE / IRTS", designations: "Assistant Divisional Engineer (ADEN), Divisional Operating Manager (Jr)", base7th: 56100, base8th_225: 126225, base8th_286: 160446, isRunning: false },
+  { level: "Level 11", gp: "GP 6600", dept: "Organized Railway Services", designations: "Divisional Mechanical Engineer (DME), Senior DPO (Junior Scale)", base7th: 67700, base8th_225: 152325, base8th_286: 193622, isRunning: false },
+  { level: "Level 12", gp: "GP 7600", dept: "Senior Administrative Wing", designations: "Senior Divisional Operating Manager (Sr DOM), Sr DEN", base7th: 78800, base8th_225: 177300, base8th_286: 225368, isRunning: false },
+  { level: "Level 13", gp: "GP 8700", dept: "Junior Administrative Grade (JAG)", designations: "Senior Divisional Commercial Manager (Selection Grade), Deputy CVO", base7th: 123100, base8th_225: 276975, base8th_286: 352066, isRunning: false },
+  { level: "Level 14", gp: "GP 10000", dept: "Senior Administrative Grade (SAG)", designations: "Divisional Railway Manager (DRM), Principal Chief Engineer (PCE)", base7th: 144200, base8th_225: 324450, base8th_286: 412412, isRunning: false }
+];
+
+const faqs = [
+  {
+    q: "How does the Indian Railways pay structure differ from standard civil ministries?",
+    a: "While Indian Railways conforms to the universal Central Pay Commission matrix (Levels 1 to 14), operational categories—specifically 'Running Staff' (Loco Pilots, Motormen, and Train Managers/Guards)—receive an additional 30% or 55% pay element calculated on basic pay for allowance and retirement computation, along with Kilometerage Allowance (KMA)."
+  },
+  {
+    q: "What is the 30% and 55% pay element formula for Railway Running Staff?",
+    a: "Under the Railway Board's Running Allowance Rules, 30% of Basic Pay is added to the actual basic pay to compute Dearness Allowance (DA), House Rent Allowance (HRA), and Transport Allowance. For retirement and pension formulation, an enhanced 55% pay element is added to the basic pay to arrive at the final qualifying average emoluments."
+  },
+  {
+    q: "What is Kilometerage Allowance (KMA) and how is it calculated?",
+    a: "Kilometerage Allowance (KMA) is an operational incentive paid per 100 kilometers operated by running staff on duty. Under 7th CPC revisions, baseline KMA rates stand at ₹525 to ₹530 per 100 km for Loco Pilots and Guards, with automatic upward revisions when Dearness Allowance crosses statutory trigger thresholds."
+  },
+  {
+    q: "How is Night Duty Allowance (NDA) computed for railway operational staff?",
+    a: "Night Duty Allowance is paid for work performed between 22:00 hours and 06:00 hours. The standard hourly formula is: Hourly NDA Rate = [(Basic Pay + DA) ÷ 200]. Following 7th CPC clarifications, NDA is calculated strictly using actual basic pay rather than an arbitrary historical ceiling."
+  },
+  {
+    q: "What are the primary demands of Railway employees in the 8th Pay Commission?",
+    a: "Major federations (AIRF and NFIR) have demanded upgrading entry pay for Track Maintainers from Level 1 to Level 2, expanding promotion channels for Senior Section Engineers (SSEs) from Level 7 into Group-B Gazetted scales (Level 8 and 9), and raising baseline KMA rates to reflect heavier freight train operations and modern high-speed semi-bullet corridors."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="railway pay structure 8th pay commission, indian railways pay matrix level 1 to 14, loco pilot salary calculator, running allowance 30 percent pay element, kilometerage allowance kma rules, night duty allowance nda formula railway" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Main Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Ministry of Railways • Cadre Compensation Guide</div>
+      <h1>Railway Pay Structure & Matrix (7th & 8th CPC)</h1>
+      <p>Comprehensive guide and calculator for Indian Railways employees: explore Level 1 to 14 cadre scales, the 30% and 55% running pay elements, Kilometerage Allowance (KMA), and Night Duty Allowance (NDA).</p>
+    </header>
+
+    <!-- INTERACTIVE RAILWAY SALARY & RUNNING ALLOWANCE CALCULATOR -->
+    <section class="calc-box" aria-label="Railway Salary and Running Staff Allowance Calculator Widget">
+      
+      <!-- Quick Post Preset Chips -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select Representative Railway Post:</span>
+        <div class="chip-bar" id="cadrePills">
+          <button class="chip-btn" data-base="18000" data-run="no" data-kma="0">Track Maintainer IV (L1)</button>
+          <button class="chip-btn" data-base="19900" data-run="yes" data-kma="3500">Assistant Loco Pilot (ALP - L2)</button>
+          <button class="chip-btn" data-base="25500" data-run="yes" data-kma="4200">Goods Guard / Train Manager (L4)</button>
+          <button class="chip-btn active" data-base="35400" data-run="yes" data-kma="4500">Loco Pilot Goods (L6)</button>
+          <button class="chip-btn" data-base="35400" data-run="no" data-kma="0">Station Master (SM - L6)</button>
+          <button class="chip-btn" data-base="44900" data-run="no" data-kma="0">Senior Section Engineer (SSE - L7)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="railPostSelect">Railway Cadre Post & Level</label>
+          <select id="railPostSelect">
+            {railwayCadres.map((c) => (
+              <option value={c.base7th} data-running={c.isRunning ? "yes" : "no"} data-level={c.level} selected={c.designations.includes("Loco Pilot Goods")}>
+                {c.level} - {c.designations.split(",")[0]} (7th Base: ₹{c.base7th.toLocaleString('en-IN')})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="railBasicInput">7th CPC Monthly Basic Pay (₹)</label>
+          <input type="number" id="railBasicInput" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="railFitmentSelect">Simulated Fitment Multiplier</label>
+          <select id="railFitmentSelect">
+            <option value="1.00">7th CPC Current Scale (1.00x)</option>
+            <option value="2.25">2.25x (Conservative Model)</option>
+            <option value="2.57">2.57x (7th CPC Parity)</option>
+            <option value="2.86" selected>2.86x (Federation Target)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="railKmRan">Monthly Operating Distance (km)</label>
+          <input type="number" id="railKmRan" value="4500" min="0" max="12000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="railNightHours">Monthly Night Duty Hours (22:00 to 06:00)</label>
+          <input type="number" id="railNightHours" value="40" min="0" max="150" step="1" />
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Revised Matrix Basic Pay</div>
+          <div class="kpi-val" id="dispRailBasic">₹1,01,244</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Running Allowance (KMA)</div>
+          <div class="kpi-val" id="dispKma">₹23,850</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Estimated Monthly Gross</div>
+          <div class="kpi-val" id="dispGrossRail">₹1,59,901</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Monthly Railway Emoluments Calculation Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipPostLabel">Level 6 • Running Staff (Loco Pilot Goods)</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Revised Basic Pay in Pay Matrix (Basic × Fitment)</td>
+              <td class="num" id="slipBasic">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>30% Running Pay Element (Added to Basic for DA/HRA computation)</td>
+              <td class="num" id="slipPayElement">₹30,373</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Total Basic Emoluments for Allowance Accounting</td>
+              <td class="num" id="slipTotalBaseForAllow" style="color: var(--primary);">₹1,31,617</td>
+            </tr>
+            <tr>
+              <td>Kilometerage Allowance (KMA @ ₹5.30 per km)</td>
+              <td class="num" id="slipKmaVal">₹23,850</td>
+            </tr>
+            <tr>
+              <td>Night Duty Allowance (NDA for entered night duty hours)</td>
+              <td class="num" id="slipNdaVal">₹4,434</td>
+            </tr>
+            <tr>
+              <td>House Rent Allowance (HRA @ 20% Tier-2 Town on augmented base)</td>
+              <td class="num" id="slipHra">₹26,323</td>
+            </tr>
+            <tr>
+              <td>National Holiday Allowance (NHA for 1 Holiday duty)</td>
+              <td class="num" id="slipNha">₹630</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Projected Monthly Gross Operating Earnings</td>
+              <td class="num" id="slipNetGross" style="color: var(--accent-green);">₹1,59,901</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Specialized Architecture of Railway Remuneration</h2>
+      <p>
+        The <strong>Indian Railways</strong> represents the single largest civil employer under the Government of India, maintaining an operational workforce exceeding 1.2 million personnel across 17 functional zones and 68 operational divisions. While railway officers, station masters, section engineers, and office staff conform to standard Central Pay Commission (CPC) Pay Matrix guidelines (Levels 1 to 14), operational categories—termed <strong>Running Staff</strong>—are governed by an intricate, century-old specialized compensatory framework: the <strong>Railway Running Allowance Rules</strong>.
+      </p>
+      <p>
+        Running staff comprise the foundational engine of train operations: <strong>Loco Pilots (Passenger, Mail, and Goods)</strong>, <strong>Assistant Loco Pilots (ALPs)</strong>, <strong>Shunters</strong>, and <strong>Train Managers (Guards)</strong>. Because their duties involve irregular working hours, long absences from home headquarters, overnight running shifts, and continuous vigilance along operational tracks, their pay structure includes specialized operational incentives, mileage grants, and enhanced retirement formulas.
+      </p>
+
+      <h2>2. Complete Indian Railways Cadre & Pay Matrix Directory (Levels 1 to 14)</h2>
+      <p>
+        The table below provides a comprehensive comparison of all primary railway cadres, tracking historical 6th CPC Grade Pay designations, department affiliations, and starting entry pay comparing current 7th CPC baselines against projected 8th CPC scales at 2.25x (consensus model) and 2.86x (federation target):
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pay Level</th>
+              <th>Grade Pay</th>
+              <th>Operational Department</th>
+              <th>Key Railway Designations</th>
+              <th>7th CPC Base</th>
+              <th>8th CPC (2.25x)</th>
+              <th>8th CPC (2.86x Target)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {railwayCadres.map((c) => (
+              <tr>
+                <td><strong>{c.level}</strong></td>
+                <td>{c.gp}</td>
+                <td>{c.dept}</td>
+                <td>{c.designations}</td>
+                <td>₹{c.base7th.toLocaleString('en-IN')}</td>
+                <td>₹{c.base8th_225.toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{c.base8th_286.toLocaleString('en-IN')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. The 30% and 55% Running Pay Element Formulas Explained</h2>
+      <p>
+        The defining feature distinguishing Railway Running Staff from stationary civil servants is the statutory <strong>Pay Element</strong>. Because running personnel spend their working lives operating mobile rolling stock rather than sitting in air-conditioned offices, their basic pay is augmented by administrative percentages to compute secondary allowances and retirement pensions:
+      </p>
+
+      <h3>1. The 30% Pay Element (Active Allowance Computation)</h3>
+      <p>
+        For active running staff on duty, an additional <strong>30% of Basic Pay</strong> is integrated with their actual basic salary to compute:
+      </p>
+      <ul>
+        <li><strong>Dearness Allowance (DA):</strong> Paid on [Basic Pay + 30% Pay Element].</li>
+        <li><strong>House Rent Allowance (HRA):</strong> Calculated as applicable city percentage (30%, 20%, or 10%) applied directly to [Basic Pay + 30% Pay Element].</li>
+        <li><strong>Transport Allowance (TA):</strong> Paid at standard cadre rates with DA computed on the augmented base.</li>
+      </ul>
+
+      <div class="formula-banner">
+        Active Service Base = Basic Pay in Pay Matrix + (30% × Basic Pay)
+      </div>
+
+      <h3>2. The 55% Pay Element (Retirement & Pension Formulation)</h3>
+      <p>
+        To compensate for the lack of promotional avenues and the physical toll of decades of operational footplate shifts, the Ministry of Railways enforces an enhanced <strong>55% Pay Element for pensionary benefits</strong>:
+      </p>
+      <ul>
+        <li>When a Loco Pilot or Train Manager retires, their qualifying average basic salary is expanded by adding <strong>55% of Basic Pay</strong>.</li>
+        <li>Their monthly basic pension is calculated at <strong>50% of this augmented total</strong>:
+          $$\text{Basic Pension} = \frac{\text{Last Drawn Basic Pay} + (55\% \times \text{Last Drawn Basic Pay})}{2}$$
+        </li>
+        <li>This statutory provision ensures that running staff receive substantial lifetime pension parity reflecting their lifelong operational contributions to the national transit economy.</li>
+      </ul>
+
+      <h2>4. Kilometerage Allowance (KMA): Operational Mileage Accounting</h2>
+      <p>
+        In addition to basic salary and the 30% pay element, running staff receive <strong>Kilometerage Allowance (KMA)</strong>, an operational incentive paid per 100 kilometers traveled on duty:
+      </p>
+      <ul>
+        <li><strong>KMA Rate Matrix:</strong> Under 7th CPC revisions (Railway Board Letter No. E(P&A)II-2017/RS-22), baseline KMA rates were revised to approximately <strong>₹525 to ₹530 per 100 km</strong> for Loco Pilots and Guards.</li>
+        <li><strong>Monthly Operational Mileage:</strong> An active Goods Loco Pilot or Passenger Driver typically clocks between <strong>3,500 km and 5,500 km per month</strong>, yielding monthly running mileage payouts between <strong>₹18,000 and ₹30,000</strong> on top of their base salary.</li>
+        <li><strong>Allowance in Lieu of Kilometerage (ALK):</strong> When running staff are deployed on stationary non-running duties (such as medical examinations, departmental inquiry hearings, simulator training, or waiting for engine duty), they receive ALK equivalent to <strong>160 km per day</strong> (approx. ₹848/day) to prevent financial penalization.</li>
+      </ul>
+
+      <h2>5. Night Duty Allowance (NDA) and National Holiday Allowance (NHA)</h2>
+      <p>
+        Railway operations function continuously around the clock every day of the year, necessitating specialized shift allowances:
+      </p>
+
+      <h3>1. Night Duty Allowance (NDA)</h3>
+      <p>
+        Paid for operational work performed during the night window spanning between <strong>22:00 hours (10:00 PM) and 06:00 hours (06:00 AM)</strong>:
+      </p>
+
+      <div class="formula-banner">
+        Hourly NDA Rate = [(Monthly Basic Pay + Dearness Allowance) ÷ 200]
+      </div>
+
+      <p>
+        Following major legal clarifications won by railway trade unions, the contentious historical ceiling (which formerly capped basic pay for NDA calculations at ₹43,600) was successfully struck down. Every operating employee—from Pointsmen to Station Directors—now receives NDA calculated strictly on their actual basic pay.
+      </p>
+
+      <h3>2. National Holiday Allowance (NHA)</h3>
+      <p>
+        Operational staff who perform active duty on gazetted national holidays (Republic Day, Independence Day, and Gandhi Jayanti) or notified festival holidays receive flat-rate <strong>National Holiday Allowance</strong>:
+      </p>
+      <ul>
+        <li>Level 1 & 2: ₹384 per day of holiday duty.</li>
+        <li>Level 3 to 5: ₹477 per day of holiday duty.</li>
+        <li>Level 6 to 8: ₹630 per day of holiday duty.</li>
+      </ul>
+
+      <h2>6. Critical Structural Demands Ahead of the 8th Pay Commission</h2>
+      <p>
+        As preliminary consultations unfold for the 8th Central Pay Commission, the two recognized railway federations—the <strong>All India Railwaymen's Federation (AIRF)</strong> and the <strong>National Federation of Indian Railwaymen (NFIR)</strong>—have drafted key structural representations:
+      </p>
+      <ol>
+        <li><strong>Upgrading Track Maintainers from Level 1 to Level 2:</strong> Track Maintainers (formerly Gangmen) perform physically exhausting, high-risk permanent-way inspections under extreme weather conditions. Federations demand that entry-level track maintenance appointments be elevated from Level 1 (GP 1800) to Level 2 (GP 1900).</li>
+        <li><strong>Gazetted Upgradation for Senior Section Engineers (SSEs):</strong> Technical supervisors (SSEs and CMS) in Level 7 (GP 4600) currently manage multi-crore signaling, track, and locomotive assets but face severe promotion ceilings. Demands advocate for automatic movement of 50% of Level 7 technical supervisors into <strong>Level 8 and Level 9 Group-B Gazetted scales</strong>.</li>
+        <li><strong>KMA Upward Revision for Semi-High-Speed Operations:</strong> With the introduction of Vande Bharat trainsets, dedicated freight corridors (DFC), and higher average commercial speeds, federations are lobbying for scaling baseline KMA from ₹530 per 100 km to at least <strong>₹1,200 to ₹1,500 per 100 km</strong> under the 8th CPC.</li>
+      </ol>
+
+      <h2>7. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Ministry of Railways, the Railway Board, or any Zonal Railway Administration. All cadre levels, running allowance rules, KMA formulas, and pay element percentages are compiled directly from Railway Board establishment circulars (RBEs), Indian Railway Establishment Code (IREC), and gazette notifications. Official administrative circulars must be confirmed at <a href="https://indianrailways.gov.in" target="_blank" rel="noopener noreferrer">indianrailways.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Estimated Railway Gross</div>
+      <div class="val" id="stickyGrossRail">₹1,59,901</div>
+    </div>
+    <a href="#railBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const railPostSelect = document.getElementById('railPostSelect');
+    const railBasicInput = document.getElementById('railBasicInput');
+    const railFitmentSelect = document.getElementById('railFitmentSelect');
+    const railKmRan = document.getElementById('railKmRan');
+    const railNightHours = document.getElementById('railNightHours');
+
+    const dispRailBasic = document.getElementById('dispRailBasic');
+    const dispKma = document.getElementById('dispKma');
+    const dispGrossRail = document.getElementById('dispGrossRail');
+    const stickyGrossRail = document.getElementById('stickyGrossRail');
+
+    const slipBasic = document.getElementById('slipBasic');
+    const slipPayElement = document.getElementById('slipPayElement');
+    const slipTotalBaseForAllow = document.getElementById('slipTotalBaseForAllow');
+    const slipKmaVal = document.getElementById('slipKmaVal');
+    const slipNdaVal = document.getElementById('slipNdaVal');
+    const slipHra = document.getElementById('slipHra');
+    const slipNha = document.getElementById('slipNha');
+    const slipNetGross = document.getElementById('slipNetGross');
+    const slipPostLabel = document.getElementById('slipPostLabel');
+
+    function calculateRailwayPay() {
+      const basic = parseFloat(railBasicInput.value) || 0;
+      const fitment = parseFloat(railFitmentSelect.value) || 1.0;
+      const kmRan = parseFloat(railKmRan.value) || 0;
+      const nightHrs = parseFloat(railNightHours.value) || 0;
+
+      const selectedOption = railPostSelect.options[railPostSelect.selectedIndex];
+      const isRunning = selectedOption.getAttribute('data-running') === 'yes';
+
+      // Arithmetic Engine
+      const revisedBasic = Math.round(basic * fitment);
+
+      // 30% Running Pay Element for Running Staff
+      const payElement = isRunning ? Math.round(revisedBasic * 0.30) : 0;
+      const totalBaseForAllow = revisedBasic + payElement;
+
+      // KMA Calculation (Base rate ₹5.30 per km)
+      const kmaAmount = isRunning ? Math.round(kmRan * 5.30) : 0;
+
+      // Night Duty Allowance (Hourly Rate = [Basic Pay + 0% DA] / 200 under 8th CPC reset)
+      const hourlyNda = totalBaseForAllow / 200;
+      const ndaAmount = Math.round(hourlyNda * nightHrs);
+
+      // HRA @ 20% (Tier-2 Town standard baseline on augmented base)
+      const hraAmount = Math.round(totalBaseForAllow * 0.20);
+
+      // National Holiday Allowance (Standard Level 6 baseline: ₹630)
+      const nhaAmount = 630;
+
+      const totalGross = revisedBasic + kmaAmount + ndaAmount + hraAmount + nhaAmount;
+
+      // Update KPI Cards
+      dispRailBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      dispKma.textContent = '₹' + kmaAmount.toLocaleString('en-IN');
+      dispGrossRail.textContent = '₹' + totalGross.toLocaleString('en-IN');
+      if (stickyGrossRail) stickyGrossRail.textContent = '₹' + totalGross.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipBasic.textContent = '₹' + revisedBasic.toLocaleString('en-IN');
+      slipPayElement.textContent = isRunning ? '₹' + payElement.toLocaleString('en-IN') : '₹0 (Stationary Staff)';
+      slipTotalBaseForAllow.textContent = '₹' + totalBaseForAllow.toLocaleString('en-IN');
+      slipKmaVal.textContent = '₹' + kmaAmount.toLocaleString('en-IN');
+      slipNdaVal.textContent = '₹' + ndaAmount.toLocaleString('en-IN');
+      slipHra.textContent = '₹' + hraAmount.toLocaleString('en-IN');
+      slipNha.textContent = '₹' + nhaAmount.toLocaleString('en-IN');
+      slipNetGross.textContent = '₹' + totalGross.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      const postName = selectedOption.text.split(' - ')[1].split(' (')[0];
+      const levelCode = selectedOption.getAttribute('data-level') || 'Level';
+      slipPostLabel.textContent = `${levelCode} • ${postName} • ${isRunning ? 'Running Staff' : 'Stationary Staff'}`;
+    }
+
+    // Input Listeners
+    railBasicInput.addEventListener('input', calculateRailwayPay);
+    railPostSelect.addEventListener('change', (e) => {
+      railBasicInput.value = e.target.value;
+      calculateRailwayPay();
+    });
+    railFitmentSelect.addEventListener('change', calculateRailwayPay);
+    railKmRan.addEventListener('input', calculateRailwayPay);
+    railNightHours.addEventListener('input', calculateRailwayPay);
+
+    // Preset Chip Buttons
+    const pills = document.querySelectorAll('#cadrePills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        railBasicInput.value = pill.getAttribute('data-base');
+        railKmRan.value = pill.getAttribute('data-kma');
+
+        // Match dropdown value
+        const targetBase = pill.getAttribute('data-base');
+        for (let i = 0; i < railPostSelect.options.length; i++) {
+          if (railPostSelect.options[i].value === targetBase) {
+            railPostSelect.selectedIndex = i;
+            break;
+          }
+        }
+        calculateRailwayPay();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateRailwayPay();
+  </script>
+
+</body>
+</html>
