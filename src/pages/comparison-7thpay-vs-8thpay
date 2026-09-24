@@ -1,5 +1,5 @@
 ---
-// src/pages/comparison-7th-vs-8th.astro
+// src/pages/comparison-7thpay-vs-8thpay.astro
 const siteUrl = "https://8paycommission.com";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const pageTitle = "7th vs 8th Pay Commission Comparison: Salary Hike, Matrix & Policy Shifts";
