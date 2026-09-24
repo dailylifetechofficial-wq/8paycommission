@@ -1,0 +1,859 @@
+---
+// src/pages/teachers-pay-scale.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "Teachers & University Faculty Pay Scale: 7th & 8th CPC UGC Academic Matrix (2026)";
+const pageDescription = "Explore the Teachers & Faculty Pay Matrix for School Teachers (PRT/TGT/PGT), Central Universities (UGC AL-10 to AL-15), CAS promotions, Ph.D. advance increments, and 8th CPC projections.";
+
+// Comprehensive School & Higher Education Faculty Cadre Benchmarks
+const academicCadres = [
+  { level: "Level 6", academicLevel: "School Tier", agp: "GP 4200", sector: "KVS / NVS / State", post: "Primary Teacher (PRT)", base7th: 35400, base8th_225: 79650, base8th_286: 101244, maxStages: 40 },
+  { level: "Level 7", academicLevel: "School Tier", agp: "GP 4600", sector: "KVS / NVS / State", post: "Trained Graduate Teacher (TGT)", base7th: 44900, base8th_225: 101025, base8th_286: 128414, maxStages: 40 },
+  { level: "Level 8", academicLevel: "School Tier", agp: "GP 4800", sector: "KVS / NVS / State", post: "Post Graduate Teacher (PGT)", base7th: 47600, base8th_225: 107100, base8th_286: 136136, maxStages: 40 },
+  { level: "Level 10", academicLevel: "Academic Level 10", agp: "AGP 6000", sector: "UGC / Central Univ", post: "Assistant Professor (Entry / Stage 1)", base7th: 57700, base8th_225: 129825, base8th_286: 165022, maxStages: 40 },
+  { level: "Level 11", academicLevel: "Academic Level 11", agp: "AGP 7000", sector: "UGC / Central Univ", post: "Assistant Professor (Senior Scale / Stage 2)", base7th: 68900, base8th_225: 155025, base8th_286: 197054, maxStages: 39 },
+  { level: "Level 12", academicLevel: "Academic Level 12", agp: "AGP 8000", sector: "UGC / Central Univ", post: "Assistant Professor (Selection Grade / Stage 3)", base7th: 79800, base8th_225: 179550, base8th_286: 228228, maxStages: 34 },
+  { level: "Level 12", academicLevel: "School Admin", agp: "GP 7600", sector: "KVS / NVS / CBSE", post: "School Vice Principal", base7th: 78800, base8th_225: 177300, base8th_286: 225368, maxStages: 34 },
+  { level: "Level 13A", academicLevel: "Academic Level 13A", agp: "AGP 9000", sector: "UGC / Central Univ", post: "Associate Professor (Stage 4)", base7th: 131400, base8th_225: 295650, base8th_286: 375804, maxStages: 18 },
+  { level: "Level 14", academicLevel: "Academic Level 14", agp: "AGP 10000", sector: "UGC / Central Univ", post: "Professor (Stage 5) / College Principal", base7th: 144200, base8th_225: 324450, base8th_286: 412412, maxStages: 16 },
+  { level: "Level 15", academicLevel: "Academic Level 15", agp: "HAG Scale", sector: "UGC / Apex Institute", post: "Senior Professor (Stage 6) / Director", base7th: 182200, base8th_225: 409950, base8th_286: 521092, maxStages: 8 },
+  { level: "Level 17", academicLevel: "Apex Executive", agp: "Apex Scale", sector: "Central University", post: "Vice Chancellor (VC) of Central University", base7th: 225000, base8th_225: 506250, base8th_286: 643500, maxStages: 1 }
+];
+
+const faqs = [
+  {
+    q: "How does the UGC Academic Pay Matrix differ from the standard Civil Services Matrix?",
+    a: "The UGC Academic Pay Matrix specifically aligns with higher education qualification requirements. For example, while standard civil Group-A entry begins at Level 10 with a starting basic of ₹56,100, the UGC Academic Level 10 for Assistant Professors starts higher at ₹57,700 to reward mandatory post-graduate research and UGC-NET/SLET credentials. Additionally, Academic Level 13A (Associate Professor) starts at ₹1,31,400 rather than civil Level 13's ₹1,23,100."
+  },
+  {
+    q: "How does Career Advancement Scheme (CAS) promotion operate across academic levels?",
+    a: "CAS promotions advance teaching faculty through defined stages without needing a vacancy opening: Assistant Professor moves from AL-10 to AL-11, then to AL-12, before competing for Associate Professor (AL-13A) and Professor (AL-14). Progression requires satisfying annual API/PBAS research output benchmarks, student feedback thresholds, and completion of mandatory Orientation/Refresher faculty development programs."
+  },
+  {
+    q: "Are advance increments granted for holding Ph.D. or M.Phil degrees?",
+    a: "Yes. Under UGC regulations, direct recruits entering as Assistant Professors holding a Ph.D. degree receive five non-compounded advance increments at entry. Recruits holding M.Phil degrees or M.Tech/LLM qualifications receive two advance increments. Serving faculty who acquire a Ph.D. degree while in service receive three non-compounded advance increments."
+  },
+  {
+    q: "Do school teachers in KVS, NVS, and State boards receive Central Pay Commission scales?",
+    a: "Yes. Teachers in Kendriya Vidyalayas (KVS), Navodaya Vidyalayas (NVS), and Central Tibetan Schools receive direct central pay parity: PRT (Level 6: ₹35,400), TGT (Level 7: ₹44,900), and PGT (Level 8: ₹47,600). State government school teachers traditionally adopt identical matrix levels following dedicated State Pay Committee or Cabinet notifications."
+  },
+  {
+    q: "What is the expected 8th Pay Commission starting basic pay for school teachers and professors?",
+    a: "Under projected 8th CPC fitment multipliers (2.25x to 2.86x), Primary Teachers (PRT - Level 6) are projected to adjust to ₹79,650 – ₹101,244; PGT teachers (Level 8) to ₹107,100 – ₹136,136; and entry-level Assistant Professors (UGC AL-10) to ₹129,825 – ₹165,022."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="teachers pay scale 8th pay commission, ugc 7th cpc pay matrix table, assistant professor salary calculator, kvs nvs prt tgt pgt salary structure, academic level 10 to 15 ugc, cas promotion rules teachers" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Main Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">UGC, School Education & Academic Matrix Standards</div>
+      <h1>Teachers & University Faculty Pay Scale (7th & 8th CPC)</h1>
+      <p>Comprehensive guide and salary simulator for school educators (PRT/TGT/PGT in KVS/NVS) and higher education faculty (UGC Academic Levels 10 to 15 in Central Universities and IITs/NITs).</p>
+    </header>
+
+    <!-- INTERACTIVE TEACHERS SALARY CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="Teachers and University Faculty Salary Calculation Widget">
+      
+      <!-- Quick Cadre Preset Chips -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select Academic Post Preset:</span>
+        <div class="chip-bar" id="cadrePills">
+          <button class="chip-btn" data-base="35400" data-post="Primary Teacher (PRT - Level 6)" data-adv="0">PRT School (Level 6)</button>
+          <button class="chip-btn" data-base="44900" data-post="Trained Graduate Teacher (TGT - Level 7)" data-adv="0">TGT School (Level 7)</button>
+          <button class="chip-btn" data-base="47600" data-post="Post Graduate Teacher (PGT - Level 8)" data-adv="0">PGT School (Level 8)</button>
+          <button class="chip-btn active" data-base="57700" data-post="Assistant Professor (UGC AL-10 Entry)" data-adv="5">Assistant Prof (AL-10 + Ph.D.)</button>
+          <button class="chip-btn" data-base="131400" data-post="Associate Professor (UGC AL-13A)" data-adv="0">Associate Prof (AL-13A)</button>
+          <button class="chip-btn" data-base="144200" data-post="Professor (UGC AL-14)" data-adv="0">Professor (AL-14)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="acadCadreSelect">Teaching / Academic Cadre Post</label>
+          <select id="acadCadreSelect">
+            {academicCadres.map((c) => (
+              <option value={c.base7th} data-post={c.post} data-level={c.level} data-acad={c.academicLevel} selected={c.post.startsWith("Assistant Professor (Entry")}>
+                {c.academicLevel} - {c.post} (7th Base: ₹{c.base7th.toLocaleString('en-IN')})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="acadBasicInput">7th CPC Matrix Basic Pay (₹)</label>
+          <input type="number" id="acadBasicInput" value="57700" min="35400" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="acadFitmentSelect">Simulated Fitment Multiplier</label>
+          <select id="acadFitmentSelect">
+            <option value="1.00">7th CPC Current Scale (1.00x)</option>
+            <option value="2.25">2.25x (Conservative Model)</option>
+            <option value="2.57">2.57x (7th CPC Parity)</option>
+            <option value="2.86" selected>2.86x (Federation Target)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="phdIncrementSelect">Ph.D. / M.Phil Advance Increments</label>
+          <select id="phdIncrementSelect">
+            <option value="0">None / Nil Advance Increments</option>
+            <option value="2">2 Increments (M.Phil / M.Tech entry)</option>
+            <option value="3">3 Increments (Ph.D. acquired in-service)</option>
+            <option value="5" selected>5 Increments (Direct Entry with Ph.D.)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="acadCityTier">Duty Station City Tier (HRA Rate)</label>
+          <select id="acadCityTier">
+            <option value="0.30" selected>Class X (30% - Metro: Delhi, Mumbai, Bengaluru)</option>
+            <option value="0.20">Class Y (20% - Tier-2 / University Towns)</option>
+            <option value="0.10">Class Z (10% - Small Towns / Rural Campuses)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Base Academic Starting Pay</div>
+          <div class="kpi-val" id="dispEntryBasic">₹1,65,022</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Pay with Advance Increments</div>
+          <div class="kpi-val" id="dispAugmentedBasic">₹1,91,304</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Projected Monthly Gross</div>
+          <div class="kpi-val" id="dispGrossSalary">₹2,55,895</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>Monthly Academic Emoluments Calculation Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipPostLabel">Academic Level 10 • Assistant Professor</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Standard Entry Basic Pay in Academic Matrix (Basic × Fitment)</td>
+              <td class="num" id="slipEntryBase">₹1,65,022</td>
+            </tr>
+            <tr>
+              <td>Advance Increments Addition (3% compounded per qualification stage)</td>
+              <td class="num" id="slipAdvAddition">+₹26,282</td>
+            </tr>
+            <tr style="font-weight: 700; background: #f8fafc;">
+              <td>Total Consolidated Academic Basic Pay</td>
+              <td class="num" id="slipConsolidatedBase" style="color: var(--primary);">₹1,91,304</td>
+            </tr>
+            <tr>
+              <td>Dearness Allowance (DA) — <span style="color: var(--text-muted);">Reset to 0% at 8th CPC Launch</span></td>
+              <td class="num">₹0</td>
+            </tr>
+            <tr>
+              <td>House Rent Allowance (HRA @ Selected City Tier on Augmented Base)</td>
+              <td class="num" id="slipHra">₹57,391</td>
+            </tr>
+            <tr>
+              <td>Transport Allowance (TA based on academic pay tier: ₹7,200)</td>
+              <td class="num" id="slipTa">₹7,200</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Projected Monthly Gross Academic Remuneration</td>
+              <td class="num" id="slipFinalGross" style="color: var(--accent-green);">₹2,55,895</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Two Pillars of Indian Educational Compensation</h2>
+      <p>
+        Teaching compensation in the Indian public sector is organized across two distinct administrative domains, each responding to statutory frameworks established by the Central Government:
+      </p>
+      <ul>
+        <li><strong>School Education (KVS, NVS, CTSA, and State Schools):</strong> Governed by the Ministry of Education and conforming directly to standard Central Pay Commission civil levels: Primary Teachers (<strong>PRT in Level 6</strong>), Trained Graduate Teachers (<strong>TGT in Level 7</strong>), and Post Graduate Teachers (<strong>PGT in Level 8</strong>).</li>
+        <li><strong>Higher & University Education (UGC, AICTE, IITs, NITs, and Central Universities):</strong> Governed by the <strong>University Grants Commission (UGC)</strong> under Ministry of Education directives. Higher education faculty are structured into distinct <strong>Academic Levels (AL-10 to AL-15)</strong> that incorporate entry pay enhancements and research-linked incentives beyond standard civil scales.</li>
+      </ul>
+      <p>
+        With the anticipated rollout of the <strong>8th Central Pay Commission</strong>, teaching federations (such as the All India Federation of University and College Teachers' Organisations - AIFUCTO, and school teacher associations) are focusing on critical policy imperatives: closing the gap between school educators and gazetted officers, expanding Career Advancement Scheme (CAS) promotion pipelines, and restoring advance increment benefits for terminal research degrees.
+      </p>
+
+      <h2>2. Complete School & University Faculty Pay Matrix (Levels 6 to 17)</h2>
+      <p>
+        The table below provides a comprehensive comparison of all primary teaching hierarchies, tracking historical Academic Grade Pay (AGP) tiers, functional academic ranks, entry basic salaries, and projected 8th CPC starting figures at 2.25x (conservative model) and 2.86x (federation target):
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Matrix Level</th>
+              <th>Academic / School Tier</th>
+              <th>Equivalent AGP / GP</th>
+              <th>Designation Benchmark</th>
+              <th>7th CPC Base</th>
+              <th>8th CPC (2.25x)</th>
+              <th>8th CPC (2.86x Target)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {academicCadres.map((c) => (
+              <tr>
+                <td><strong>{c.level}</strong></td>
+                <td>{c.academicLevel}</td>
+                <td>{c.agp}</td>
+                <td>{c.post}</td>
+                <td>₹{c.base7th.toLocaleString('en-IN')}</td>
+                <td>₹{c.base8th_225.toLocaleString('en-IN')}</td>
+                <td style="color: var(--primary); font-weight: 700;">₹{c.base8th_286.toLocaleString('en-IN')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. The UGC Academic Pay Premium: Why Academic Level 10 Exceeds Civil Level 10</h2>
+      <p>
+        A unique structural feature of higher education compensation in India is the <strong>Academic Pay Premium</strong>. In standard civil services (e.g., direct-recruit SDMs, DSPs, or Assistant Commissioners), entry into Pay Level 10 starts at a monthly basic pay of <strong>₹56,100</strong>.
+      </p>
+      <p>
+        However, under the UGC 7th CPC notification (Ministry of HRD Order No. 1-7/2015-U.II(1)), the starting basic pay for an Assistant Professor in <strong>Academic Level 10 is fixed at ₹57,700</strong>.
+      </p>
+      <p>
+        The Ministry codified this premium for three foundational reasons:
+      </p>
+      <ol>
+        <li><strong>Mandatory Pre-Service Research:</strong> Unlike standard civil posts where a candidate can enter immediately upon completing a bachelor's degree, an Assistant Professor must hold a Master's degree (minimum 55% marks) and clear the National Eligibility Test (UGC-NET/CSIR-NET) or hold a Ph.D., representing several additional years of academic specialization.</li>
+        <li><strong>Brain Drain Mitigation:</strong> Providing higher starting compensation at university entry levels ensures that high-caliber researchers and scientists are incentivized to remain in domestic public academia rather than joining foreign research labs or private corporate R&D divisions.</li>
+        <li><strong>Associate Professor Baseline (AL-13A):</strong> Similarly, while civil Level 13 (Director) starts at ₹1,23,100, UGC Academic Level 13A for Associate Professors begins at <strong>₹1,31,400</strong>, reflecting extensive post-doctoral publication standards.</li>
+      </ol>
+
+      <div class="formula-banner">
+        UGC Starting Advantage: Civil Level 10 Entry = ₹56,100  vs.  UGC Academic Level 10 Entry = ₹57,700
+      </div>
+
+      <h2>4. Non-Compounded Advance Increments for Ph.D. and Research Qualifications</h2>
+      <p>
+        To encourage research productivity and scholarly rigor, UGC regulations institutionalize <strong>non-compounded advance increments</strong>:
+      </p>
+      <ul>
+        <li><strong>Direct Entry with Ph.D.:</strong> A candidate appointed as Assistant Professor (AL-10) who possesses a Ph.D. degree in the relevant discipline awarded through UGC-compliant entrance and coursework procedures receives <strong>five non-compounded advance increments</strong> at entry.</li>
+        <li><strong>Direct Entry with M.Phil / Professional PG:</strong> Candidates recruited holding an M.Phil, M.Tech, LL.M., or M.D./M.S. degree receive <strong>two non-compounded advance increments</strong>.</li>
+        <li><strong>Acquiring Ph.D. In-Service:</strong> A serving faculty member who completes and is awarded a Ph.D. degree while in active university service receives <strong>three non-compounded advance increments</strong>.</li>
+      </ul>
+      <p>
+        Each advance increment is valued at approximately <strong>3% of basic pay</strong>, meaning a newly recruited Assistant Professor with a Ph.D. begins their service earning an effective starting basic pay of approximately <strong>₹66,800 under 7th CPC (or ~₹1,91,300 projected under 8th CPC at 2.86x)</strong> rather than the entry baseline.
+      </p>
+
+      <h2>5. Career Advancement Scheme (CAS): Progression Without Vacancies</h2>
+      <p>
+        In general civil administration, promotion depends heavily on the availability of sanctioned cadre vacancies in higher posts. In contrast, academic advancement in Central and State Universities is driven by the <strong>Career Advancement Scheme (CAS)</strong>, a merit-based, non-vacancy-linked career progression system:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Career Stage Transition</th>
+              <th>Academic Level Movement</th>
+              <th>Minimum Qualifying Service Period</th>
+              <th>Mandatory Evaluative Prerequisites</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Stage 1 to Stage 2</strong></td>
+              <td>Academic Level 10 ➔ Level 11</td>
+              <td>4 Years (with Ph.D.) / 5 Years (M.Phil) / 6 Years (Others)</td>
+              <td>1 Orientation Program + 1 Refresher Course; acceptable PBAS score</td>
+            </tr>
+            <tr>
+              <td><strong>Stage 2 to Stage 3</strong></td>
+              <td>Academic Level 11 ➔ Level 12</td>
+              <td>5 Years continuous service in AL-11</td>
+              <td>1 Faculty Development Program (FDP) / Research Methodology; published papers</td>
+            </tr>
+            <tr>
+              <td><strong>Stage 3 to Stage 4</strong></td>
+              <td>Academic Level 12 ➔ Level 13A (Assoc Prof)</td>
+              <td>3 Years continuous service in AL-12</td>
+              <td>Ph.D. degree mandatory; minimum 7 peer-reviewed publications; selection interview</td>
+            </tr>
+            <tr>
+              <td><strong>Stage 4 to Stage 5</strong></td>
+              <td>Academic Level 13A ➔ Level 14 (Professor)</td>
+              <td>3 Years continuous service in AL-13A</td>
+              <td>Minimum 10 publications (3 post-doctoral); successful Ph.D. student supervision</td>
+            </tr>
+            <tr>
+              <td><strong>Stage 5 to Stage 6</strong></td>
+              <td>Academic Level 14 ➔ Level 15 (Senior Prof)</td>
+              <td>10 Years continuous service in AL-14</td>
+              <td>Distinguished scholarship; minimum 10 Ph.D.s awarded under guidance; external peer review</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>6. School Education Cadres: PRT, TGT, and PGT Structures</h2>
+      <p>
+        School teachers in central autonomous bodies (Kendriya Vidyalaya Sangathan - KVS, Navodaya Vidyalaya Samiti - NVS) and union territory administrations are structured across three primary teaching bands:
+      </p>
+      <ul>
+        <li><strong>Primary Teachers (PRT - Level 6, Starting Basic ₹35,400):</strong> Instruct foundational and primary classes (Grades 1 to 5). Minimum qualifications require a D.El.Ed/B.Ed and passing the Central Teacher Eligibility Test (CTET Paper 1). Under the 8th CPC, starting pay is projected to expand to between <strong>₹79,650 and ₹1,01,244</strong>.</li>
+        <li><strong>Trained Graduate Teachers (TGT - Level 7, Starting Basic ₹44,900):</strong> Handle secondary classes (Grades 6 to 10). Minimum qualifications mandate a Bachelor’s degree in the teaching subject, B.Ed, and CTET Paper 2. Projected 8th CPC entry basic pay ranges from <strong>₹1,01,025 to ₹1,28,414</strong>.</li>
+        <li><strong>Post Graduate Teachers (PGT - Level 8, Starting Basic ₹47,600):</strong> Responsible for senior secondary instruction (Grades 11 and 12). Candidates must hold a Master’s degree in the subject with a B.Ed. Projected 8th CPC entry basic pay ranges from <strong>₹1,07,100 to ₹1,36,136</strong>.</li>
+      </ul>
+
+      <h2>7. Core Demands Ahead of the 8th Pay Commission for Educators</h2>
+      <p>
+        Ahead of 8th CPC deliberations, national teaching federations and university unions have articulated several shared priorities:
+      </p>
+      <ul>
+        <li><strong>Upgrading School Educator Entry Scales:</strong> Demands from school teacher unions emphasize that primary and secondary teaching requires rigorous pre-service diplomas and national testing. They advocate upgrading PRTs from Level 6 to Level 7, and TGTs from Level 7 to Level 8, to reflect their educational responsibilities.</li>
+        <li><strong>Restoring Slashed Ph.D. In-Service Increments:</strong> While pre-service entry increments were retained, regulations following the 7th CPC restricted certain in-service advance increments. University faculty federations demand the restoration of automatic, compounded advance increments for every higher research credential completed during tenure.</li>
+        <li><strong>Retirement Age Harmonization:</strong> Central University faculty currently retire at <strong>65 years of age</strong> (with provisions for re-employment up to 70 in specialized research positions). School teachers, however, remain tied to the civil superannuation age of <strong>60 years</strong>. Federations are urging the government to consider raising the superannuation age for school educators to 62 or 65 years to retain experienced mentors.</li>
+      </ul>
+
+      <h2>8. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Ministry of Education, the University Grants Commission (UGC), or the Kendriya Vidyalaya Sangathan (KVS). All pay scales, academic matrix levels, advance increment rules, and CAS progression criteria are compiled directly from official UGC regulations, MHRD gazette notifications, and KVS establishment circulars. Official administrative guidelines must be confirmed at <a href="https://ugc.gov.in" target="_blank" rel="noopener noreferrer">ugc.gov.in</a> and <a href="https://kvsangathan.nic.in" target="_blank" rel="noopener noreferrer">kvsangathan.nic.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Total Monthly Gross</div>
+      <div class="val" id="stickyGross">₹2,55,895</div>
+    </div>
+    <a href="#acadBasicInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const acadCadreSelect = document.getElementById('acadCadreSelect');
+    const acadBasicInput = document.getElementById('acadBasicInput');
+    const acadFitmentSelect = document.getElementById('acadFitmentSelect');
+    const phdIncrementSelect = document.getElementById('phdIncrementSelect');
+    const acadCityTier = document.getElementById('acadCityTier');
+
+    const dispEntryBasic = document.getElementById('dispEntryBasic');
+    const dispAugmentedBasic = document.getElementById('dispAugmentedBasic');
+    const dispGrossSalary = document.getElementById('dispGrossSalary');
+    const stickyGross = document.getElementById('stickyGross');
+
+    const slipEntryBase = document.getElementById('slipEntryBase');
+    const slipAdvAddition = document.getElementById('slipAdvAddition');
+    const slipConsolidatedBase = document.getElementById('slipConsolidatedBase');
+    const slipHra = document.getElementById('slipHra');
+    const slipTa = document.getElementById('slipTa');
+    const slipFinalGross = document.getElementById('slipFinalGross');
+    const slipPostLabel = document.getElementById('slipPostLabel');
+
+    function calculateAcademicPay() {
+      const basic = parseFloat(acadBasicInput.value) || 0;
+      const fitment = parseFloat(acadFitmentSelect.value) || 1.0;
+      const advanceIncrements = parseInt(phdIncrementSelect.value) || 0;
+      const hraRate = parseFloat(acadCityTier.value) || 0.30;
+
+      // Arithmetic Engine
+      const revisedEntryBase = Math.round(basic * fitment);
+
+      // Compounding 3% for advance increments
+      let augmentedBase = revisedEntryBase;
+      for (let i = 0; i < advanceIncrements; i++) {
+        augmentedBase = Math.round((augmentedBase * 1.03) / 100) * 100;
+      }
+
+      const advanceAddition = augmentedBase - revisedEntryBase;
+      const hraAmount = Math.round(augmentedBase * hraRate);
+
+      // Transport Allowance Baseline (Officers / AL-10+ = ₹7,200; School Levels 6-8 = ₹3,600)
+      const isHigherFaculty = basic >= 57700;
+      const baseTa = isHigherFaculty ? 7200 : 3600;
+
+      const totalGross = augmentedBase + hraAmount + baseTa;
+
+      // Update KPI Cards
+      dispEntryBasic.textContent = '₹' + revisedEntryBase.toLocaleString('en-IN');
+      dispAugmentedBasic.textContent = '₹' + augmentedBase.toLocaleString('en-IN');
+      dispGrossSalary.textContent = '₹' + totalGross.toLocaleString('en-IN');
+      if (stickyGross) stickyGross.textContent = '₹' + totalGross.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipEntryBase.textContent = '₹' + revisedEntryBase.toLocaleString('en-IN');
+      slipAdvAddition.textContent = advanceIncrements > 0 ? '+₹' + advanceAddition.toLocaleString('en-IN') + ` (${advanceIncrements} Increments)` : '₹0';
+      slipConsolidatedBase.textContent = '₹' + augmentedBase.toLocaleString('en-IN');
+      slipHra.textContent = '₹' + hraAmount.toLocaleString('en-IN');
+      slipTa.textContent = '₹' + baseTa.toLocaleString('en-IN');
+      slipFinalGross.textContent = '₹' + totalGross.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      const selectedOption = acadCadreSelect.options[acadCadreSelect.selectedIndex];
+      if (selectedOption) {
+        const postName = selectedOption.getAttribute('data-post') || 'Academic Post';
+        const acadLevel = selectedOption.getAttribute('data-acad') || 'Level';
+        slipPostLabel.textContent = `${acadLevel} • ${postName} • ${advanceIncrements > 0 ? advanceIncrements + ' Adv Inc' : 'Regular'}`;
+      }
+    }
+
+    // Input Listeners
+    acadBasicInput.addEventListener('input', calculateAcademicPay);
+    acadCadreSelect.addEventListener('change', (e) => {
+      acadBasicInput.value = e.target.value;
+      calculateAcademicPay();
+    });
+    acadFitmentSelect.addEventListener('change', calculateAcademicPay);
+    phdIncrementSelect.addEventListener('change', calculateAcademicPay);
+    acadCityTier.addEventListener('change', calculateAcademicPay);
+
+    // Preset Chip Buttons
+    const pills = document.querySelectorAll('#cadrePills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        acadBasicInput.value = pill.getAttribute('data-base');
+        phdIncrementSelect.value = pill.getAttribute('data-adv');
+
+        // Match dropdown value
+        const targetBase = pill.getAttribute('data-base');
+        for (let i = 0; i < acadCadreSelect.options.length; i++) {
+          if (acadCadreSelect.options[i].value === targetBase) {
+            acadCadreSelect.selectedIndex = i;
+            break;
+          }
+        }
+        calculateAcademicPay();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateAcademicPay();
+  </script>
+
+</body>
+</html>
