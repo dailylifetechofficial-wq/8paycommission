@@ -1,0 +1,852 @@
+---
+// src/pages/hra-rules.astro
+const siteUrl = "https://8paycommission.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const pageTitle = "HRA Rules for All Cities: Class X, Y, Z Classification & Entitlements (7th & 8th CPC)";
+const pageDescription = "Official HRA rules for Central Government employees. Complete list of Class X (30%), Class Y (20%), and Class Z (10%) cities, urban agglomeration contiguous rules, and floor protection.";
+
+// Comprehensive Directory of Class X and Key Class Y Cities
+const classXCities = [
+  { city: "Delhi (NCT)", state: "Delhi NCR", uaIncludes: "New Delhi, Delhi Cantonment, contiguous urban areas of Noida, Ghaziabad, Faridabad, and Gurugram for central offices" },
+  { city: "Mumbai (UA)", state: "Maharashtra", uaIncludes: "Greater Mumbai, Navi Mumbai, Thane, Kalyan-Dombivli, Mira-Bhayandar, Ulhasnagar" },
+  { city: "Kolkata (UA)", state: "West Bengal", uaIncludes: "Kolkata Municipal Corp, Howrah, Bidhannagar (Salt Lake), South Dum Dum, North Dum Dum, Baranagar" },
+  { city: "Chennai (UA)", state: "Tamil Nadu", uaIncludes: "Chennai Corporation, Tambaram, Avadi, Ambattur, Pallavaram, Alandur" },
+  { city: "Bengaluru (UA)", state: "Karnataka", uaIncludes: "Bruhat Bengaluru Mahanagara Palike (BBMP), electronic city corridors, Yelahanka, Kengeri" },
+  { city: "Hyderabad (UA)", state: "Telangana", uaIncludes: "Greater Hyderabad Municipal Corp (GHMC), Secunderabad Cantonment, Cyberabad perimeter" },
+  { city: "Ahmedabad (UA)", state: "Gujarat", uaIncludes: "Ahmedabad Municipal Corp, Gandhinagar urban continuity perimeter, Daskroi" },
+  { city: "Pune (UA)", state: "Maharashtra", uaIncludes: "Pune Municipal Corp (PMC), Pimpri-Chinchwad (PCMC), Khadki Cantonment, Dehu Road Cantonment" }
+];
+
+const classYCities = [
+  { state: "Andhra Pradesh", cities: "Vijayawada (UA), Visakhapatnam (UA), Guntur (UA), Nellore (UA)" },
+  { state: "Assam", cities: "Guwahati (UA)" },
+  { state: "Bihar", cities: "Patna (UA)" },
+  { state: "Chandigarh", cities: "Chandigarh (UA including Mohali and Panchkula continuity)" },
+  { state: "Chhattisgarh", cities: "Raipur (UA), Durg-Bhilainagar (UA)" },
+  { state: "Gujarat", cities: "Surat (UA), Vadodara (UA), Rajkot (UA), Bhavnagar (UA), Jamnagar (UA)" },
+  { state: "Haryana", cities: "Faridabad, Gurugram, Ambala (UA), Panipat" },
+  { state: "Jammu & Kashmir", cities: "Srinagar (UA), Jammu (UA)" },
+  { state: "Jharkhand", cities: "Jamshedpur (UA), Dhanbad (UA), Ranchi (UA), Bokaro Steel City (UA)" },
+  { state: "Karnataka", cities: "Mysuru (UA), Mangaluru (UA), Hubballi-Dharwad, Belagavi (UA)" },
+  { state: "Kerala", cities: "Kochi (UA), Thiruvananthapuram (UA), Kozhikode (UA), Thrissur (UA), Malappuram (UA), Kannur (UA), Kollam (UA)" },
+  { state: "Madhya Pradesh", cities: "Bhopal (UA), Indore (UA), Jabalpur (UA), Gwalior (UA), Ujjain (UA)" },
+  { state: "Maharashtra", cities: "Nagpur (UA), Nashik (UA), Aurangabad (Chhatrapati Sambhajinagar), Solapur, Kolhapur (UA), Amravati, Jalgaon, Nanded-Waghala" },
+  { state: "Odisha", cities: "Bhubaneswar (UA), Cuttack (UA), Rourkela (UA)" },
+  { state: "Punjab", cities: "Amritsar (UA), Jalandhar (UA), Ludhiana (UA)" },
+  { state: "Rajasthan", cities: "Jaipur (UA), Jodhpur (UA), Bikaner, Kota (UA), Ajmer (UA)" },
+  { state: "Tamil Nadu", cities: "Coimbatore (UA), Madurai (UA), Tiruchirappalli (UA), Salem (UA), Tiruppur (UA), Erode (UA)" },
+  { state: "Telangana", cities: "Warangal (UA)" },
+  { state: "Uttar Pradesh", cities: "Lucknow (UA), Kanpur (UA), Agra (UA), Varanasi (UA), Meerut (UA), Prayagraj (Allahabad), Aligarh, Bareilly (UA), Moradabad, Gorakhpur, Firozabad, Jhansi (UA), Saharanpur, Noida, Ghaziabad" },
+  { state: "Uttarakhand", cities: "Dehradun (UA)" }
+];
+
+const faqs = [
+  {
+    q: "How are cities classified into Class X, Y, and Z for Central Government HRA?",
+    a: "City classification is determined strictly by the Department of Expenditure (Ministry of Finance) based on the latest decennial Census population counts. Cities with an Urban Agglomeration (UA) population of 50 Lakhs and above are Class X (30% HRA); cities between 5 Lakhs and 50 Lakhs are Class Y (20% HRA); and all remaining locations with a population below 5 Lakhs are Class Z (10% HRA)."
+  },
+  {
+    q: "What is the contiguous urban area rule for claiming higher HRA?",
+    a: "Under Ministry of Finance directives, if a central government office, military cantonment, or research establishment is situated within 8 kilometers of the municipal perimeter of a Class X or Class Y city, and the area forms an unbroken continuous urban continuity with that city, employees stationed there are eligible to draw HRA at the higher city's rate, subject to an administrative dependency certificate issued by the District Collector."
+  },
+  {
+    q: "Can a government servant claim HRA while residing in their own home?",
+    a: "Yes. Central Government employees residing in their own self-financed, co-owned, or ancestral residential properties are fully eligible to draw their statutory monthly HRA on their payslip. However, this allowance is 100% taxable as salary income because no actual rent is paid to an external landlord."
+  },
+  {
+    q: "What are the rules regarding government accommodation (GPRA) and HRA?",
+    a: "If an employee is allotted official government residential accommodation from the General Pool (GPRA), railway quarters, or defence cantonment housing, they forfeit 100% of their monthly HRA from the date of taking possession and must pay a nominal standard monthly license fee. Refusing quarters after formal allocation without valid administrative exemption can lead to temporary debarment from HRA for up to one year."
+  },
+  {
+    q: "How does the dual-spouse government employee rule apply to HRA?",
+    a: "If both husband and wife are government employees stationed at the same headquarters, only one spouse can draw HRA if living in rented accommodation. If either spouse accepts government-allotted quarters, neither spouse is legally permitted to draw House Rent Allowance under Central Civil Services rules."
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta name="keywords" content="hra rules for all cities central government, class x y z cities list, 8th pay commission hra city classification, urban agglomeration 8 km rule hra, gpra accommodation hra forfeiture, dual spouse hra rules" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="8th Pay Commission Portal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org WebPage + FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": pageTitle,
+        "url": canonicalURL.toString(),
+        "description": pageDescription,
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f) => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      }
+    ]
+  })} />
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--primary-hover); }
+
+    .layout-wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero Header */
+    .hero-header {
+      text-align: center;
+      padding: 3rem 1rem 1.75rem;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.25rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.85rem;
+    }
+    .hero-header h1 {
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* Calculator Widget Box */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 3.5rem;
+    }
+    .chip-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1.25rem;
+      scrollbar-width: none;
+    }
+    .chip-bar::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover { background: #e2e8f0; }
+    .chip-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-item label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-item input, .form-item select {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.96rem;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Live Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-unit {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-unit.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .kpi-unit.success {
+      background: var(--accent-green-bg);
+      border-color: #86efac;
+    }
+    .kpi-unit .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-unit .kpi-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .kpi-unit.highlight .kpi-val { color: var(--primary); }
+    .kpi-unit.success .kpi-val { color: var(--accent-green); }
+
+    /* Breakdown Box */
+    .breakdown-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+    .breakdown-table td {
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td.num {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Long-Form Content Area */
+    .article-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3.5rem;
+    }
+    .article-wrap h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eff6ff;
+    }
+    .article-wrap h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 1.6rem 0 0.65rem;
+    }
+    .article-wrap p {
+      margin-bottom: 1.25rem;
+      color: #334155;
+      font-size: 1.02rem;
+    }
+    .article-wrap ul, .article-wrap ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+      color: #334155;
+    }
+    .article-wrap li { margin-bottom: 0.45rem; }
+
+    .formula-banner {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.15rem 1.35rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-family: monospace;
+      font-size: 0.96rem;
+      color: #1e40af;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin: 1.5rem 0;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.91rem;
+    }
+    table.data-table th, table.data-table td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-unit {
+      border-bottom: 1px solid var(--border);
+      padding: 1.15rem 0;
+    }
+    .faq-quest {
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.02rem;
+    }
+    .faq-ans {
+      display: none;
+      padding-top: 0.65rem;
+      color: #475569;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+    .faq-unit.open .faq-ans { display: block; }
+    .faq-unit.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem 1.25rem;
+      z-index: 990;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .mobile-sticky-bar .lbl { font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+    .mobile-sticky-bar .val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    @media (max-width: 768px) {
+      .mobile-sticky-bar { display: flex; }
+      body { padding-bottom: 4.5rem; }
+    }
+
+    /* Disclaimer */
+    .disclaimer-strip {
+      max-width: 1160px;
+      margin: 2rem auto 4rem;
+      padding: 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid #94a3b8;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="layout-wrap">
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+      <div class="badge-pill">Department of Expenditure Statutory Norms</div>
+      <h1>HRA Rules for All Cities & Classifications</h1>
+      <p>Official guidelines governing House Rent Allowance across Class X (30%), Class Y (20%), and Class Z (10%) cities: census thresholds, contiguous urban agglomerations, and floor guarantee rules.</p>
+    </header>
+
+    <!-- INTERACTIVE HRA CITY CALCULATOR WIDGET -->
+    <section class="calc-box" aria-label="City HRA Rate & Floor Protection Calculator Widget">
+      
+      <!-- Quick City Tier Selection Chips -->
+      <div style="margin-bottom: 1.25rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Select Duty Station Classification:</span>
+        <div class="chip-bar" id="tierPills">
+          <button class="chip-btn active" data-tier="0.30" data-floor="5400" data-f8th="15444">Class X Metro (30% HRA)</button>
+          <button class="chip-btn" data-tier="0.20" data-floor="3600" data-f8th="10296">Class Y Tier-2 (20% HRA)</button>
+          <button class="chip-btn" data-tier="0.10" data-floor="1800" data-f8th="5148">Class Z Small Town (10% HRA)</button>
+        </div>
+      </div>
+
+      <!-- Controls Grid -->
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="cityTierSelect">Official City Classification</label>
+          <select id="cityTierSelect">
+            <option value="0.30" data-floor="5400" data-f8th="15444" selected>Class X (Population 50L+ • 30% HRA)</option>
+            <option value="0.20" data-floor="3600" data-f8th="10296">Class Y (Population 5L to 50L • 20% HRA)</option>
+            <option value="0.10" data-floor="1800" data-f8th="5148">Class Z (Population &lt; 5L • 10% HRA)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="basicPayInput">Current Monthly Basic Pay (₹)</label>
+          <input type="number" id="basicPayInput" value="35400" min="18000" step="100" />
+        </div>
+
+        <div class="form-item">
+          <label for="fitmentMultiplier">Simulate 8th CPC Fitment Factor</label>
+          <select id="fitmentMultiplier">
+            <option value="1.00">7th CPC Baseline (No Fitment)</option>
+            <option value="2.25">2.25x (Conservative Model)</option>
+            <option value="2.57">2.57x (7th CPC Parity)</option>
+            <option value="2.86" selected>2.86x (Federation Target)</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <label for="accommodationStatus">Living Accommodation Type</label>
+          <select id="accommodationStatus">
+            <option value="rented" selected>Private Rented / Own House (Full HRA)</option>
+            <option value="govt">Government Quarters / GPRA (0% HRA - Forfeited)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Summary KPI Cards -->
+      <div class="summary-cards">
+        <div class="kpi-unit">
+          <div class="kpi-label">Calculated Monthly Basic</div>
+          <div class="kpi-val" id="dispBasic">₹1,01,244</div>
+        </div>
+        <div class="kpi-unit highlight">
+          <div class="kpi-label">Statutory Minimum Floor</div>
+          <div class="kpi-val" id="dispFloor">₹15,444</div>
+        </div>
+        <div class="kpi-unit success">
+          <div class="kpi-label">Final Disbursed Monthly HRA</div>
+          <div class="kpi-val" id="dispHra">₹30,373</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Slip -->
+      <div class="breakdown-box">
+        <div class="breakdown-title">
+          <span>HRA Entitlement & Protection Breakdown</span>
+          <span style="color: var(--primary); font-size: 0.85rem;" id="slipCityLabel">Class X Metro (30%)</span>
+        </div>
+        <table class="breakdown-table">
+          <tbody>
+            <tr>
+              <td>Basic Pay Reference for Computation</td>
+              <td class="num" id="slipComputedBasic">₹1,01,244</td>
+            </tr>
+            <tr>
+              <td>Statutory Percentage Rate Applicable to City Class</td>
+              <td class="num" id="slipRate">30%</td>
+            </tr>
+            <tr>
+              <td>Raw Calculated Monthly HRA (Basic Pay × Rate)</td>
+              <td class="num" id="slipRawHra">₹30,373</td>
+            </tr>
+            <tr>
+              <td>Statutory Minimum Floor Protection Floor Limit</td>
+              <td class="num" id="slipFloorVal">₹15,444</td>
+            </tr>
+            <tr>
+              <td>Government Quarters (GPRA) Forfeiture Deduction</td>
+              <td class="num" id="slipDeduction" style="color: #64748b;">₹0 (Admissible)</td>
+            </tr>
+            <tr style="font-weight: 800; background: var(--accent-green-bg);">
+              <td style="color: var(--accent-green);">Final Disbursed Monthly HRA to Bank</td>
+              <td class="num" id="slipFinalHra" style="color: var(--accent-green);">₹30,373</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- IN-DEPTH 1,300+ WORDS FRESH SEO ARTICLE -->
+    <article class="article-wrap">
+      <h2>1. The Foundation of House Rent Allowance in Central Service</h2>
+      <p>
+        In the compensation structure of the Government of India, <strong>House Rent Allowance (HRA)</strong> serves as a targeted subsidy to compensate employees for private residential tenancy expenses incurred when government-provided quarters are unavailable. Unlike general compensatory allowances, HRA is strictly location-dependent and tied directly to the urban agglomeration boundaries established by the Registrar General and Census Commissioner of India.
+      </p>
+      <p>
+        The administration of HRA is governed by formal Office Memorandums (OMs) issued by the <strong>Department of Expenditure (DoE)</strong>, Ministry of Finance. As cities expand beyond historical municipal borders into sprawling urban agglomerations, the government enforces specific geographic dependency criteria, population classifications, and floor protection limits to ensure uniform housing assistance across all ranks.
+      </p>
+
+      <h2>2. City Classification Architecture: Census Thresholds & Rates</h2>
+      <p>
+        The Central Government categorizes all postings across India into three primary groups based strictly on the decennial Census population metrics:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>City Classification</th>
+              <th>Population Benchmark</th>
+              <th>Current 7th CPC Restored Rate</th>
+              <th>Projected 8th CPC Baseline</th>
+              <th>Statutory Minimum Floor (7th vs 8th CPC)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Class X (Metro Cities)</strong></td>
+              <td>50 Lakhs (5 Million) and Above</td>
+              <td><strong style="color: var(--primary);">30% of Basic Pay</strong></td>
+              <td>30% of Basic Pay</td>
+              <td>₹5,400 / ₹15,444 (Projected @ 2.86x)</td>
+            </tr>
+            <tr>
+              <td><strong>Class Y (Tier-2 Centers)</strong></td>
+              <td>5 Lakhs to 50 Lakhs</td>
+              <td><strong style="color: var(--primary);">20% of Basic Pay</strong></td>
+              <td>20% of Basic Pay</td>
+              <td>₹3,600 / ₹10,296 (Projected @ 2.86x)</td>
+            </tr>
+            <tr>
+              <td><strong>Class Z (Tier-3 / Rural)</strong></td>
+              <td>Below 5 Lakhs</td>
+              <td><strong style="color: var(--primary);">10% of Basic Pay</strong></td>
+              <td>10% of Basic Pay</td>
+              <td>₹1,800 / ₹5,148 (Projected @ 2.86x)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="formula-banner">
+        Monthly Disbursed HRA = Higher of [Basic Pay × Applicable City Rate (30%, 20%, 10%)] OR Statutory Minimum Floor Limit
+      </div>
+
+      <h2>3. Complete Master List of Class X Urban Agglomerations</h2>
+      <p>
+        Currently, only eight major urban agglomerations qualify for the top-tier <strong>Class X (30%)</strong> bracket. These regions encompass not only the core municipal corporations but also surrounding contiguous municipal satellites:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Class X Urban Center</th>
+              <th>State / UT</th>
+              <th>Included Urban Agglomerations & Contiguous Perimeters</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classXCities.map((x) => (
+              <tr>
+                <td><strong>{x.city}</strong></td>
+                <td>{x.state}</td>
+                <td style="font-size: 0.85rem; color: #475569;">{x.uaIncludes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>4. State-Wise Directory of Class Y (20%) Urban Centers</h2>
+      <p>
+        Class Y cities represent regional commercial hubs, state capitals, and industrial agglomerations with populations exceeding 500,000 residents:
+      </p>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>State / Territory</th>
+              <th>Recognized Class Y (20% HRA) Cities & Urban Agglomerations</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classYCities.map((y) => (
+              <tr>
+                <td style="white-space: nowrap;"><strong>{y.state}</strong></td>
+                <td style="font-size: 0.86rem; color: #334155;">{y.cities}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>5. The Contiguous Urban Area (8-Kilometer Dependency) Rule</h2>
+      <p>
+        One of the most litigated and vital provisions in Central Civil Services (Allowance) Rules is the <strong>Contiguous Area Rule</strong>, which addresses central establishments located outside municipal city limits.
+      </p>
+      <p>
+        Under Ministry of Finance regulations:
+      </p>
+      <ul>
+        <li><strong>The 8-Kilometer Perimeter:</strong> If a central government office, defence depot, atomic facility, or research laboratory is situated outside the municipal limits of a qualifying Class X or Class Y city, but within a distance of <strong>8 kilometers from the periphery</strong> of the municipal boundary, employees may claim the higher city's HRA rate.</li>
+        <li><strong>The Dependency Certificate:</strong> For the higher rate to be sanctioned, the administrative ministry must obtain a formal dependency certificate from the District Collector or Municipal Commissioner confirming that:
+          <ol>
+            <li>The suburban enclave forms a continuous urban extension with unbroken residential and commercial infrastructure.</li>
+            <li>Employees stationed at the establishment are compelled to reside inside the main qualifying city due to a lack of civic housing, schools, and medical facilities within the immediate suburban vicinity.</li>
+          </ol>
+        </li>
+      </ul>
+
+      <h2>6. The Minimum Floor Protection Guarantee</h2>
+      <p>
+        To protect entry-level operational personnel (such as Multi-Tasking Staff and Lower Division Clerks in Levels 1 and 2) stationed in high-cost metropolitan centers, the Central Government mandates a statutory <strong>HRA Minimum Floor Limit</strong>.
+      </p>
+      <p>
+        Under this rule, if the mathematical calculation of an employee's basic pay multiplied by the city percentage yields an amount lower than the statutory floor, the Accounts Office must pay the guaranteed floor amount:
+      </p>
+      <ul>
+        <li><strong>7th CPC Floor Limits:</strong> Fixed at <strong>₹5,400</strong> (Class X), <strong>₹3,600</strong> (Class Y), and <strong>₹1,800</strong> (Class Z).</li>
+        <li><strong>8th CPC Projections:</strong> Applying the standard 2.25x to 2.86x fitment multipliers, these guaranteed minimum floors will adjust upwards to approximately <strong>₹12,150 – ₹15,444</strong> (Class X), <strong>₹8,100 – ₹10,296</strong> (Class Y), and <strong>₹4,050 – ₹5,148</strong> (Class Z).</li>
+      </ul>
+
+      <h2>7. Dual-Spouse Employment & Government Quarters Forfeiture</h2>
+      <p>
+        Central Civil Services rules enforce strict restrictions to prevent dual housing disbursements within a single household:
+      </p>
+      <h3>1. Forfeiture on Government Quarters (GPRA)</h3>
+      <p>
+        When an employee accepts government accommodation (General Pool Residential Accommodation - GPRA, railway quarters, or defence cantonment housing), they forfeit <strong>100% of their monthly HRA</strong> from the physical date of taking possession. In addition, a nominal standard monthly license fee is deducted from their salary.
+      </p>
+      <h3>2. Spouses Stationed at the Same Duty Station</h3>
+      <p>
+        If both husband and wife are public servants (central government, state government, or public sector undertakings) stationed at the same headquarters:
+      </p>
+      <ul>
+        <li><strong>One Spouse in Quarters:</strong> If either spouse occupies government-allotted quarters, the other spouse is <strong>strictly barred</strong> from drawing HRA, even if they claim to maintain separate residential dwellings.</li>
+        <li><strong>Living in Private Rented Housing:</strong> If both spouses reside in private rented accommodation, only one spouse is entitled to draw House Rent Allowance on their pay slip.</li>
+      </ul>
+      <h3>3. Spouses Stationed at Different Duty Stations</h3>
+      <p>
+        If a married couple is stationed at separate, geographically distinct duty stations (e.g., the husband in Delhi and the wife in Bengaluru), both employees are independently entitled to draw HRA applicable to their respective city classifications, provided neither occupies government quarters at their duty post.
+      </p>
+
+      <h2>8. Tax Implications: Exemption under Section 10(13A)</h2>
+      <p>
+        The taxability of House Rent Allowance depends on the employee's tax regime selection and housing arrangements:
+      </p>
+      <ul>
+        <li><strong>Under the Old Tax Regime:</strong> Employees residing in private rented housing can claim substantial tax exemptions under <strong>Section 10(13A)</strong> read with Rule 2A. The exempt amount is the lowest of:
+          <ol>
+            <li>Total actual HRA received during the financial year.</li>
+            <li>Actual rent paid minus 10% of basic salary (including Dearness Allowance).</li>
+            <li>50% of basic salary for metro cities (Delhi, Mumbai, Kolkata, Chennai) or 40% for all other locations.</li>
+          </ol>
+        </li>
+        <li><strong>Under the New Tax Regime:</strong> HRA exemptions under Section 10(13A) are <strong>completely disallowed</strong>. Employees opting for the default New Tax Regime are taxed on their full gross HRA earnings.</li>
+      </ul>
+
+      <h2>9. Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <div class="faq-unit">
+            <div class="faq-quest">
+              <span>{faq.q}</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-ans">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <!-- DISCLAIMER STRIP -->
+    <div class="disclaimer-strip">
+      <strong>Statutory Disclaimer:</strong> 8paycommission.com is an independent educational and analytical platform. It is not affiliated with, endorsed by, or connected to the Government of India, the Ministry of Finance, the Department of Expenditure, or the Directorate of Estates. All city classifications, HRA percentages, and contiguous agglomeration rules are compiled directly from Ministry of Finance Office Memorandums (OMs) and gazette notifications. Official orders must be confirmed at <a href="https://doe.gov.in" target="_blank" rel="noopener noreferrer">doe.gov.in</a> and <a href="https://esampada.mohua.gov.in" target="_blank" rel="noopener noreferrer">esampada.mohua.gov.in</a>.
+    </div>
+
+  </main>
+
+  <!-- STICKY MOBILE SUMMARY BAR -->
+  <div class="mobile-sticky-bar">
+    <div>
+      <div class="lbl">Monthly HRA Entitlement</div>
+      <div class="val" id="stickyHra">₹30,373</div>
+    </div>
+    <a href="#basicPayInput" class="chip-btn active" style="padding: 0.45rem 0.95rem; font-size: 0.82rem;">Recalculate</a>
+  </div>
+
+  <!-- CLIENT-SIDE COMPUTATION JAVASCRIPT -->
+  <script is:inline>
+    const cityTierSelect = document.getElementById('cityTierSelect');
+    const basicPayInput = document.getElementById('basicPayInput');
+    const fitmentMultiplier = document.getElementById('fitmentMultiplier');
+    const accommodationStatus = document.getElementById('accommodationStatus');
+
+    const dispBasic = document.getElementById('dispBasic');
+    const dispFloor = document.getElementById('dispFloor');
+    const dispHra = document.getElementById('dispHra');
+    const stickyHra = document.getElementById('stickyHra');
+
+    const slipComputedBasic = document.getElementById('slipComputedBasic');
+    const slipRate = document.getElementById('slipRate');
+    const slipRawHra = document.getElementById('slipRawHra');
+    const slipFloorVal = document.getElementById('slipFloorVal');
+    const slipDeduction = document.getElementById('slipDeduction');
+    const slipFinalHra = document.getElementById('slipFinalHra');
+    const slipCityLabel = document.getElementById('slipCityLabel');
+
+    function calculateCityHRA() {
+      const basic = parseFloat(basicPayInput.value) || 0;
+      const fitment = parseFloat(fitmentMultiplier.value) || 1.0;
+      const rate = parseFloat(cityTierSelect.value) || 0.30;
+      const isGovt = accommodationStatus.value === 'govt';
+
+      const selectedOption = cityTierSelect.options[cityTierSelect.selectedIndex];
+      const floor7th = parseFloat(selectedOption.getAttribute('data-floor')) || 5400;
+      const floor8th = parseFloat(selectedOption.getAttribute('data-f8th')) || 15444;
+      const activeFloor = fitment > 1.0 ? floor8th : floor7th;
+
+      // Arithmetic Engine
+      const computedBasic = Math.round(basic * fitment);
+      const rawHra = Math.round(computedBasic * rate);
+      const protectedHra = Math.max(rawHra, activeFloor);
+      const finalDisbursedHra = isGovt ? 0 : protectedHra;
+
+      // Update KPI Cards
+      dispBasic.textContent = '₹' + computedBasic.toLocaleString('en-IN');
+      dispFloor.textContent = '₹' + activeFloor.toLocaleString('en-IN');
+      dispHra.textContent = '₹' + finalDisbursedHra.toLocaleString('en-IN');
+      if (stickyHra) stickyHra.textContent = '₹' + finalDisbursedHra.toLocaleString('en-IN');
+
+      // Update Breakdown Table
+      slipComputedBasic.textContent = '₹' + computedBasic.toLocaleString('en-IN');
+      slipRate.textContent = `${Math.round(rate * 100)}% (${selectedOption.text.split(' (')[0]})`;
+      slipRawHra.textContent = '₹' + rawHra.toLocaleString('en-IN');
+      slipFloorVal.textContent = '₹' + activeFloor.toLocaleString('en-IN');
+      slipDeduction.textContent = isGovt ? '-100% (Quarters Allotted)' : '₹0 (Admissible)';
+      slipFinalHra.textContent = '₹' + finalDisbursedHra.toLocaleString('en-IN');
+
+      // Update Subtitle Label
+      slipCityLabel.textContent = `${selectedOption.text.split(' (')[0]} • ${Math.round(rate * 100)}% Rate`;
+    }
+
+    // Input Listeners
+    cityTierSelect.addEventListener('change', calculateCityHRA);
+    basicPayInput.addEventListener('input', calculateCityHRA);
+    fitmentMultiplier.addEventListener('change', calculateCityHRA);
+    accommodationStatus.addEventListener('change', calculateCityHRA);
+
+    // Preset Chip Buttons
+    const pills = document.querySelectorAll('#tierPills .chip-btn');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        cityTierSelect.value = pill.getAttribute('data-tier');
+        calculateCityHRA();
+      });
+    });
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-quest').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Initial Execution
+    calculateCityHRA();
+  </script>
+
+</body>
+</html>
