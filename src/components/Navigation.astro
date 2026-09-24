@@ -1,42 +1,43 @@
 ---
-const groups = [
+const navGroups = [
   {
     label: 'Calculators',
     items: [
-      ['8th Pay Salary Calculator', '/8th-pay-commission-salary-calculator'],
-      ['Pension calculator', '/8th-pay-commission-pension-calculator'],
-['Arrears calculator', '/8th-pay-commission-arrears-calculator'],
-      ['HRA Slabs Calculator', '/8th-pay-commission-hra-calculator'],
-      ['Expected DA Calculator', '/8th-pay-commission-da-calculator'],
+      { label: '8th Pay Salary Calculator', href: '/8th-pay-commission-salary-calculator' },
+      { label: 'Pension calculator', href: '/8th-pay-commission-pension-calculator' },
+      { label: 'Arrears calculator', href: '/8th-pay-commission-arrears-calculator' },
+      { label: 'HRA Slabs Calculator', href: '/8th-pay-commission-hra-calculator' },
+      { label: 'Expected DA Calculator', href: '/8th-pay-commission-da-calculator' },
     ],
   },
   {
     label: 'Pay Matrix',
     items: [
-      ['Level 1 to 18 Matrix Table', '/8th-pay-commission-pay-matrix'],
-      ['Fitment Factor Scenarios', '/8th-pay-commission-fitment-factor'],
-      ['7th vs 8th CPC Comparison', '/comparison-7thpay-vs-8thpay'],
+      { label: 'Level 1 to 18 Matrix Table', href: '/8th-pay-commission-pay-matrix' },
+      { label: 'Fitment Factor Scenarios', href: '/8th-pay-commission-fitment-factor' },
+      { label: '7th vs 8th CPC Comparison', href: '/comparison-7thpay-vs-8thpay' },
     ],
   },
   {
     label: 'Allowances & Rules',
     items: [
-      ['DA & AICPI Tracker', '/dearness-allowance'],
-      ['HRA (X, Y, Z Cities)', '/hra-rules'],
-      ['Travel & TA Rules', '/transport-allowance'],
-      ['Children Education Allowance', '/cea-rules'],
+      { label: 'DA & AICPI Tracker', href: '/dearness-allowance' },
+      { label: 'HRA (X, Y, Z Cities)', href: '/hra-rules' },
+      { label: 'Travel & TA Rules', href: '/transport-allowance' },
+      { label: 'Children Education Allowance', href: '/cea-rules' },
     ],
   },
   {
     label: 'Sector-Wise Pay',
     items: [
-      ['Defence & MSP Matrix', '/defence-pay-scale'],
-      ['Railway Employee Rules', '/railway-pay-structure'],
-      ['Teachers & University Staff', '/teachers-pay-scale'],
-      ['State Govt Status', '/state-wise-status'],
+      { label: 'Defence & MSP Matrix', href: '/defence-pay-scale' },
+      { label: 'Railway Employee Rules', href: '/railway-pay-structure' },
+      { label: 'Teachers & University Staff', href: '/teachers-pay-scale' },
+      { label: 'State Govt Status', href: '/state-wise-status' },
     ],
   },
 ];
+
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => currentPath === href || currentPath.startsWith(`${href}/`);
 ---
@@ -46,15 +47,17 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
     <nav class="desktop-nav" aria-label="Main navigation">
       <ul class="nav-list">
         <li><a class:list={['nav-link', { active: currentPath === '/' }]} href="/">Home</a></li>
-        {groups.map((group) => (
+        {navGroups.map((group) => (
           <li class="nav-item">
             <button class="nav-link menu-button" aria-haspopup="true">{group.label}<span aria-hidden="true">⌄</span></button>
             <ul class="dropdown">
-              {group.items.map(([label, href]) => <li><a class:list={['dropdown-link', { active: isCurrent(href) }]} href={href}>{label}</a></li>)}
+              {group.items.map((item) => (
+                <li><a class:list={['dropdown-link', { active: isCurrent(item.href) }]} href={item.href}>{item.label}</a></li>
+              ))}
             </ul>
           </li>
         ))}
-        <li><a class:list={['nav-link', { active: isCurrent('/blog') || isCurrent('/latest-news') }]} href="/blog">Latest Updates</a></li>
+        <li><a class:list={['nav-link', { active: isCurrent('/blog') }]} href="/blog">Latest Updates</a></li>
       </ul>
     </nav>
     <button class="menu-trigger" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
@@ -64,10 +67,12 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
 <aside class="mobile-drawer" id="drawer" aria-label="Mobile navigation" aria-hidden="true">
   <div class="mobile-drawer-head"><a href="/" class="brand">8paycommission</a><button class="drawer-close" id="drawerClose" aria-label="Close navigation">×</button></div>
   <a class="mobile-home" href="/">Home</a>
-  {groups.map((group) => (
+  {navGroups.map((group) => (
     <div class="mobile-acc-item">
       <button class="mobile-acc-btn" aria-expanded="false">{group.label}<span aria-hidden="true">⌄</span></button>
-      <ul class="mobile-sub-menu">{group.items.map(([label, href]) => <li><a class:list={{ active: isCurrent(href) }} href={href}>{label}</a></li>)}</ul>
+      <ul class="mobile-sub-menu">
+        {group.items.map((item) => <li><a class:list={{ active: isCurrent(item.href) }} href={item.href}>{item.label}</a></li>)}
+      </ul>
     </div>
   ))}
   <a class="mobile-home" href="/blog">Latest Updates</a>
@@ -76,14 +81,14 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
   .site-nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,.97); border-bottom: 1px solid #e2e8f0; }
   .nav-container { max-width: 1200px; margin: auto; padding: .75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
   .brand { display: inline-flex; align-items: center; gap: .55rem; color: #0f172a; font-weight: 800; text-decoration: none; }
-  .brand-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,#1d4ed8,#0284c7); color: #fff; }
+  .brand-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,#1d4ed8,#0284c7); color: #fff; font-weight: 900; }
   .nav-list { display: flex; align-items: center; gap: .2rem; list-style: none; margin: 0; padding: 0; }
   .nav-item { position: relative; }
-  .nav-link, .dropdown-link { display: block; padding: .55rem .7rem; border: 0; border-radius: 7px; color: #334155; background: transparent; font: inherit; font-size: .88rem; font-weight: 650; text-decoration: none; white-space: nowrap; }
+  .nav-link, .dropdown-link { display: block; padding: .55rem .7rem; border: 0; border-radius: 7px; color: #334155; background: transparent; font: inherit; font-size: .88rem; font-weight: 650; text-decoration: none; }
   .menu-button { cursor: pointer; }
   .nav-link span { margin-left: .35rem; }
   .nav-link:hover, .nav-link.active, .dropdown-link:hover, .dropdown-link.active { color: #1d4ed8; background: #eff6ff; }
-  .dropdown { display: none; position: absolute; top: calc(100% + .25rem); left: 0; width: 255px; padding: .4rem; margin: 0; list-style: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 12px 30px rgba(15,23,42,.12); }
+  .dropdown { display: none; position: absolute; top: calc(100% + .25rem); left: 0; width: 255px; padding: .4rem; margin: 0; list-style: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 16px 28px rgba(15,23,42,.08); }
   .nav-item:hover .dropdown, .nav-item:focus-within .dropdown { display: block; }
   .menu-trigger { display: none; border: 0; background: none; font-size: 1.6rem; cursor: pointer; }
   .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.4); z-index: 1010; }
@@ -92,7 +97,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
   .mobile-drawer.open { right: 0; }
   .mobile-drawer-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; }
   .drawer-close { border: 0; background: none; font-size: 1.7rem; cursor: pointer; }
-  .mobile-home, .mobile-acc-btn { display: flex; width: 100%; justify-content: space-between; padding: .8rem 0; border: 0; background: none; color: #0f172a; font: inherit; font-weight: 700; text-align: left; text-decoration: none; cursor: pointer; }
+  .mobile-home, .mobile-acc-btn { display: flex; width: 100%; justify-content: space-between; padding: .8rem 0; border: 0; background: none; color: #0f172a; font: inherit; font-weight: 700; text-decoration: none; }
   .mobile-sub-menu { display: none; list-style: none; margin: 0; padding: 0 0 .45rem .9rem; }
   .mobile-acc-item.expanded .mobile-sub-menu { display: block; }
   .mobile-sub-menu a { display: block; padding: .42rem 0; color: #64748b; text-decoration: none; }
@@ -105,7 +110,9 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
   const backdrop = document.getElementById('backdrop');
   const close = document.getElementById('drawerClose');
   const setOpen = (open) => { drawer?.classList.toggle('open', open); backdrop?.classList.toggle('active', open); drawer?.setAttribute('aria-hidden', String(!open)); menu?.setAttribute('aria-expanded', String(open)); };
-  menu?.addEventListener('click', () => setOpen(true)); close?.addEventListener('click', () => setOpen(false)); backdrop?.addEventListener('click', () => setOpen(false));
+  menu?.addEventListener('click', () => setOpen(true));
+  close?.addEventListener('click', () => setOpen(false));
+  backdrop?.addEventListener('click', () => setOpen(false));
   document.querySelectorAll('.mobile-acc-btn').forEach((button) => button.addEventListener('click', () => { const item = button.parentElement; const expanded = item.classList.toggle('expanded'); button.setAttribute('aria-expanded', String(expanded)); }));
   drawer?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
 </script>
